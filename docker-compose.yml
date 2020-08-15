@@ -1,0 +1,12 @@
+version: '2'
+services:
+    node:
+        container_name: fftcg-node
+        build:
+            dockerfile: ./docker/node/Dockerfile
+            context: .
+        command: ["npm", "run", "watch"]
+        volumes:
+            - .:/var/www
+        ports:
+            - "3000:3000"
