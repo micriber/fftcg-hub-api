@@ -11,11 +11,11 @@ export default class Context implements ContextInterface {
         this.res = res;
     }
 
-    public getBody(): object {
+    public getBody(): Record<string, unknown> {
         return this.req.body;
     }
 
-    public sendJson(code: number, json: object): void {
+    public sendJson(code: number, json: Record<string, unknown>): void {
         this.res.status(code).json(json);
     }
 }
