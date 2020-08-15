@@ -2,12 +2,13 @@
     "name": "fftcg-collection-api",
     "version": "0.1.0",
     "description": "",
-    "main": "src/index.ts",
+    "main": "src/app.ts",
     "scripts": {
-        "start": "node build/index.js",
+        "start": "node build/app.js",
         "build": "tsc",
         "check": "tsc --noemit",
-        "watch": "nodemon"
+        "watch": "nodemon",
+        "test": "NODE_ENV=test npx mocha -r ts-node/register test/**/*.ts"
     },
     "repository": {
         "type": "git",
@@ -16,10 +17,17 @@
     "author": "Micriber",
     "license": "ISC",
     "dependencies": {
-        "fastify": "^3.2.0"
+        "express": "^4.17.1",
+        "joi": "^17.2.0"
     },
     "devDependencies": {
+        "@types/chai": "^4.2.12",
+        "@types/express": "^4.17.7",
+        "@types/mocha": "^8.0.2",
         "@types/node": "^14.0.27",
+        "chai": "^4.2.0",
+        "chai-http": "^4.3.0",
+        "mocha": "^8.1.1",
         "nodemon": "^2.0.4",
         "ts-node": "^8.10.2",
         "typescript": "^3.9.7"
