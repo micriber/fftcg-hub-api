@@ -1,0 +1,1 @@
+# fftcg collection api
