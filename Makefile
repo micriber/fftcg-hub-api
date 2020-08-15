@@ -1,14 +1,22 @@
+DOCKER_RUN_CMD=docker-compose run --rm node
+
+up:
+	docker-compose up -d
+
+logs-node:
+	docker-compose logs -f node
+
 ssh-node:
-	docker-compose run --rm node bash
+	docker-compose exec node bash
 
 watch:
-	docker-compose run --rm node npm run watch
+	$(DOCKER_RUN_CMD) npm run watch
 
 build:
-	docker-compose run --rm node npm run build
+	$(DOCKER_RUN_CMD) npm run build
 
 check:
-	docker-compose run --rm node npm run check
+	$(DOCKER_RUN_CMD) npm run check
 
 start:
-	docker-compose run --rm node npm run start
+	$(DOCKER_RUN_CMD) npm run start
