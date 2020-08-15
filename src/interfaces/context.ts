@@ -1,4 +1,4 @@
 export interface ContextInterface {
-    getBody(): object;
-    sendJson(code: number, json: object): void;
+    getBody(): Record<string, unknown>;
+    sendJson(code: number, json: Record<string, unknown>): void;
 }

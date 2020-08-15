@@ -30,11 +30,11 @@ describe('Controller users', async(): Promise<void> => {
 
     describe('create', (): void => {
         it('should create a user', (): void => {
-
+            // implement in next commit with DB
         });
 
         it('should create a user with error', (): void => {
-
+            // implement in next commit with DB
         });
     });
 });
