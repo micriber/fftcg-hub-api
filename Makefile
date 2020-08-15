@@ -25,3 +25,9 @@ start:
 
 test:
 	$(DOCKER_RUN_CMD) npm run test
+
+eslint:
+	$(DOCKER_RUN_CMD) npm run eslint
+
+eslint-fix:
+	$(DOCKER_RUN_CMD) npm run eslint:fix
