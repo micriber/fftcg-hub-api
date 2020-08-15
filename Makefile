@@ -1,3 +1,5 @@
+.PHONY: up logs-node ssh-node watch build check start test
+
 DOCKER_RUN_CMD=docker-compose run --rm node
 
 up:
@@ -20,3 +22,6 @@ check:
 
 start:
 	$(DOCKER_RUN_CMD) npm run start
+
+test:
+	$(DOCKER_RUN_CMD) npm run test
