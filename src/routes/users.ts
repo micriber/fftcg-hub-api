@@ -7,6 +7,6 @@ const router = express.Router();
 const controller = new UsersController();
 
 router
-    .get('/users', (req: Request, res: Response): void => controller.get(new Context(req, res)));
+    .get('/users/:id', (req: Request, res: Response) => controller.get(new Context(req, res)));
 
 export default router;

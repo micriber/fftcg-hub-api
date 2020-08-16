@@ -16,8 +16,8 @@
         "schema:sync:test": "npm run typeorm -- schema:sync -c test",
         "fixture": "fixtures ./fixtures -s -c ./ormconfig.js --require=ts-node/register",
         "fixture:test": "npm run schema:sync:test && fixtures ./fixtures -cn test -s -c ./ormconfig.js --require=ts-node/register",
-        "test:full": "npm run test:unit && npm run test:func",
-        "test:func": "npm run fixture:test && NODE_ENV=test npx mocha -r ts-node/register test/controllers/**/*.ts",
+        "test": "npm run test:unit && npm run test:func",
+        "test:func": "NODE_ENV=test npx mocha -r ts-node/register test/controllers/**/*.ts",
         "test:unit": "npx mocha -r ts-node/register --exclude test/controllers/**/*.ts test/**/*.ts"
     },
     "repository": {

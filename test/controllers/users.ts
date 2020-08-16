@@ -20,10 +20,24 @@ describe('Controller users', async(): Promise<void> => {
 
     describe('get', async (): Promise<void> => {
         it('should return a user', async(): Promise<void> => {
-            server.get('/users').end((err, res): void => {
+            server.get('/users/1').end((err, res): void => {
                 expect(err).to.be.null;
                 expect(res).to.have.status(200);
-                expect(res.body).to.be.deep.equal({ message: 'success' });
+                const user = res.body.user;
+                expect(user.id).to.be.equal(1);
+                expect(user.firstName).to.be.equal('Bersiroth');
+                expect(user.lastName).to.be.equal('Masamune');
+            });
+        });
+
+        it('should return a user with user not exist', async(): Promise<void> => {
+            server.get('/users/99999').end((err, res): void => {
+                expect(err).to.be.null;
+                expect(res).to.have.status(404);
+                expect(res.body).to.be.deep.equal({
+                    status: 404,
+                    message: 'user not found' }
+                );
             });
         });
     });

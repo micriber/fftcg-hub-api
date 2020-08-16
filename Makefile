@@ -29,6 +29,12 @@ start:
 test:
 	$(DOCKER_RUN_CMD) npm run test
 
+test-func:
+	$(DOCKER_RUN_CMD) npm run test:func
+
+test-unit:
+	$(DOCKER_RUN_CMD) npm run test:unit
+
 eslint:
 	$(DOCKER_RUN_CMD) npm run eslint
 
@@ -40,3 +46,9 @@ migration-create:
 
 migration-run:
 	$(DOCKER_RUN_CMD) npm run migration:run
+
+fixture:
+	$(DOCKER_RUN_CMD) npm run fixture
+
+fixture-test:
+	$(DOCKER_RUN_CMD) npm run fixture:test

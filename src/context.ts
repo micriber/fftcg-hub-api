@@ -11,6 +11,18 @@ export default class Context implements ContextInterface {
         this.res = res;
     }
 
+    public getQueryParam(name: string): string {
+        if (!this.req.params.hasOwnProperty(name)){
+            throw Error(`Query param "${name}" not found`);
+        }
+
+        return this.req.params[name];
+    }
+
+    public getQueryParams(): Record<string, string> {
+        return this.req.params;
+    }
+
     public getBody(): Record<string, unknown> {
         return this.req.body;
     }

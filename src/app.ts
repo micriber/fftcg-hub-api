@@ -1,13 +1,16 @@
 import express from 'express';
 import router from './routes';
-import {createConnection} from "typeorm";
+import {createConnection, getConnectionOptions} from "typeorm";
 import {Server} from 'http';
 
 async function start(): Promise<Server> {
     const port :number = (process.env.NODE_ENV === 'test') ? 2000 : 3000;
-    const connection :string = (process.env.NODE_ENV === 'test') ? 'test' : 'default';
+    const database :string = ((process.env.NODE_ENV === 'test') ? process.env.POSTGRES_DB_TEST : process.env.POSTGRES_DB) || 'fftcg-application' ;
 
-    await createConnection(connection);
+    const connectionOptions = await getConnectionOptions();
+    Object.assign(connectionOptions, { database:  database});
+    await createConnection(connectionOptions);
+
     const app = express();
 
     app.use(express.json());

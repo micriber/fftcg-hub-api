@@ -8,9 +8,17 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
+            - name: Set env
+              run: "cp .env.dist .env"
+            - name: Up docker
+              run: "make up"
             - name: Check typescript
               run: "make check"
             - name: Check linter
               run: "make eslint"
-            - name: Run tests
-              run: "make test"
+            - name: Load fixture
+              run: "make fixture-test"
+            - name: Run func test
+              run: "make test-func"
+#            - name: Run unit test
+#              run: "make test-unit"
