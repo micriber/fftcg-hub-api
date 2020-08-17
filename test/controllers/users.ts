@@ -34,10 +34,7 @@ describe('Controller users', async(): Promise<void> => {
             server.get('/users/99999').end((err, res): void => {
                 expect(err).to.be.null;
                 expect(res).to.have.status(404);
-                expect(res.body).to.be.deep.equal({
-                    status: 404,
-                    message: 'user not found' }
-                );
+                expect(res.body.message).to.be.equal('user not found');
             });
         });
     });

@@ -4,12 +4,16 @@ import {Request, Response} from "express";
 
 export default class Users {
     public async get(req: Request, res: Response) {
+        if (!req.params.hasOwnProperty('id')){
+            throw Error(`Query param id not found`);
+        }
+
         const userRepository = getRepository(User);
-        const user = await userRepository.findOne(req.params.idf);
+        const user = await userRepository.findOne(req.params.id);
 
         if (!user) {
             res.status(404).json({
-                'message' : 'user n1ot found'
+                'message' : 'user not found'
             })
         }
 

@@ -14,11 +14,11 @@
         "migration:run": "npm run typeorm -- migration:run",
         "migration:generate": "npm run typeorm -- migration:generate -n",
         "schema:sync:test": "npm run typeorm -- schema:sync -c test",
-        "fixture": "fixtures ./fixtures -s -c ./ormconfig.js --require=ts-node/register",
-        "fixture:test": "npm run schema:sync:test && fixtures ./fixtures -cn test -s -c ./ormconfig.js --require=ts-node/register",
+        "fixture": "fixtures ./fixtures -c ./ormconfig.js --require=ts-node/register",
+        "fixture:test": "fixtures ./fixtures -cn test -s -c ./ormconfig.js --require=ts-node/register",
         "test": "npm run test:unit && npm run test:func",
-        "test:func": "NODE_ENV=test npx mocha -r ts-node/register test/controllers/**/*.ts",
-        "test:unit": "npx mocha -r ts-node/register --exclude test/controllers/**/*.ts test/**/*.ts"
+        "test:unit": "NODE_ENV=test npx mocha -r ts-node/register --exclude test/controllers/**/*.ts test/**/*.ts",
+        "test:func": "NODE_ENV=test npx mocha -r ts-node/register test/controllers/**/*.ts"
     },
     "repository": {
         "type": "git",
