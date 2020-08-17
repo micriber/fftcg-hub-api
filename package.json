@@ -10,7 +10,15 @@
         "watch": "nodemon",
         "eslint": "eslint --ext .ts ./src ./test",
         "eslint:fix": "eslint --ext .ts --fix ./src ./test",
-        "test": "NODE_ENV=test npx mocha -r ts-node/register test/**/*.ts"
+        "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
+        "migration:run": "npm run typeorm -- migration:run",
+        "migration:generate": "npm run typeorm -- migration:generate -n",
+        "schema:sync:test": "npm run typeorm -- schema:sync -c test",
+        "fixture": "fixtures ./fixtures -c ./ormconfig.js --require=ts-node/register",
+        "fixture:test": "fixtures ./fixtures -cn test -s -c ./ormconfig.js --require=ts-node/register",
+        "test": "npm run test:unit && npm run test:func",
+        "test:unit": "NODE_ENV=test npx mocha -r ts-node/register --exclude test/controllers/**/*.ts test/**/*.ts",
+        "test:func": "NODE_ENV=test npx mocha -r ts-node/register test/controllers/**/*.ts"
     },
     "repository": {
         "type": "git",
@@ -20,7 +28,9 @@
     "license": "ISC",
     "dependencies": {
         "express": "^4.17.1",
-        "joi": "^17.2.0"
+        "joi": "^17.2.0",
+        "pg": "^8.3.0",
+        "typeorm": "^0.2.25"
     },
     "devDependencies": {
         "@types/chai": "^4.2.12",
@@ -40,6 +50,7 @@
         "mocha": "^8.1.1",
         "nodemon": "^2.0.4",
         "ts-node": "^8.10.2",
+        "typeorm-fixtures-cli": "^1.7.1",
         "typescript": "^3.9.7"
     }
 }

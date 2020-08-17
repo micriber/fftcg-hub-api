@@ -1,0 +1,9 @@
+entity: User
+items:
+    user:
+        firstName: 'Bersiroth'
+        lastName: 'Masamune'
+
+    user{2..10}:
+        firstName: '{{name.firstName}}'
+        lastName: '{{name.lastName}}'
