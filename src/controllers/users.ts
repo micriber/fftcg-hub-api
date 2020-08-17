@@ -1,21 +1,19 @@
-import {ContextInterface} from "../interfaces/context";
 import {getRepository} from "typeorm";
 import {User} from "../entities/user";
+import {Request, Response} from "express";
 
 export default class Users {
-    public async get(context: ContextInterface) {
+    public async get(req: Request, res: Response) {
         const userRepository = getRepository(User);
-        const user = await userRepository.findOne(context.getQueryParam('id'));
+        const user = await userRepository.findOne(req.params.idf);
 
         if (!user) {
-            context.sendJson(404, {
-                'status' : 404,
-                'message' : 'user not found'
+            res.status(404).json({
+                'message' : 'user n1ot found'
             })
         }
 
-        context.sendJson(200, {
-            'status' : 200,
+        res.status(200).json({
             'user' : user
         });
     }
