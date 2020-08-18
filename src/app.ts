@@ -14,7 +14,7 @@ async function start(): Promise<Server> {
     const app = express();
 
     app.use(express.json());
-    app.use(router);
+    app.use('/api', router);
 
     return app.listen(port);
 }

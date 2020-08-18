@@ -1,14 +1,14 @@
 import {getRepository} from "typeorm";
-import {User} from "../entities/user";
+import UserEntity from "../entities/user";
 import {Request, Response} from "express";
 
-export default class Users {
+export default class User {
     public async get(req: Request, res: Response) {
         if (!req.params.hasOwnProperty('id')){
             throw Error(`Query param id not found`);
         }
 
-        const userRepository = getRepository(User);
+        const userRepository = getRepository(UserEntity);
         const user = await userRepository.findOne(req.params.id);
 
         if (!user) {
