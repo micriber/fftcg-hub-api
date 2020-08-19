@@ -3,15 +3,12 @@ import {LoginTicket, TokenPayload} from "google-auth-library/build/src/auth/logi
 
 export default class GoogleOAuth {
     public async verifyIdToken(idToken: string, callback: (error: (Error | null), tokenPayload?: TokenPayload) => Promise<void>) {
-        const clientId = '1057672635058-u39dubmadlf9a0u24e80cc4cjrdgv876.apps.googleusercontent.com'
-        const client = new OAuth2Client(clientId);
-
         if (process.env.NODE_ENV === 'test') {
             if (idToken === 'error') {
                 await callback(new Error('test'));
                 return;
             }
-
+            
             await callback(null, {
                 aud: "",
                 exp: 0,
@@ -26,10 +23,12 @@ export default class GoogleOAuth {
             return;
         }
 
+        const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
         /* istanbul ignore next */
         client.verifyIdToken({
             idToken: idToken,
-            audience: clientId,
+            audience: process.env.GOOGLE_CLIENT_ID,
         }).then(async (loginTicket :LoginTicket) => {
             const loginPayload = <TokenPayload> loginTicket.getPayload();
 
