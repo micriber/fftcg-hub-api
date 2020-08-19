@@ -1,0 +1,115 @@
+swagger: "2.0"
+info:
+    description: "Manage your FFTCG collection"
+    version: "0.1.0"
+    title: "FFTCG collection"
+tags:
+    - name: "login"
+    - name: "user"
+paths:
+    /api/v1/login/google:
+        post:
+            tags:
+                - "login"
+            summary: "login with google"
+            description: "description"
+            operationId: "loginGoogle"
+            consumes: "application/json"
+            produces: "application/json"
+            parameters:
+                - in: "body"
+                  name: "payload"
+                  required: true
+                  description: "ID of google token"
+                  schema:
+                      $ref: "#/definitions/googlePayload"
+            responses:
+                "200":
+                    description: "login successful"
+                    schema:
+                        $ref: "#/definitions/user"
+
+                "201":
+                    description: "user creation successful"
+                    schema:
+                        $ref: "#/definitions/user"
+                "401":
+                    description: "Invalid token"
+                    schema:
+                        type: object
+                        properties:
+                            message:
+                                type: "string"
+                                exemple: "Token expiration date"
+    /api/v1/users/{userId}:
+        get:
+            tags:
+                - "user"
+            summary: "Find user by ID"
+            description: "Returns a single user"
+            operationId: "getUserById"
+            consumes: "application/json"
+            produces: "application/json"
+            parameters:
+                - name: "userId"
+                  in: "path"
+                  description: "ID of user to return"
+                  exemple: 1
+                  required: true
+                  type: "integer"
+            responses:
+                "200":
+                    description: "successful operation"
+                    schema:
+                        type: object
+                        properties:
+                            users:
+                                items:
+                                    $ref: '#/definitions/user'
+                                type: array
+                "404":
+                    description: "User not found"
+                    schema:
+                        type: object
+                        properties:
+                            message:
+                                type: "string"
+                                exemple: "user not found"
+definitions:
+    user:
+        type: "object"
+        properties:
+            id:
+                type: "integer"
+                exemple: "1"
+            firstName:
+                type: "string"
+                exemple: "Bersiroth"
+            lastName:
+                type: "string"
+                exemple: "Masamune"
+            email:
+                type: "string"
+                exemple: "Bersiroth@masamune.fr"
+            locale:
+                type: "string"
+                exemple: "fr"
+            createdAt:
+                type: "string"
+                description: "format timestamp"
+                format: date-time
+                exemple: "2020-08-18T22:30:22.650Z"
+            UpdatedAt:
+                type: "string"
+                description: "format timestamp"
+                format: date-time
+                exemple: "2020-08-18T22:30:22.650Z"
+
+    googlePayload:
+        type: "object"
+        properties:
+            idtoken:
+                required: true
+                type: "string"
+                example: "eyJhbGciOiJSUz...yLe9LNM85DA"
+                description: "Google token ID"

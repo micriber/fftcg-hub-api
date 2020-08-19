@@ -7,13 +7,16 @@ export default class User {
     public id!: number;
 
     @Column("varchar")
-    public firstName?: string;
+    public firstName!: string;
 
     @Column("varchar")
-    public lastName?: string;
+    public lastName!: string;
 
     @Column("varchar")
     public email!: string;
+
+    @Column("varchar")
+    public locale!: string;
 
     @CreateDateColumn()
     public createdAt!: Timestamp;
