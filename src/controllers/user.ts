@@ -4,12 +4,7 @@ import {Request, Response} from "express";
 
 export default class User {
     public async get(req: Request, res: Response) {
-        // if (!req.params.hasOwnProperty('id')){
-        //     throw Error(`Query param id not found`);
-        // }
-
         const userRepository = getRepository(UserEntity);
-        // UserEntity.
         const user = await userRepository.findOne(req.params.id);
 
         if (!user) {
