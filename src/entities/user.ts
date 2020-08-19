@@ -1,7 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Timestamp} from "typeorm";
 
 @Entity("users")
-export class User {
+export default class User {
 
     @PrimaryGeneratedColumn()
     public id!: number;
@@ -11,6 +11,12 @@ export class User {
 
     @Column("varchar")
     public lastName!: string;
+
+    @Column("varchar")
+    public email!: string;
+
+    @Column("varchar")
+    public locale!: string;
 
     @CreateDateColumn()
     public createdAt!: Timestamp;

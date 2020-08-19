@@ -18,34 +18,25 @@ describe('Controller users', async(): Promise<void> => {
         server.close();
     });
 
-    describe('get', async (): Promise<void> => {
+    describe('GET /users/{userId}', async (): Promise<void> => {
         it('should return a user', async(): Promise<void> => {
-            server.get('/users/1').end((err, res): void => {
-                expect(err).to.be.null;
+            await server.get('/api/v1/users/1').then((res): void => {
+                expect(res.error).to.be.false;
                 expect(res).to.have.status(200);
-                const user = res.body.user;
+                const user = res.body;
                 expect(user.id).to.be.equal(1);
-                expect(user.firstName).to.be.equal('Bersiroth');
-                expect(user.lastName).to.be.equal('Masamune');
+                expect(user.firstName).to.be.equal('firstName1');
+                expect(user.lastName).to.be.equal('lastName1');
+                expect(user.email).to.be.equal('email1@gmail.com');
+                expect(user.locale).to.be.equal('fr');
             });
         });
 
         it('should return a user with user not exist', async(): Promise<void> => {
-            server.get('/users/99999').end((err, res): void => {
-                expect(err).to.be.null;
+            await server.get('/api/v1/users/99999').then((res): void => {
                 expect(res).to.have.status(404);
                 expect(res.body.message).to.be.equal('user not found');
             });
-        });
-    });
-
-    describe('create', (): void => {
-        it('should create a user', (): void => {
-            // implement in next commit with DB
-        });
-
-        it('should create a user with error', (): void => {
-            // implement in next commit with DB
         });
     });
 });

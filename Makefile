@@ -32,6 +32,9 @@ test:
 test-func:
 	$(DOCKER_RUN_CMD) npm run test:func
 
+test-func-cov:
+	$(DOCKER_RUN_CMD) npm run test:func:cov
+
 test-unit:
 	$(DOCKER_RUN_CMD) npm run test:unit
 
