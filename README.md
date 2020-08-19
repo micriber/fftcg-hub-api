@@ -3,6 +3,8 @@
 #### Setup
 Create `.env` file with `.env.dist` for database credential 
 
+Run make up
+
 #### Api documentation
 Swagger documentation : http://localhost:3000/api/swagger
 

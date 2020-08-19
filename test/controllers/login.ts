@@ -33,8 +33,7 @@ describe('Controller login', async(): Promise<void> => {
             }).then((res): void => {
                 expect(res.error).to.be.false;
                 expect(res).to.have.status(200);
-                const user = res.body.users;
-                expect(user.id).to.be.equal(1);
+                expect(res.body.id).to.be.equal(1);
             });
         });
         it('should create a user', async(): Promise<void> => {
@@ -43,8 +42,7 @@ describe('Controller login', async(): Promise<void> => {
             }).then((res): void => {
                 expect(res.error).to.be.false;
                 expect(res).to.have.status(201);
-                const user = res.body.users;
-                expect(user.email).to.be.equal('email9999@gmail.com');
+                expect(res.body.email).to.be.equal('email9999@gmail.com');
             });
         });
     });

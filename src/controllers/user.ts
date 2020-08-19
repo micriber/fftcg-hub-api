@@ -13,8 +13,6 @@ export default class User {
             })
         }
 
-        res.status(200).json({
-            'users' : user
-        });
+        res.status(200).json(user);
     }
 }

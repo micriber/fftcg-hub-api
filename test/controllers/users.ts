@@ -23,7 +23,7 @@ describe('Controller users', async(): Promise<void> => {
             await server.get('/api/v1/users/1').then((res): void => {
                 expect(res.error).to.be.false;
                 expect(res).to.have.status(200);
-                const user = res.body.users;
+                const user = res.body;
                 expect(user.id).to.be.equal(1);
                 expect(user.firstName).to.be.equal('firstName1');
                 expect(user.lastName).to.be.equal('lastName1');

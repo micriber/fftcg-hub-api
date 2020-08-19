@@ -24,9 +24,7 @@ export default class Login {
             });
 
             if (user) {
-                res.status(200).json({
-                    'users': user
-                });
+                res.status(200).json(user);
             } else {
                 const newUser = new User();
                 newUser.firstName = <string>tokenPayload!.given_name;
@@ -36,9 +34,7 @@ export default class Login {
 
                 await userRepository.save(newUser);
 
-                res.status(201).json({
-                    'users': newUser
-                });
+                res.status(201).json(newUser);
             }
         })
     }

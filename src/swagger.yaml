@@ -61,12 +61,7 @@ paths:
                 "200":
                     description: "successful operation"
                     schema:
-                        type: object
-                        properties:
-                            users:
-                                items:
-                                    $ref: '#/definitions/user'
-                                type: array
+                        $ref: '#/definitions/user'
                 "404":
                     description: "User not found"
                     schema:
