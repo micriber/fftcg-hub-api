@@ -89,6 +89,12 @@ definitions:
             locale:
                 type: "string"
                 exemple: "fr"
+            userName:
+                type: "string"
+                exemple: "userName"
+            authenticationType:
+                type: "string"
+                exemple: "google"
             createdAt:
                 type: "string"
                 description: "format timestamp"
