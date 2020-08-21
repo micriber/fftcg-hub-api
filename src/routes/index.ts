@@ -9,9 +9,12 @@ const router = express.Router();
 
 router.use(authCheck);
 
-const swaggerDocument = YAML.load(__dirname + '/../swagger.yaml');
-router.use('/swagger', swaggerUi.serve);
-router.get('/swagger', swaggerUi.setup(swaggerDocument));
+/* istanbul ignore next */
+if (process.env.NODE_ENV !== 'production') {
+    const swaggerDocument = YAML.load(__dirname + '/../swagger.yaml');
+    router.use('/swagger', swaggerUi.serve);
+    router.get('/swagger', swaggerUi.setup(swaggerDocument));
+}
 
 router.use(userRouter);
 router.use(loginRouter);
