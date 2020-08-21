@@ -31,6 +31,7 @@ export default class Login {
                 newUser.lastName = <string>tokenPayload!.family_name;
                 newUser.email = <string>tokenPayload!.email;
                 newUser.locale = <string>tokenPayload!.locale;
+                newUser.authenticationType = 'google';
 
                 await userRepository.save(newUser);
 

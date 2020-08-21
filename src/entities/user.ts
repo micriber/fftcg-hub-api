@@ -3,7 +3,7 @@ import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColu
 @Entity("users")
 export default class User {
 
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("uuid")
     public id!: number;
 
     @Column("varchar")
@@ -12,15 +12,21 @@ export default class User {
     @Column("varchar")
     public lastName!: string;
 
+    @Column("varchar", {nullable: true})
+    public userName?: string;
+
     @Column("varchar")
     public email!: string;
 
     @Column("varchar")
     public locale!: string;
 
+    @Column("varchar")
+    public authenticationType!: string;
+
     @CreateDateColumn()
     public createdAt!: Timestamp;
 
     @UpdateDateColumn()
-    public UpdatedAt!: Timestamp;
+    public updatedAt!: Timestamp;
 }

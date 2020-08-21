@@ -1,14 +1,15 @@
 import {OAuth2Client} from "google-auth-library";
 import {LoginTicket, TokenPayload} from "google-auth-library/build/src/auth/loginticket"
 
+/* istanbul ignore next */
 export default class GoogleOAuth {
     public async verifyIdToken(idToken: string, callback: (error: (Error | null), tokenPayload?: TokenPayload) => Promise<void>) {
-        if (process.env.NODE_ENV === 'test') {
+        if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development') {
             if (idToken === 'error') {
                 await callback(new Error('test'));
                 return;
             }
-            
+
             await callback(null, {
                 aud: "",
                 exp: 0,
@@ -24,8 +25,6 @@ export default class GoogleOAuth {
         }
 
         const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-
-        /* istanbul ignore next */
         client.verifyIdToken({
             idToken: idToken,
             audience: process.env.GOOGLE_CLIENT_ID,
