@@ -21,7 +21,7 @@ describe('Controller login', async(): Promise<void> => {
     describe('POST /login/google', async (): Promise<void> => {
         it('bad token', async(): Promise<void> => {
             await server.post('/api/v1/login/google', ).send({
-                idToken: 'error'
+                idToken: 'badIdToken'
             }).then((res): void => {
                 expect(res).to.have.status(401);
                 expect(res.body.message).to.be.equal('Invalid token');
@@ -33,7 +33,7 @@ describe('Controller login', async(): Promise<void> => {
             }).then((res): void => {
                 expect(res.error).to.be.false;
                 expect(res).to.have.status(200);
-                expect(res.body.id).to.be.equal(1);
+                expect(res.body.email).to.be.equal('email1@gmail.com');
             });
         });
         it('should create a user', async(): Promise<void> => {

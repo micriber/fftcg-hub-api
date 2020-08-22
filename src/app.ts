@@ -4,7 +4,9 @@ import {createConnection, getConnectionOptions} from "typeorm";
 import {Server} from 'http';
 
 async function start(): Promise<Server> {
+    /* istanbul ignore next */
     const port :number = (process.env.NODE_ENV === 'test') ? 2000 : 3000;
+    /* istanbul ignore next */
     const database :string = ((process.env.NODE_ENV === 'test') ? process.env.POSTGRES_DB_TEST : process.env.POSTGRES_DB) || 'fftcg-application' ;
 
     const connectionOptions = await getConnectionOptions();

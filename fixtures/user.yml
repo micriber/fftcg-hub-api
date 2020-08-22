@@ -5,3 +5,5 @@ items:
         lastName: 'lastName($current)'
         email: 'email($current)@gmail.com'
         locale: 'fr'
+        authenticationType: 'google'
+        userName: 'userName($current)'
