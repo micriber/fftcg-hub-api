@@ -1,4 +1,4 @@
 GET http://{{host}}:{{port}}/api/v1/users/1
-authorization: google 1
+authorization: bearer 1
 
 ###

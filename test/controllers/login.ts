@@ -21,7 +21,7 @@ describe('Controller login', async(): Promise<void> => {
     describe('POST /login/google', async (): Promise<void> => {
         it('bad token', async(): Promise<void> => {
             await server.post('/api/v1/login/google', ).send({
-                idToken: 'error'
+                idToken: 'badIdToken'
             }).then((res): void => {
                 expect(res).to.have.status(401);
                 expect(res.body.message).to.be.equal('Invalid token');

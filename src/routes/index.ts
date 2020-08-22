@@ -3,11 +3,8 @@ import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs';
 import userRouter from './user';
 import loginRouter from './login';
-import authCheck from "../middlewares/authCheck";
 
 const router = express.Router();
-
-router.use(authCheck);
 
 /* istanbul ignore next */
 if (process.env.NODE_ENV !== 'production') {

@@ -1,13 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import GoogleOAuth from "../services/googleOAuth";
 import {TokenPayload} from "google-auth-library/build/src/auth/loginticket";
+import JWT from "jsonwebtoken";
 
 const authCheckMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-    if (req.path.includes('login') || req.path.includes('swagger') ) {
-        next();
-        return;
-    }
-
     if (!req.headers.authorization) {
         res.status(400).json({
             message: 'authorization header not found'
@@ -16,22 +12,29 @@ const authCheckMiddleware = async (req: Request, res: Response, next: NextFuncti
     }
 
     const authorizationHeader = req.header('Authorization');
-    const token = authorizationHeader!.split(' ');
+    const [type, jwt] = authorizationHeader!.split(' ');
 
-    if (token.length !== 2) {
+    if (type !== 'bearer') {
         res.status(400).json({
-            message: 'invalid authorization header'
+            message: 'invalid authorization type'
         });
         return;
     }
 
-    const type = token[0];
-    const credentials = token[1];
+    const jwtDecode = JWT.decode(jwt);
 
-    switch (type) {
-        case 'google' :
+    if (!jwtDecode || typeof jwtDecode === "string") {
+        res.status(401).json({
+            'message': 'Invalid token'
+        });
+        return;
+    }
+
+    switch (jwtDecode.iss) {
+        case 'https://accounts.google.com' :
             const googleOAuth = new GoogleOAuth();
-            await googleOAuth.verifyIdToken(credentials, async (error: Error | null, tokenPayload?: TokenPayload) => {
+            await googleOAuth.verifyIdToken(jwt, async (error: Error | null, tokenPayload?: TokenPayload) => {
+                /* istanbul ignore next */
                 if (error) {
                     res.status(401).json({
                         'message': 'Invalid token'
@@ -42,8 +45,8 @@ const authCheckMiddleware = async (req: Request, res: Response, next: NextFuncti
             });
             break;
         default:
-            res.status(400).json({
-                message: 'invalid authorization type'
+            res.status(401).json({
+                'message': 'Invalid token'
             });
             return;
     }

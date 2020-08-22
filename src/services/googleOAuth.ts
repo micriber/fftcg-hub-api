@@ -4,9 +4,9 @@ import {LoginTicket, TokenPayload} from "google-auth-library/build/src/auth/logi
 /* istanbul ignore next */
 export default class GoogleOAuth {
     public async verifyIdToken(idToken: string, callback: (error: (Error | null), tokenPayload?: TokenPayload) => Promise<void>) {
-        if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development') {
-            if (idToken === 'error') {
-                await callback(new Error('test'));
+        if (process.env.NODE_ENV === 'test') {
+            if (idToken === 'badIdToken') {
+                await callback(new Error());
                 return;
             }
 
