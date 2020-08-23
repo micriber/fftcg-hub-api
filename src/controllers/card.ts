@@ -18,11 +18,8 @@ export default class Card {
 
     public async getAll(req: Request, res: Response) {
         const cardRepository = getRepository(CardEntity);
-        const cards = await cardRepository.find();
+        const cards = await cardRepository.createQueryBuilder('cards').paginate();
 
-        res.status(200).json({
-            cards: cards,
-            total: cards.length
-        });
+        res.status(200).json(cards);
     }
 }

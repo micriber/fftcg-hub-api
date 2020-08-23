@@ -191,7 +191,28 @@ components:
                     schema:
                         type: object
                         properties:
-                            cards:
+                            from:
+                                type: integer
+                                example: 16
+                            to:
+                                type: integer
+                                example: 30
+                            per_page:
+                                type: integer
+                                example: 15
+                            total:
+                                type: integer
+                                example: 1655
+                            current_page:
+                                type: integer
+                                example: 2
+                            prev_page:
+                                type: integer
+                                example: 1
+                            next_page:
+                                type: integer
+                                example: 3
+                            data:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/card'
