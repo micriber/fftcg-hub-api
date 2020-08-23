@@ -1,6 +1,6 @@
 .PHONY: up logs-node ssh-node watch build check start test eslint eslint-fix create-migration run-migration
 
-DOCKER_RUN_CMD=docker-compose run --rm node
+DOCKER_RUN_CMD=docker-compose exec node
 
 up:
 	docker-compose up -d
@@ -12,7 +12,7 @@ logs-postgres:
 	docker-compose logs -f postgres
 
 ssh-node:
-	docker-compose exec node bash
+	$(DOCKER_RUN_CMD) bash
 
 ssh-postgres:
 	docker-compose exec postgres bash
