@@ -18,6 +18,8 @@ jobs:
               run: "make eslint"
             - name: Load fixture
               run: "make fixture-test"
+            - name: Load cards
+              run: "make card-test"
             - name: Run func test
               run: "make test-func-cov"
 #            - name: Run unit test
