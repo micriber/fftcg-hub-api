@@ -1,4 +1,4 @@
-FROM node:12.3-stretch
+FROM node:12.18-stretch
 
 WORKDIR /var/www
 

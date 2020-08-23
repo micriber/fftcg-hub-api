@@ -1,4 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Timestamp} from "typeorm";
+import {Index} from "typeorm/index";
 
 @Entity("users")
 export default class User {
@@ -16,6 +17,7 @@ export default class User {
     public userName?: string;
 
     @Column("varchar")
+    @Index({ unique: true })
     public email!: string;
 
     @Column("varchar")

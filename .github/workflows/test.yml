@@ -11,7 +11,7 @@ jobs:
             - name: Set env
               run: "cp .env.dist .env"
             - name: Up docker
-              run: "make up"
+              run: "docker-compose up -d postgres"
             - name: Check typescript
               run: "make check"
             - name: Check linter
