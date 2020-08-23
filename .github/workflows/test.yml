@@ -10,7 +10,7 @@ jobs:
             - uses: actions/checkout@v2
             - name: Set env
               run: "cp .env.dist .env"
-            - name: Up docker
+            - name: up postgres
               run: "docker-compose up -d postgres"
             - name: Check typescript
               run: "make check"
@@ -20,7 +20,7 @@ jobs:
               run: "make fixture-test"
             - name: Load cards
               run: "make card-test"
-            - name: Run func test
+            - name: Run func test with coverage
               run: "make test-func-cov"
 #            - name: Run unit test
 #              run: "make test-unit"

@@ -24,13 +24,13 @@ describe('Controller cards', async(): Promise<void> => {
     });
 
     describe('GET /cards', async (): Promise<void> => {
-        it('should return all card', async(): Promise<void> => {
+        it('should return pagination of all card', async(): Promise<void> => {
             const databaseCard =  await getRepository(Card).find();
             await server.get('/api/v1/cards').set('authorization', authorizationHeader).then((res): void => {
                 expect(res.error).to.be.false;
                 expect(res).to.have.status(200);
                 expect(res.body.total).to.be.equal(databaseCard!.length);
-                const card = res.body.cards[0];
+                const card = res.body.data[0];
                 expect(card.code).to.be.equal(databaseCard![0].code);
                 expect(card.rarity).to.be.equal(databaseCard![0].rarity);
                 expect(card.name).to.be.equal(databaseCard![0].name);
