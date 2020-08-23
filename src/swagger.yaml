@@ -10,7 +10,7 @@ paths:
     /login/google:
         post:
             tags: [login]
-            summary: login with google
+            summary: Login with google
             requestBody:
                 $ref: '#/components/requestBodies/google'
             responses:
@@ -43,8 +43,89 @@ paths:
                     $ref: '#/components/responses/badRequest'
                 401:
                     $ref: '#/components/responses/invalidToken'
+    /cards:
+        get:
+            tags: [card]
+            summary: Get all cards
+            parameters:
+                -   $ref: '#/components/parameters/authorization'
+            responses:
+                200:
+                    $ref: '#/components/responses/cards'
+                400:
+                    $ref: '#/components/responses/badRequest'
+                401:
+                    $ref: '#/components/responses/invalidToken'
+    /cards/{code}:
+        get:
+            tags: [card]
+            summary: Find card by code
+            parameters:
+                -   name: code
+                    in: path
+                    description: code of card to return
+                    example: 1-011C
+                    required: true
+                    schema:
+                        type: string
+                -   $ref: '#/components/parameters/authorization'
+            responses:
+                200:
+                    $ref: '#/components/responses/card'
+                404:
+                    $ref: '#/components/responses/notFound'
+                400:
+                    $ref: '#/components/responses/badRequest'
+                401:
+                    $ref: '#/components/responses/invalidToken'
 components:
     schemas:
+        card:
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                code:
+                    type: string
+                element:
+                    type: string
+                rarity:
+                    type: string
+                cost:
+                    type: string
+                power:
+                    type: string
+                category1:
+                    type: string
+                category2:
+                    type: string
+                multicard:
+                    type: string
+                exBurst:
+                    type: string
+                name:
+                    type: string
+                type:
+                    type: string
+                job:
+                    type: string
+                text:
+                    type: string
+            example:
+                id: 8987518b-f2bb-45e1-bbf7-4e6a35803149
+                code: 1-001H
+                element: 火
+                rarity: H
+                cost: 6
+                power: 9000
+                category1: X
+                category2: I
+                multicard: ○
+                exBurst: ○
+                name: Auron
+                type: Avant
+                job: Gardien
+                text: Lorsqu'Auron inflige des dégâts à votre adversaire, vous pouvez jouer 1 Soutien Feu de votre main sur le terrain dullé.
         user:
             properties:
                 id:
@@ -103,6 +184,24 @@ components:
                     schema:
                         $ref: '#/components/schemas/idToken'
     responses:
+        cards:
+            description: ok
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            cards:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/card'
+
+        card:
+            description: ok
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/card'
         user:
             description: ok
             content:

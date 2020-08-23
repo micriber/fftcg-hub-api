@@ -59,5 +59,8 @@ fixture-test:
 card:
 	$(DOCKER_RUN_CMD) npm run card
 
+card-test:
+	$(DOCKER_RUN_CMD) npm run card:test
+
 card-regen:
-	$(DOCKER_RUN_CMD) npm run card-regen
+	$(DOCKER_RUN_CMD) npm run card:regen
