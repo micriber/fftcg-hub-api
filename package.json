@@ -33,6 +33,7 @@
         "express": "^4.17.1",
         "google-auth-library": "^6.0.6",
         "jsonwebtoken": "^8.5.1",
+        "npm": "^6.9.0",
         "pg": "^8.3.0",
         "swagger-ui-express": "^4.1.4",
         "typeorm": "^0.2.25",
