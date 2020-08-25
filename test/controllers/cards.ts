@@ -46,7 +46,6 @@ describe('Controller cards', async(): Promise<void> => {
                     qb.where('unaccent(cards.code) ILIKE unaccent(:search)', { search: `%${search}%` })
                         .orWhere('unaccent(cards.name) ILIKE unaccent(:search)', { search: `%${search}%` })
                 }))
-            // console.log(cardsQuery.getSql())
             const databaseCard = await cardsQuery.paginate();
             await server.get(`/api/v1/cards?search=${search}`)
               .set('authorization', authorizationHeader)

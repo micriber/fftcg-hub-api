@@ -26,7 +26,7 @@ export default class Card {
                   .orWhere('unaccent(cards.name) ILIKE unaccent(:search)', { search: `%${search}%` })
             }))
         }
-        console.log({query: cardsQuery.getSql()});
+
         const cards = await cardsQuery.paginate();
 
         res.status(200).json(cards);
