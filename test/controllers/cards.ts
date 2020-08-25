@@ -4,7 +4,6 @@ import chaiHttp = require("chai-http");
 import {Brackets, getRepository} from "typeorm";
 import JWT from "jsonwebtoken";
 import Card from "../../src/entities/card";
-import CardEntity from "../../src/entities/card";
 
 chai.use(chaiHttp);
 const {expect, request} = chai;
@@ -40,7 +39,7 @@ describe('Controller cards', async(): Promise<void> => {
 
         it('should return result filtered by "search" param', async () => {
             const search = 'sephiroth';
-            const cardRepository = getRepository(CardEntity);
+            const cardRepository = getRepository(Card);
             const cardsQuery = cardRepository.createQueryBuilder('cards')
                 .andWhere(new Brackets(qb => {
                     qb.where('unaccent(cards.code) ILIKE unaccent(:search)', { search: `%${search}%` })
