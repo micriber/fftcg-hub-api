@@ -51,11 +51,9 @@ describe('Controller cards', async(): Promise<void> => {
               .then((res): void => {
                 expect(res.error).to.be.false;
                 expect(res).to.have.status(200);
-                console.log({body: res.body, data: databaseCard!.data})
                 expect(res.body.total).to.be.equal(databaseCard!.data.length);
                 expect(res.body.data).to.deep.equal(databaseCard!.data);
                 const card = res.body.data[0];
-                console.log(databaseCard!.data);
                 expect(card.code).to.be.equal(databaseCard!.data[0].code);
                 expect(card.rarity).to.be.equal(databaseCard!.data[0].rarity);
                 expect(card.name).to.be.equal(databaseCard!.data[0].name);
