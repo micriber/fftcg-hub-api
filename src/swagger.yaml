@@ -49,6 +49,9 @@ paths:
             summary: Get all cards
             parameters:
                 -   $ref: '#/components/parameters/authorization'
+                -   $ref: '#/components/parameters/search'
+                -   $ref: '#/components/parameters/perPage'
+                -   $ref: '#/components/parameters/page'
             responses:
                 200:
                     $ref: '#/components/responses/cards'
@@ -256,3 +259,24 @@ components:
                 format: bearer
                 required: true
                 example: bearer eyJhbGciOiJSUz...yLe9LNM85DA
+        search:
+            in: query
+            name: search
+            schema:
+                type: string
+                required: false
+                example: sephiroth
+        page:
+            in: query
+            name: page
+            schema:
+                type: integer
+                required: false
+                example: 1
+        perPage:
+            in: query
+            name: per_page
+            schema:
+                type: integer
+                required: false
+                example: 50
