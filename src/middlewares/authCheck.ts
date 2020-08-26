@@ -41,6 +41,8 @@ const authCheckMiddleware = async (req: Request, res: Response, next: NextFuncti
                     });
                     return;
                 }
+
+                // add check if user exist
                 next();
             });
             break;

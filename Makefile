@@ -1,6 +1,6 @@
 .PHONY: up logs-node ssh-node watch build check start test eslint eslint-fix create-migration run-migration
 
-DOCKER_RUN_CMD=docker-compose run --rm node
+DOCKER_RUN_CMD=docker-compose exec node
 
 up:
 	docker-compose up -d

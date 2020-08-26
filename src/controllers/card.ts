@@ -1,11 +1,17 @@
 import {Brackets, getRepository} from "typeorm";
 import CardEntity from "../entities/card";
 import {Request, Response} from "express";
+import logger from "../services/logger";
 
 export default class Card {
     public async get(req: Request, res: Response) {
         const cardRepository = getRepository(CardEntity);
-        const card = await cardRepository.findOne({ where: { code: req.params.code} });
+        const card = await cardRepository.findOne({ where: { code: req.params.code} }).catch((err) => {
+            logger.error(err.message)
+            res.status(400).json({
+                'message' : err.message
+            })
+        });
 
         if (!card) {
             res.status(404).json({

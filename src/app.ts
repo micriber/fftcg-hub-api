@@ -3,6 +3,7 @@ import router from './routes';
 import {createConnection, getConnectionOptions} from "typeorm";
 import {Server} from 'http';
 import {pagination} from 'typeorm-pagination'
+import logger from "./services/logger";
 
 async function start(): Promise<Server> {
     /* istanbul ignore next */
@@ -21,7 +22,7 @@ async function start(): Promise<Server> {
     app.use('/api', router);
 
     return app.listen(port, () => {
-        console.log('server start with port ' + port);
+        logger.info('server start with port ' + port);
     });
 }
 

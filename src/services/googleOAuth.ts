@@ -1,5 +1,6 @@
 import {OAuth2Client} from "google-auth-library";
 import {LoginTicket, TokenPayload} from "google-auth-library/build/src/auth/loginticket"
+import logger from "./logger";
 
 /* istanbul ignore next */
 export default class GoogleOAuth {
@@ -32,15 +33,15 @@ export default class GoogleOAuth {
             const loginPayload = <TokenPayload> loginTicket.getPayload();
 
             if (!loginPayload.email) {
-                console.error(loginPayload)
+                logger.error(loginPayload)
                 throw new Error('Missing email in token');
             }
             if (!loginPayload.given_name) {
-                console.error(loginPayload)
+                logger.error(loginPayload)
                 throw new Error('Missing given_name in token');
             }
             if (!loginPayload.family_name) {
-                console.error(loginPayload)
+                logger.error(loginPayload)
                 throw new Error('Missing family_name in token');
             }
             if (!loginPayload.locale) {

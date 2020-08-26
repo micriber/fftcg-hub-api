@@ -1,9 +1,9 @@
-import chai from 'chai';
+import * as chai from 'chai';
 import app from '../../src/app';
 import chaiHttp = require("chai-http");
 import {getRepository} from "typeorm";
 import User from "../../src/entities/user";
-import JWT from "jsonwebtoken";
+import * as JWT from "jsonwebtoken";
 
 chai.use(chaiHttp);
 const {expect, request} = chai;
