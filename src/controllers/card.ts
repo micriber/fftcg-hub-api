@@ -1,4 +1,4 @@
-import {getRepository} from "typeorm";
+import {Brackets, getRepository} from "typeorm";
 import CardEntity from "../entities/card";
 import {Request, Response} from "express";
 
@@ -18,7 +18,16 @@ export default class Card {
 
     public async getAll(req: Request, res: Response) {
         const cardRepository = getRepository(CardEntity);
-        const cards = await cardRepository.createQueryBuilder('cards').paginate();
+        const { search } = req.query;
+        const cardsQuery = cardRepository.createQueryBuilder('cards');
+        if (search) {
+            cardsQuery.andWhere(new Brackets(qb => {
+                qb.where('unaccent(cards.code) ILIKE unaccent(:search)', { search: `%${search}%` })
+                  .orWhere('unaccent(cards.name) ILIKE unaccent(:search)', { search: `%${search}%` })
+            }))
+        }
+
+        const cards = await cardsQuery.paginate();
 
         res.status(200).json(cards);
     }

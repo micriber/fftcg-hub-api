@@ -1,8 +1,7 @@
 import chai from 'chai';
 import app from '../../src/app';
 import chaiHttp = require("chai-http");
-import {getRepository} from "typeorm";
-import User from "../../src/entities/user";
+import {Brackets, getRepository} from "typeorm";
 import JWT from "jsonwebtoken";
 import Card from "../../src/entities/card";
 
@@ -37,6 +36,31 @@ describe('Controller cards', async(): Promise<void> => {
                 expect(card.text).to.be.equal(databaseCard![0].text);
             });
         });
+
+        it('should return result filtered by "search" param', async () => {
+            const search = 'sephiroth';
+            const cardRepository = getRepository(Card);
+            const cardsQuery = cardRepository.createQueryBuilder('cards')
+                .andWhere(new Brackets(qb => {
+                    qb.where('unaccent(cards.code) ILIKE unaccent(:search)', { search: `%${search}%` })
+                        .orWhere('unaccent(cards.name) ILIKE unaccent(:search)', { search: `%${search}%` })
+                }))
+            const databaseCard = await cardsQuery.paginate();
+            await server.get(`/api/v1/cards?search=${search}`)
+              .set('authorization', authorizationHeader)
+              .then((res): void => {
+                expect(res.error).to.be.false;
+                expect(res).to.have.status(200);
+                expect(res.body.total).to.be.equal(databaseCard!.data.length);
+                expect(res.body.data).to.deep.equal(databaseCard!.data);
+                const card = res.body.data[0];
+                expect(card.code).to.be.equal(databaseCard!.data[0].code);
+                expect(card.rarity).to.be.equal(databaseCard!.data[0].rarity);
+                expect(card.name).to.be.equal(databaseCard!.data[0].name);
+                expect(card.text).to.be.equal(databaseCard!.data[0].text);
+
+            });
+        })
     });
 
     describe('GET /cards/{code}', async (): Promise<void> => {
