@@ -1,6 +1,6 @@
 .PHONY: up logs-node ssh-node watch build check start test eslint eslint-fix create-migration run-migration
 
-DOCKER_RUN_CMD=docker-compose run --rm node
+DOCKER_RUN_CMD=docker-compose exec node
 
 up:
 	docker-compose up -d
@@ -17,26 +17,11 @@ ssh-node:
 ssh-postgres:
 	docker-compose exec postgres bash
 
-build:
-	$(DOCKER_RUN_CMD) npm run build
-
 check:
 	$(DOCKER_RUN_CMD) npm run check
 
-start:
-	$(DOCKER_RUN_CMD) npm run start
-
-test:
-	$(DOCKER_RUN_CMD) npm run test
-
-test-func:
-	$(DOCKER_RUN_CMD) npm run test:func
-
 test-func-cov:
 	$(DOCKER_RUN_CMD) npm run test:func:cov
-
-test-unit:
-	$(DOCKER_RUN_CMD) npm run test:unit
 
 eslint:
 	$(DOCKER_RUN_CMD) npm run eslint
@@ -64,3 +49,4 @@ card-test:
 
 card-regen:
 	$(DOCKER_RUN_CMD) npm run card:regen
+

@@ -35,5 +35,8 @@ module.exports = [{
     ],
     "subscribers": [
         "src/subscribers/**/*.ts"
-    ]
+    ],
+    "migrations": [
+        "src/migrations/**/*.ts"
+    ],
 }];

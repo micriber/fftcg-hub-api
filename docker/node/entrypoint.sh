@@ -1,7 +1,7 @@
  #!/bin/bash
 set -e
 
-npm install ci
+npm install
 
 if [[ "$NODE_ENV" == 'development' ]] ; then
     npm run migration:run

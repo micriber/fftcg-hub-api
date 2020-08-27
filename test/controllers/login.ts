@@ -1,4 +1,4 @@
-import chai from 'chai';
+import * as chai from 'chai';
 import app from '../../src/app';
 import chaiHttp = require("chai-http");
 
@@ -37,12 +37,13 @@ describe('Controller login', async(): Promise<void> => {
             });
         });
         it('should create a user', async(): Promise<void> => {
+            const token = Date.now();
             await server.post('/api/v1/login/google', ).send({
-                idToken: '9999'
+                idToken: token
             }).then((res): void => {
                 expect(res.error).to.be.false;
                 expect(res).to.have.status(201);
-                expect(res.body.email).to.be.equal('email9999@gmail.com');
+                expect(res.body.email).to.be.equal(`email${token}@gmail.com`);
             });
         });
     });
