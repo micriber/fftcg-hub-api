@@ -19,6 +19,8 @@ jobs:
               uses: actions/checkout@v2
             - name: Set env
               run: "cp .env.dist .env"
+            - name: Install dependencies
+              run: "npm ci"
             - name: Check typescript
               run: "npm run check"
             - name: Check linter
