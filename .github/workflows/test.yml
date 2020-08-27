@@ -6,7 +6,12 @@ on:
 jobs:
     test:
         runs-on: ubuntu-latest
-        container: node:12.18-stretch
+        container:
+            image: node:12.18-stretch
+            env:
+                POSTGRES_USER: user
+                POSTGRES_PASSWORD: password
+                POSTGRES_DB_TEST: fftcg-application-test
         services:
             postgres:
                 image: postgres:11.4
@@ -17,8 +22,6 @@ jobs:
         steps:
             - name: Check out code
               uses: actions/checkout@v2
-            - name: Set env
-              run: "cp .env.dist .env"
             - name: Install dependencies
               run: "npm ci"
             - name: Check typescript
@@ -27,5 +30,13 @@ jobs:
               run: "npm run eslint"
             - name: Load fixture
               run: "npm run fixture:test"
+              env:
+                  POSTGRES_USER: user
+                  POSTGRES_PASSWORD: password
+                  POSTGRES_DB: fftcg-application-test
             - name: Run func test with coverage
               run: "npm run test:func:cov"
+              env:
+                  POSTGRES_USER: user
+                  POSTGRES_PASSWORD: password
+                  POSTGRES_DB: fftcg-application-test
