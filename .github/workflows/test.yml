@@ -25,11 +25,13 @@ jobs:
               uses: actions/checkout@v2
             - name: Install dependencies
               run: "npm ci"
-            - name: Check typescript
+            - name: typescript
               run: "npm run check"
-            - name: Check linter
+            - name: linter
               run: "npm run eslint"
-            - name: Load fixture
+            - name: Migration
+              run: "npm run migration:run:test"
+            - name: Fixture
               run: "npm run fixture:test"
-            - name: Run func test with coverage
+            - name: Test with coverage
               run: "npm run test:func:cov"
