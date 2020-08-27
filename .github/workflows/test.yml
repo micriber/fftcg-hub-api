@@ -9,6 +9,7 @@ jobs:
         container:
             image: node:12.18-stretch
             env:
+                DB_HOST: postgres
                 POSTGRES_USER: user
                 POSTGRES_PASSWORD: password
                 POSTGRES_DB_TEST: fftcg-application-test
@@ -30,13 +31,5 @@ jobs:
               run: "npm run eslint"
             - name: Load fixture
               run: "npm run fixture:test"
-              env:
-                  POSTGRES_USER: user
-                  POSTGRES_PASSWORD: password
-                  POSTGRES_DB: fftcg-application-test
             - name: Run func test with coverage
               run: "npm run test:func:cov"
-              env:
-                  POSTGRES_USER: user
-                  POSTGRES_PASSWORD: password
-                  POSTGRES_DB: fftcg-application-test
