@@ -15,7 +15,8 @@ jobs:
                     POSTGRES_PASSWORD: password
                     POSTGRES_DB: fftcg-application-test
     steps:
-        - uses: actions/checkout@v2
+        - name: Check out code
+          uses: actions/checkout@v2
         - name: Set env
           run: "cp .env.dist .env"
         - name: Check typescript
