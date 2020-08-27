@@ -4,7 +4,7 @@ on:
     pull_request:
 
 jobs:
-    container-job:
+    test:
         runs-on: ubuntu-latest
         container: node:12.18-stretch
         services:
@@ -14,16 +14,16 @@ jobs:
                     POSTGRES_USER: user
                     POSTGRES_PASSWORD: password
                     POSTGRES_DB: fftcg-application-test
-    steps:
-        - name: Check out code
-          uses: actions/checkout@v2
-        - name: Set env
-          run: "cp .env.dist .env"
-        - name: Check typescript
-          run: "npm run check"
-        - name: Check linter
-          run: "npm run eslint"
-        - name: Load fixture
-          run: "npm run fixture:test"
-        - name: Run func test with coverage
-          run: "npm run test:func:cov"
+        steps:
+            - name: Check out code
+              uses: actions/checkout@v2
+            - name: Set env
+              run: "cp .env.dist .env"
+            - name: Check typescript
+              run: "npm run check"
+            - name: Check linter
+              run: "npm run eslint"
+            - name: Load fixture
+              run: "npm run fixture:test"
+            - name: Run func test with coverage
+              run: "npm run test:func:cov"
