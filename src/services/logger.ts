@@ -5,14 +5,14 @@ const format = winston.format;
 
 const logger = winston.createLogger({
     transports: new DailyRotateFile({
-        filename: 'logs/'+process.env.NODE_ENV+'/api-%DATE%.log',
+        filename: `logs/${process.env.NODE_ENV}/api-%DATE%.log`,
         datePattern: 'YYYY-MM-DD',
         zippedArchive: true,
         format: format.combine(
             format.timestamp(),
             format.printf(info => {
-                const body = info.body ? 'body : ' + JSON.stringify(info.body) : '';
-                const params = info.params ? 'param : ' + JSON.stringify(info.params) : '';
+                const body = info.body ? `body : ${JSON.stringify(info.body)}` : '';
+                const params = info.params ? `params : ${JSON.stringify(info.params)}` : '';
                 return `${info.timestamp} ${info.level}: ${info.message} ${body} ${params}`;
             })
         )

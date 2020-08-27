@@ -2,6 +2,15 @@ import { Request, Response, NextFunction } from 'express';
 import GoogleOAuth from "../services/googleOAuth";
 import {TokenPayload} from "google-auth-library/build/src/auth/loginticket";
 import JWT from "jsonwebtoken";
+import logger from "../services/logger";
+import UserEntity from "../entities/user";
+import {getRepository} from "typeorm/index";
+
+function unauthorized(res: Response<any>) {
+    res.status(401).json({
+        'message': 'Invalid token'
+    });
+}
 
 const authCheckMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.headers.authorization) {
@@ -24,10 +33,8 @@ const authCheckMiddleware = async (req: Request, res: Response, next: NextFuncti
     const jwtDecode = JWT.decode(jwt);
 
     if (!jwtDecode || typeof jwtDecode === "string") {
-        res.status(401).json({
-            'message': 'Invalid token'
-        });
-        return;
+        logger.info('Auth : jwt decode null');
+        return unauthorized(res);
     }
 
     switch (jwtDecode.iss) {
@@ -36,21 +43,33 @@ const authCheckMiddleware = async (req: Request, res: Response, next: NextFuncti
             await googleOAuth.verifyIdToken(jwt, async (error: Error | null, tokenPayload?: TokenPayload) => {
                 /* istanbul ignore next */
                 if (error) {
-                    res.status(401).json({
-                        'message': 'Invalid token'
-                    });
-                    return;
+                    logger.error(error.message);
+                    return unauthorized(res);
                 }
 
-                // add check if user exist
+                if (process.env.NODE_ENV !== 'test') {
+                    const userRepository = getRepository(UserEntity);
+                    const user = await userRepository.findOne({
+                        where: {
+                            email: tokenPayload!.email
+                        }
+                    }).catch((err) => {
+                        logger.error(err.message);
+                        return unauthorized(res);
+                    })
+
+                    if (!user) {
+                        logger.info('Auth : user not found');
+                        return unauthorized(res);
+                    }
+                }
+
                 next();
             });
             break;
         default:
-            res.status(401).json({
-                'message': 'Invalid token'
-            });
-            return;
+            logger.info('Auth : bad iss');
+            return unauthorized(res);
     }
 };
 

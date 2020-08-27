@@ -15,7 +15,7 @@ router.use((req, res, next) => {
     }
 
     res.on('finish', () => {
-        logger.info(req.url + ' ' + res.statusCode, {
+        logger.info(`${req.url} ${res.statusCode}`, {
             body: req.body,
             params: req.params,
         });
