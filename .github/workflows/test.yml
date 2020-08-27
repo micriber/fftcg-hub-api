@@ -21,13 +21,13 @@ jobs:
                     POSTGRES_PASSWORD: password
                     POSTGRES_DB: fftcg-application-test
         steps:
-            - name: Check out code
+            - name: Checkout
               uses: actions/checkout@v2
-            - name: Install dependencies
+            - name: Install
               run: "npm ci"
-            - name: typescript
+            - name: Typescript
               run: "npm run check"
-            - name: linter
+            - name: Linter
               run: "npm run eslint"
             - name: Migration
               run: "npm run migration:run:test"
