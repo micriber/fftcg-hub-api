@@ -1,7 +1,7 @@
 import express from 'express';
 import {Request, Response} from 'express';
 import CardsController from '../controllers/card';
-import authCheck from "../middlewares/authCheck";
+import authCheck from '../../users/middlewares/authCheck';
 
 const router = express.Router();
 const cardsController = new CardsController();

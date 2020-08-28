@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import app from '../../src/app';
 import chaiHttp = require("chai-http");
 import {getRepository} from "typeorm";
-import User from "../../src/entities/user";
+import User from "../../src/users/entities/user";
 import * as JWT from "jsonwebtoken";
 
 chai.use(chaiHttp);

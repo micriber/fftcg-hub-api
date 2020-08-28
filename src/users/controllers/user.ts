@@ -1,7 +1,7 @@
 import {getRepository} from "typeorm";
 import UserEntity from "../entities/user";
 import {Request, Response} from "express";
-import logger from "../services/logger";
+import logger from "../../utils/logger";
 
 export default class User {
     public async get(req: Request, res: Response) {

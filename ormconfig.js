@@ -9,18 +9,18 @@ module.exports = [{
     "synchronize": false,
     "logging": false,
     "entities": [
-        "src/entities/**/*.ts"
+        "src/**/entities/**/*.ts"
     ],
     "migrations": [
-        "src/migrations/**/*.ts"
+        "src/**/migrations/**/*.ts"
     ],
     "subscribers": [
-        "src/subscribers/**/*.ts"
+        "src/**/subscribers/**/*.ts"
     ],
     "cli": {
-        "entitiesDir": "src/entities",
-        "migrationsDir": "src/migrations",
-        "subscribersDir": "src/subscribers"
+        "entitiesDir": "src/cards/entities",
+        "migrationsDir": "src/cards/migrations",
+        "subscribersDir": "src/cards/subscribers"
     }
 }, {
     "name": "test",
@@ -31,12 +31,12 @@ module.exports = [{
     "password": process.env.POSTGRES_PASSWORD,
     "database": process.env.POSTGRES_DB_TEST,
     "entities": [
-        "src/entities/**/*.ts"
+        "src/**/entities/**/*.ts"
     ],
     "subscribers": [
-        "src/subscribers/**/*.ts"
+        "src/**/subscribers/**/*.ts"
     ],
     "migrations": [
-        "src/migrations/**/*.ts"
+        "src/**/migrations/**/*.ts"
     ],
 }];
