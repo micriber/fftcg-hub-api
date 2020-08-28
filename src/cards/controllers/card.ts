@@ -1,7 +1,7 @@
 import {Brackets, getRepository} from "typeorm";
 import CardEntity from "../entities/card";
 import {Request, Response} from "express";
-import logger from "../services/logger";
+import logger from '../../utils/logger';
 
 export default class Card {
     public async get(req: Request, res: Response) {

@@ -1,10 +1,9 @@
 import express from 'express';
 import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs';
-import userRouter from './user';
-import loginRouter from './login';
-import cardRouter from './card';
-import logger from "../services/logger";
+import usersRouter from './users/routes/';
+import cardsRouter from './cards/routes/';
+import logger from './utils/logger';
 
 const router = express.Router();
 
@@ -25,13 +24,12 @@ router.use((req, res, next) => {
 
 /* istanbul ignore next */
 if (process.env.NODE_ENV !== 'production') {
-    const swaggerDocument = YAML.load(__dirname + '/../swagger.yaml');
+    const swaggerDocument = YAML.load(__dirname + '/swagger.yaml');
     router.use('/swagger', swaggerUi.serve);
     router.get('/swagger', swaggerUi.setup(swaggerDocument));
 }
 
-router.use(userRouter);
-router.use(loginRouter);
-router.use(cardRouter);
+router.use(usersRouter);
+router.use(cardsRouter);
 
 export default router;

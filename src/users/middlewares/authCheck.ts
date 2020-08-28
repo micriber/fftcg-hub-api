@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import GoogleOAuth from "../services/googleOAuth";
+import GoogleOAuth from "../../users/services/googleOAuth";
 import {TokenPayload} from "google-auth-library/build/src/auth/loginticket";
 import JWT from "jsonwebtoken";
-import logger from "../services/logger";
-import UserEntity from "../entities/user";
+import logger from "../../utils/logger";
+import UserEntity from "../../users/entities/user";
 import {getRepository} from "typeorm/index";
 
 function unauthorized(res: Response<any>) {

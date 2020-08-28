@@ -1,6 +1,6 @@
 import {OAuth2Client} from "google-auth-library";
 import {LoginTicket, TokenPayload} from "google-auth-library/build/src/auth/loginticket"
-import logger from "./logger";
+import logger from "../../utils/logger";
 
 /* istanbul ignore next */
 export default class GoogleOAuth {

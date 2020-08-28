@@ -6,7 +6,7 @@
         "src/**/*.ts"
     ],
     "exclude": [
-        "src/migrations/*",
-        "src/commands/*"
+        "src/**/migrations/*",
+        "src/**/commands/*"
     ]
 }
