@@ -7,7 +7,7 @@ export class unaccentExt1598564068343 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`DROP EXTENSION  IF EXISTS  unaccent;`);
+        await queryRunner.query(`DROP EXTENSION IF EXISTS unaccent;`);
     }
 
 }

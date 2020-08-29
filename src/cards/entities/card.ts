@@ -1,5 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
-import {Index} from "typeorm/index";
+import {Index, OneToMany} from "typeorm/index";
+import card from "../controllers/card";
+import UserCard from "./userCard";
 
 @Entity("cards")
 export default class Card {
@@ -46,4 +48,7 @@ export default class Card {
 
     @Column("varchar")
     public text!: string;
+
+    @OneToMany(() => UserCard, (userCard :UserCard) => userCard.card)
+    public userCard!: UserCard[];
 }

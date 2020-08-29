@@ -51,8 +51,7 @@ export default class GoogleOAuth {
 
             await callback(null, loginPayload);
         }).catch((error) => {
-            // logger error message
-            console.error(error.message);
+            logger.error(error.message);
 
             callback(error);
         });

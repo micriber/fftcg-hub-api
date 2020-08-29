@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import {getRepository} from "typeorm";
-import User from "../entities/user";
+import User from "../../users/entities/user";
 import {TokenPayload} from "google-auth-library/build/src/auth/loginticket";
 import GoogleOAuth from "../services/googleOAuth";
 

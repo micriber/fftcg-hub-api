@@ -3,6 +3,7 @@ import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs';
 import usersRouter from './users/routes/';
 import cardsRouter from './cards/routes/';
+import authenticationsRouter from "./authentications/routes";
 import logger from './utils/logger';
 
 const router = express.Router();
@@ -31,5 +32,6 @@ if (process.env.NODE_ENV !== 'production') {
 
 router.use(usersRouter);
 router.use(cardsRouter);
+router.use(authenticationsRouter);
 
 export default router;
