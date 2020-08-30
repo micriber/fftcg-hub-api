@@ -9,7 +9,6 @@ export default class Login {
     public async google(req: Request, res:  Response) {
         const {value, error} = googleLogin.validate(req.body);
         if (error) {
-            console.log(error)
             res.status(400).json(error.message);
             return;
         }

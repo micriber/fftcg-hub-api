@@ -9,7 +9,7 @@ servers:
 paths:
     /login/google:
         post:
-            tags: [login]
+            tags: [authentication]
             summary: Login with google
             requestBody:
                 $ref: '#/components/requestBodies/google'
@@ -81,6 +81,37 @@ paths:
                     $ref: '#/components/responses/badRequest'
                 401:
                     $ref: '#/components/responses/invalidToken'
+    /cards/{code}/add:
+        post:
+            tags: [card]
+            summary: Add card to collection
+            requestBody:
+                $ref: '#/components/requestBodies/userCard'
+            responses:
+                200:
+                    description: ok
+                401:
+                    $ref: '#/components/responses/invalidToken'
+                404:
+                    $ref: '#/components/responses/notFound'
+                400:
+                    $ref: '#/components/responses/badRequest'
+    /cards/{code}/subtract:
+        post:
+            tags: [card]
+            summary: Remove card to collection
+            requestBody:
+                $ref: '#/components/requestBodies/userCard'
+            responses:
+                200:
+                    description: ok
+                401:
+                    $ref: '#/components/responses/invalidToken'
+                404:
+                    $ref: '#/components/responses/notFound'
+                400:
+                    $ref: '#/components/responses/badRequest'
+
 components:
     schemas:
         card:
@@ -114,6 +145,10 @@ components:
                     type: string
                 text:
                     type: string
+                userCard:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/userCard'
             example:
                 id: 8987518b-f2bb-45e1-bbf7-4e6a35803149
                 code: 1-001H
@@ -129,6 +164,13 @@ components:
                 type: Avant
                 job: Gardien
                 text: Lorsqu'Auron inflige des dégâts à votre adversaire, vous pouvez jouer 1 Soutien Feu de votre main sur le terrain dullé.
+                userCard:
+                    - quantity: 10
+                      version: classic
+                    - quantity: 2
+                      version: foil
+                    - quantity: 1
+                      version: full-art
         user:
             properties:
                 id:
@@ -163,6 +205,14 @@ components:
                 authenticationType: google
                 createdAt: 2020-08-20 23:04:53.935692
                 updatedAt: 2020-08-20 23:04:53.935692
+        userCard:
+            properties:
+                quantity:
+                    type: interger
+                    example: 5
+                version:
+                    type: string
+                    enum: [classic, foil, full-art]
         idToken:
             properties:
                 idtoken:
@@ -179,13 +229,23 @@ components:
                         - User not found
     requestBodies:
         google:
-            description: id token from goog oauth
+            description: id token from google oauth
             required: true
             content:
                 application/json:
                     example: eyJhbGciOiJSUz...yLe9LNM85DA
                     schema:
                         $ref: '#/components/schemas/idToken'
+        userCard:
+            description: quantity and version of user card
+            required: true
+            content:
+                application/json:
+                    example:
+                        quantity: 5
+                        version: classic
+                    schema:
+                        $ref: '#/components/schemas/userCard'
     responses:
         cards:
             description: ok
@@ -194,28 +254,16 @@ components:
                     schema:
                         type: object
                         properties:
-                            from:
-                                type: integer
-                                example: 16
-                            to:
-                                type: integer
-                                example: 30
-                            per_page:
+                            perPage:
                                 type: integer
                                 example: 15
                             total:
                                 type: integer
                                 example: 1655
-                            current_page:
+                            page:
                                 type: integer
                                 example: 2
-                            prev_page:
-                                type: integer
-                                example: 1
-                            next_page:
-                                type: integer
-                                example: 3
-                            data:
+                            cards:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/card'
@@ -275,7 +323,7 @@ components:
                 example: 1
         perPage:
             in: query
-            name: per_page
+            name: perPage
             schema:
                 type: integer
                 required: false
