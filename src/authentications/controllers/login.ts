@@ -1,14 +1,21 @@
 import {Request, Response} from "express";
 import {getRepository} from "typeorm";
-import User from "../entities/user";
+import User from "../../users/entities/user";
 import {TokenPayload} from "google-auth-library/build/src/auth/loginticket";
 import GoogleOAuth from "../services/googleOAuth";
+import googleLogin from "../schemas/googleLogin";
 
 export default class Login {
     public async google(req: Request, res:  Response) {
+        const {value, error} = googleLogin.validate(req.body);
+        if (error) {
+            res.status(400).json(error.message);
+            return;
+        }
+
         const googleOAuth = new GoogleOAuth();
 
-        await googleOAuth.verifyIdToken(req.body.idToken, async (error: Error | null, tokenPayload?: TokenPayload) => {
+        await googleOAuth.verifyIdToken(value.idToken, async (error: Error | null, tokenPayload?: TokenPayload) => {
             if (error) {
                 res.status(401).json({
                     'message': 'Invalid token'
@@ -26,7 +33,7 @@ export default class Login {
             if (user) {
                 res.status(200).json(user);
             } else {
-                const newUser = new User();
+                const newUser = userRepository.create();
                 newUser.firstName = <string>tokenPayload!.given_name;
                 newUser.lastName = <string>tokenPayload!.family_name;
                 newUser.email = <string>tokenPayload!.email;

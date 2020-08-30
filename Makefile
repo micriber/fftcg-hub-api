@@ -20,8 +20,8 @@ ssh-postgres:
 check:
 	$(DOCKER_RUN_CMD) npm run check
 
-test-func-cov:
-	$(DOCKER_RUN_CMD) npm run test:func:cov
+test:
+	$(DOCKER_RUN_CMD) npm run test
 
 eslint:
 	$(DOCKER_RUN_CMD) npm run eslint
@@ -35,17 +35,8 @@ migration-create:
 migration-run:
 	$(DOCKER_RUN_CMD) npm run migration:run
 
-fixture:
-	$(DOCKER_RUN_CMD) npm run fixture
-
-fixture-test:
-	$(DOCKER_RUN_CMD) npm run fixture:test
-
 card:
 	$(DOCKER_RUN_CMD) npm run card
-
-card-test:
-	$(DOCKER_RUN_CMD) npm run card:test
 
 card-regen:
 	$(DOCKER_RUN_CMD) npm run card:regen

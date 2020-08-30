@@ -3,26 +3,21 @@
     "version": "0.1.0",
     "description": "",
     "main": "src/app.ts",
+    "engines": {
+        "node": ">=12.18"
+    },
     "scripts": {
         "start": "node build/app.js",
-        "build": "tsc",
         "check": "tsc --noemit",
         "watch": "nodemon",
         "eslint": "eslint --ext .ts ./src ./test",
         "eslint:fix": "eslint --ext .ts --fix ./src ./test",
         "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
         "migration:run": "npm run typeorm -- migration:run",
-        "migration:run:test": "npm run typeorm -- migration:run -c test",
         "migration:generate": "npm run typeorm -- migration:generate -n",
-        "fixture": "fixtures ./fixtures -c ./ormconfig.js --require=ts-node/register",
-        "fixture:test": "fixtures ./fixtures -cn test -c ./ormconfig.js --require=ts-node/register && npm run card:test",
-        "test": "npm run test:unit && npm run test:func",
-        "test:unit": "NODE_ENV=test npx mocha -r ts-node/register --exclude test/controllers/**/*.ts test/**/*.ts",
-        "test:func": "NODE_ENV=test npx mocha -r ts-node/register test/controllers/**/*.ts",
-        "test:func:cov": "NODE_ENV=test npx nyc mocha -r ts-node/register test/controllers/**/*.ts",
+        "test": "NODE_ENV=test npx nyc mocha -r ts-node/register test/**/*.ts",
         "card": "npx ts-node src/cards/commands/cardsLoader.ts",
-        "card:regen": "npm run card -- --regen-file",
-        "card:test": "NODE_ENV=test npm run card"
+        "card:regen": "npm run card -- --regen-file"
     },
     "repository": {
         "type": "git",
@@ -33,11 +28,11 @@
     "dependencies": {
         "express": "^4.17.1",
         "google-auth-library": "^6.0.6",
+        "joi": "^17.2.1",
         "jsonwebtoken": "^8.5.1",
         "pg": "^8.3.0",
         "swagger-ui-express": "^4.1.4",
         "typeorm": "^0.2.25",
-        "typeorm-pagination": "^2.0.1",
         "winston": "^3.3.3",
         "winston-daily-rotate-file": "^4.5.0",
         "yamljs": "^0.3.0"
@@ -46,6 +41,7 @@
         "@istanbuljs/nyc-config-typescript": "^1.0.1",
         "@types/chai": "^4.2.12",
         "@types/express": "^4.17.7",
+        "@types/joi": "^14.3.4",
         "@types/jsonwebtoken": "^8.5.0",
         "@types/mocha": "^8.0.2",
         "@types/node": "^14.0.27",

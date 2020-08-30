@@ -1,9 +1,9 @@
 import express from 'express';
-import user from './user'
+import login from './login'
 
 const router = express.Router();
 
 router
-    .use(user);
+    .use(login);
 
 export default router;

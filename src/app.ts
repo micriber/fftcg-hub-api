@@ -2,7 +2,6 @@ import express from 'express';
 import router from './router';
 import {createConnection, getConnectionOptions} from "typeorm";
 import {Server} from 'http';
-import {pagination} from 'typeorm-pagination'
 import logger from "./utils/logger";
 
 async function start(): Promise<Promise<Server> | void> {
@@ -19,7 +18,6 @@ async function start(): Promise<Promise<Server> | void> {
         const app = express();
 
         app.use(express.json());
-        app.use(pagination);
         app.use('/api', router);
 
         return app.listen(port, () => {

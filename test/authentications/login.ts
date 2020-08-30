@@ -1,20 +1,26 @@
-import * as chai from 'chai';
+import chai from 'chai';
 import app from '../../src/app';
 import chaiHttp = require("chai-http");
+import loadFixtures from "../fixture";
 
 chai.use(chaiHttp);
 const {expect, request} = chai;
 
-describe('Controller login', async(): Promise<void> => {
+describe('Login', async(): Promise<void> => {
 
     let server: ChaiHttp.Agent;
 
-    before(async(): Promise<void> => {
+    before(async function(): Promise<void> {
+        this.timeout(5000);
         const startedApp = await app;
         server = request(startedApp).keepOpen();
     });
 
-    after(async(): Promise<void> => {
+    beforeEach(async(): Promise<void> => {
+        await loadFixtures();
+    });
+
+    after(() => {
         server.close();
     });
 
@@ -39,7 +45,7 @@ describe('Controller login', async(): Promise<void> => {
         it('should create a user', async(): Promise<void> => {
             const token = Date.now();
             await server.post('/api/v1/login/google', ).send({
-                idToken: token
+                idToken: token.toString()
             }).then((res): void => {
                 expect(res.error).to.be.false;
                 expect(res).to.have.status(201);
