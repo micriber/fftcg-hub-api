@@ -10,7 +10,8 @@ describe('Login', async(): Promise<void> => {
 
     let server: ChaiHttp.Agent;
 
-    before(async(): Promise<void> => {
+    before(async function(): Promise<void> {
+        this.timeout(5000);
         const startedApp = await app;
         server = request(startedApp).keepOpen();
     });
@@ -19,7 +20,7 @@ describe('Login', async(): Promise<void> => {
         await loadFixtures();
     });
 
-    after(async(): Promise<void> => {
+    after(() => {
         server.close();
     });
 

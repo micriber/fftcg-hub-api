@@ -9,51 +9,62 @@ export default class userCard {
     public async add(req: Request, res: Response) {
         const {value, error} = addCard.validate(req.body);
         if (error) {
-            res.status(400).json(error.message);
+            res.status(400).json({message: error.message});
             return;
         }
 
-        const {card, userCard} = await this.getUserCard(req);
-        const userCardRepository = await getRepository(UserCard);
+        try {
+            const {card, userCard} = await this.getUserCard(req);
+            const userCardRepository = await getRepository(UserCard);
 
-        if (!userCard) {
-            const userCard = userCardRepository.create();
-            userCard.card = card;
-            userCard.quantity = value.quantity;
-            userCard.version = value.version;
-            userCard.user = <User>req.app.get('user');
+            if (!userCard) {
+                const userCard = userCardRepository.create();
+                userCard.card = card;
+                userCard.quantity = value.quantity;
+                userCard.version = value.version;
+                userCard.user = <User>req.app.get('user');
 
-            userCardRepository.save(userCard);
-        } else {
-            userCard.quantity += value.quantity;
-            userCardRepository.save(userCard);
+                await userCardRepository.save(userCard);
+            } else {
+                userCard.quantity += value.quantity;
+                await userCardRepository.save(userCard);
+            }
+
+            res.sendStatus(200);
+        } catch (error) {
+            res.status(400).json({message: error.message});
+            return;
         }
-
-        res.sendStatus(200);
     }
 
     public async subtract(req: Request, res: Response) {
         const {value, error} = addCard.validate(req.body);
         if (error) {
-            res.status(400).json(error.message);
+            res.status(400).json({message: error.message});
             return;
         }
 
-        const {userCard} = await this.getUserCard(req);
-        const userCardRepository = await getRepository(UserCard);
+        try {
+            const {userCard} = await this.getUserCard(req);
+            const userCardRepository = await getRepository(UserCard);
 
-        if (!userCard) {
-            throw new Error("This user doesn't have this card" );
+            if (!userCard) {
+                res.status(400).json({message: "This user doesn't have this card"});
+                return;
+            }
+
+            if (userCard.quantity === value.quantity) {
+                await userCardRepository.remove(userCard);
+            } else {
+                userCard.quantity -= value.quantity;
+                await userCardRepository.save(userCard);
+            }
+
+            res.sendStatus(200);
+        } catch (error) {
+            res.status(400).json({message: error.message});
+            return;
         }
-
-        if (userCard.quantity === value.quantity) {
-            await userCardRepository.remove(userCard);
-        } else {
-            userCard.quantity -= value.quantity;
-            userCardRepository.save(userCard);
-        }
-
-        res.sendStatus(200);
     }
 
     private async getUserCard(req: Request) {
