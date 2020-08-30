@@ -8,7 +8,7 @@ const userCardController = new UserCard();
 
 router
     .use('/v1/cards', authentication)
-    .post('/v1/cards/:code/collection',(req: Request, res: Response) => userCardController.add(req, res))
-    .delete('/v1/cards/:code/collection',(req: Request, res: Response) => userCardController.delete(req, res));
+    .post('/v1/cards/:code/add',(req: Request, res: Response) => userCardController.add(req, res))
+    .post('/v1/cards/:code/subtract',(req: Request, res: Response) => userCardController.subtract(req, res));
 
 export default router;

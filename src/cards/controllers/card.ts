@@ -1,18 +1,12 @@
-import {Brackets, getRepository} from "typeorm";
-import CardEntity from "../entities/card";
 import {Request, Response} from "express";
-import logger from '../../utils/logger';
-import user from "../../users/services/user";
+import {CardRepository} from "../repositories/card";
+import {getCustomRepository} from "typeorm/index";
+import User from "../../users/entities/user";
 
 export default class Card {
     public async get(req: Request, res: Response) {
-        const cardRepository = getRepository(CardEntity);
-        const card = await cardRepository.findOne({ where: { code: req.params.code} }).catch((err) => {
-            logger.error(err.message)
-            res.status(400).json({
-                'message' : err.message
-            })
-        });
+        const cardRepository :CardRepository = getCustomRepository(CardRepository);
+        const card = await cardRepository.findByCode(req.params.code, <User>req.app.get('user'));
 
         if (!card) {
             res.status(404).json({
@@ -24,33 +18,16 @@ export default class Card {
     }
 
     public async getAll(req: Request, res: Response) {
-        const cardRepository = getRepository(CardEntity);
-        const { search, perPage, page } = req.query;
-        const cardsQuery = cardRepository.createQueryBuilder('cards');
+        const cardRepository :CardRepository = getCustomRepository(CardRepository);
+        const filter = {search: <string|undefined>req.query.search};
+        const cards =  await cardRepository.getAllCardsWithPagination(
+            <User>req.app.get('user'),
+            filter,
+            // @TODO : voir comment faire pour ne pas avoir a typer string undefined sur chaque query param
+            <string|undefined>req.query.page,
+            <string|undefined>req.query.perPage,
+        );
 
-        cardsQuery.leftJoinAndSelect('cards.userCard', 'uc', 'cards.id = "uc"."cardId"');
-        cardsQuery.leftJoin('users', 'u', '"uc"."userId" = u.id');
-        cardsQuery.where('uc.quantity IS NUll or u.email = :email', {email: (await user.getCurrentUser(req)).email});
-        cardsQuery.take(perPage ? +perPage : 10);
-        cardsQuery.skip(page ? +page : 1);
-        cardsQuery.orderBy({
-            'cards.code': 'ASC',
-        });
-
-        if (search) {
-            cardsQuery.andWhere(new Brackets(qb => {
-                qb.where('unaccent(cards.code) ILIKE unaccent(:search)', { search: `%${search}%` })
-                  .orWhere('unaccent(cards.name) ILIKE unaccent(:search)', { search: `%${search}%` })
-            }))
-        }
-
-        const data = await cardsQuery.getManyAndCount();
-
-        res.status(200).json({
-            cards: data[0],
-            page: page ? +page : 1,
-            perPage: perPage ? +perPage : 10,
-            total: data[1]
-        });
+        res.status(200).json(cards);
     }
 }

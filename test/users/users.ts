@@ -4,18 +4,23 @@ import chaiHttp = require("chai-http");
 import {getRepository} from "typeorm";
 import User from "../../src/users/entities/user";
 import * as JWT from "jsonwebtoken";
+import loadFixtures from "../fixture";
 
 chai.use(chaiHttp);
 const {expect, request} = chai;
 const authorizationHeader = 'bearer ' + JWT.sign({iss: 'https://accounts.google.com'}, 'test');
 
-describe('Controller users', async(): Promise<void> => {
+describe('Users', async(): Promise<void> => {
 
     let server: ChaiHttp.Agent;
 
     before(async(): Promise<void> => {
         const startedApp = await app;
         server = request(startedApp).keepOpen();
+    });
+
+    beforeEach(async(): Promise<void> => {
+        await loadFixtures();
     });
 
     after(async(): Promise<void> => {
@@ -25,14 +30,14 @@ describe('Controller users', async(): Promise<void> => {
     describe('GET /users/{userId}', async (): Promise<void> => {
         it('authorization header not found', async(): Promise<void> => {
             await server.get('/api/v1/users/caa8b54a-eb5e-4134-8ae2-a3946a428ec7').then((res): void => {
-                expect(res).to.have.status(400);
+                expect(res).to.have.status(401);
                 expect(res.body.message).to.be.equal('authorization header not found');
             });
         });
 
         it('invalid authorization header', async(): Promise<void> => {
             await server.get('/api/v1/users/caa8b54a-eb5e-4134-8ae2-a3946a428ec7').set('authorization', 'bea rer 1').then((res): void => {
-                expect(res).to.have.status(400);
+                expect(res).to.have.status(401);
                 expect(res.body.message).to.be.equal('invalid authorization type');
             });
         });

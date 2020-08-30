@@ -1,50 +1,74 @@
 import {Request, Response} from "express";
-import {getRepository} from "typeorm/index";
 import Card from "../entities/card";
-import UserCard, {version} from "../entities/userCard";
-import user from "../../users/services/user";
+import UserCard from "../entities/userCard";
+import User from "../../users/entities/user";
+import {getRepository} from "typeorm/index";
 
 export default class userCard {
     public async add(req: Request, res: Response) {
-        const card = await getRepository(Card).findOne({
-            where: {code: req.params.code}
-        });
+        const {card, userCard} = await this.getUserCard(req);
+        const userCardRepository = await getRepository(UserCard);
 
-        if (!card) {
-            throw new Error('card not found');
+        if (!userCard) {
+            const userCard = userCardRepository.create();
+            userCard.card = card;
+            userCard.quantity = req.body.quantity;
+            userCard.version = req.body.version;
+            userCard.user = <User>req.app.get('user');
+
+            userCardRepository.save(userCard);
+        } else {
+            userCard.quantity += req.body.quantity;
+            userCardRepository.save(userCard);
         }
 
-        const userCard = new UserCard();
-        userCard.card = card;
-        userCard.quantity = 1;
-        userCard.version = version.CLASSIC;
-        userCard.user = await user.getCurrentUser(req);
-
-        await getRepository(UserCard).save(userCard);
-
-        res.status(200);
+        res.sendStatus(200);
     }
 
-    public async delete(req: Request, res: Response) {
-        const card = await getRepository(Card).findOne({
-            where: {code: req.params.code}
-        });
+    public async subtract(req: Request, res: Response) {
+        const {userCard} = await this.getUserCard(req);
+        const userCardRepository = await getRepository(UserCard);
 
-        if (!card) {
-            throw new Error('card not found');
+        if (!userCard) {
+            throw new Error("This user doesn't have this card" );
         }
+
+        if (userCard.quantity === req.body.quantity) {
+            await userCardRepository.remove(userCard);
+        } else {
+            userCard.quantity -= req.body.quantity;
+            userCardRepository.save(userCard);
+        }
+
+        res.sendStatus(200);
+    }
+
+    private async getUserCard(req: Request) {
+        const card = await this.getCard(req);
 
         const userCardRepository = await getRepository(UserCard);
         const userCard = await userCardRepository.findOne({
-            where: {card: card}
+            relations: ['user', 'card'],
+            where: {
+                card: card,
+                user: req.app.get('user'),
+                version: req.body.version
+            }
         });
 
-        if (!userCard) {
+        return {card, userCard};
+    }
+
+
+    private async getCard(req: Request) {
+        const card = await getRepository(Card).findOne({
+            where: {code: req.params.code}
+        });
+
+        if (!card) {
             throw new Error('card not found');
         }
 
-        userCardRepository.remove(userCard);
-
-        res.status(200);
+        return card;
     }
 }

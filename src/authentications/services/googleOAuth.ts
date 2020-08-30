@@ -45,7 +45,7 @@ export default class GoogleOAuth {
                 throw new Error('Missing family_name in token');
             }
             if (!loginPayload.locale) {
-                console.error(loginPayload)
+                logger.error(loginPayload)
                 throw new Error('Missing locale in token');
             }
 

@@ -18,7 +18,10 @@ const authenticationMiddleware = async (req: Request, res: Response, next: NextF
                     /* istanbul ignore next */
                     if (error) {
                         logger.error(error.message);
-                        throw new Error('Invalid token');
+                        res.status(401).json({
+                            message: 'Invalid token'
+                        });
+                        return;
                     }
 
                     if (process.env.NODE_ENV !== 'test') {
@@ -29,13 +32,23 @@ const authenticationMiddleware = async (req: Request, res: Response, next: NextF
                             }
                         }).catch((err) => {
                             logger.error(err.message);
-                            throw new Error('Invalid token');
+                            res.status(401).json({
+                                message: 'Invalid token'
+                            });
+                            return;
                         })
 
                         if (!user) {
                             logger.info('Auth : user not found');
-                            throw new Error('Invalid token');
+                            res.status(401).json({
+                                message: 'Invalid token'
+                            });
+                            return;
                         }
+                        req.app.set('user', user);
+                    } else {
+                        const user = await getRepository(UserEntity).findOne();
+                        req.app.set('user', user);
                     }
 
                     next();
@@ -43,13 +56,15 @@ const authenticationMiddleware = async (req: Request, res: Response, next: NextF
                 break;
             default:
                 logger.info('Auth : bad iss');
-                throw new Error('Invalid token');
+                res.status(401).json({
+                    message: 'Invalid token'
+                });
         }
     } catch (error) {
         res.status(401).json({
             message: error.message
         });
-        return ;
+        return;
     }
 
 };

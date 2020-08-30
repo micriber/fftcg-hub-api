@@ -1,0 +1,17 @@
+entity: userCard
+items:
+    classic:
+        quantity: '10'
+        version: 'classic'
+        user: '@user1'
+        card: '@pampa'
+    foil:
+        quantity: '4'
+        version: 'foil'
+        user: '@user1'
+        card: '@bahamut'
+    full-art:
+        quantity: '1'
+        version: 'full-art'
+        user: '@user1'
+        card: '@yuna'

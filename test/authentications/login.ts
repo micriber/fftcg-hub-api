@@ -1,17 +1,22 @@
-import * as chai from 'chai';
+import chai from 'chai';
 import app from '../../src/app';
 import chaiHttp = require("chai-http");
+import loadFixtures from "../fixture";
 
 chai.use(chaiHttp);
 const {expect, request} = chai;
 
-describe('Controller login', async(): Promise<void> => {
+describe('Login', async(): Promise<void> => {
 
     let server: ChaiHttp.Agent;
 
     before(async(): Promise<void> => {
         const startedApp = await app;
         server = request(startedApp).keepOpen();
+    });
+
+    beforeEach(async(): Promise<void> => {
+        await loadFixtures();
     });
 
     after(async(): Promise<void> => {

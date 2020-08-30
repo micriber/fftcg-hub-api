@@ -1,6 +1,6 @@
 entity: User
 items:
-    user{1..10}:
+    user{1..3}:
         firstName: 'firstName($current)'
         lastName: 'lastName($current)'
         email: 'email($current)@gmail.com'

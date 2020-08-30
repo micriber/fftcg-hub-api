@@ -1,6 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
 import {Index, OneToMany} from "typeorm/index";
-import card from "../controllers/card";
 import UserCard from "./userCard";
 
 @Entity("cards")
