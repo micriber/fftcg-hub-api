@@ -3,22 +3,29 @@ import Card from "../entities/card";
 import UserCard from "../entities/userCard";
 import User from "../../users/entities/user";
 import {getRepository} from "typeorm/index";
+import addCard from '../schemas/userCard';
 
 export default class userCard {
     public async add(req: Request, res: Response) {
+        const {value, error} = addCard.validate(req.body);
+        if (error) {
+            res.status(400).json(error.message);
+            return;
+        }
+
         const {card, userCard} = await this.getUserCard(req);
         const userCardRepository = await getRepository(UserCard);
 
         if (!userCard) {
             const userCard = userCardRepository.create();
             userCard.card = card;
-            userCard.quantity = req.body.quantity;
-            userCard.version = req.body.version;
+            userCard.quantity = value.quantity;
+            userCard.version = value.version;
             userCard.user = <User>req.app.get('user');
 
             userCardRepository.save(userCard);
         } else {
-            userCard.quantity += req.body.quantity;
+            userCard.quantity += value.quantity;
             userCardRepository.save(userCard);
         }
 
@@ -26,6 +33,12 @@ export default class userCard {
     }
 
     public async subtract(req: Request, res: Response) {
+        const {value, error} = addCard.validate(req.body);
+        if (error) {
+            res.status(400).json(error.message);
+            return;
+        }
+
         const {userCard} = await this.getUserCard(req);
         const userCardRepository = await getRepository(UserCard);
 
@@ -33,10 +46,10 @@ export default class userCard {
             throw new Error("This user doesn't have this card" );
         }
 
-        if (userCard.quantity === req.body.quantity) {
+        if (userCard.quantity === value.quantity) {
             await userCardRepository.remove(userCard);
         } else {
-            userCard.quantity -= req.body.quantity;
+            userCard.quantity -= value.quantity;
             userCardRepository.save(userCard);
         }
 

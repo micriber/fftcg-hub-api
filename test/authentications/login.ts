@@ -44,7 +44,7 @@ describe('Login', async(): Promise<void> => {
         it('should create a user', async(): Promise<void> => {
             const token = Date.now();
             await server.post('/api/v1/login/google', ).send({
-                idToken: token
+                idToken: token.toString()
             }).then((res): void => {
                 expect(res.error).to.be.false;
                 expect(res).to.have.status(201);

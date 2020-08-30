@@ -37,7 +37,6 @@ export class CardRepository extends Repository<Card> {
 
         return {
             cards: data[0],
-            // @Todo : voir comment faire pour ne pas repeter cette verif
             page: page,
             perPage: intPerPage,
             total: data[1]

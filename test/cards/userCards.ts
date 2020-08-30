@@ -57,6 +57,19 @@ describe('User cards', async(): Promise<void> => {
                 expect(card.name).to.be.equal(sephiroth!.name);
             });
         });
+
+        it('should add a card to collection with negative quantity', async(): Promise<void> => {
+            const sephiroth = await getRepository(Card).findOne({
+                where : {name: 'Séphiroth'}
+            });
+            await server.post(`/api/v1/cards/${sephiroth!.code}/add`).set('authorization', authorizationHeader).send({
+                quantity: -1,
+                version: 'classic'
+            }).then((res): void => {
+                expect(res.error).to.be.false;
+                expect(res).to.have.status(400);
+            });
+        });
     });
 
     describe('POST /cards/{code}/subtract', async (): Promise<void> => {
