@@ -25,7 +25,7 @@ export default class Card {
         if (req.query.search) {
             filter.search = <string>req.query.search;
         }
-        const cards =  await cardRepository.getAllCardsWithPagination(
+        const cards = await cardRepository.getAllCardsWithPagination(
             <User>req.app.get('user'),
             filter,
             // @TODO : voir comment faire pour ne pas avoir a typer string undefined sur chaque query param

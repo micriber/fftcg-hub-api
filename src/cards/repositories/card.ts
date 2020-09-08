@@ -27,7 +27,7 @@ export class CardRepository extends Repository<Card> {
     public async getAllCardsWithPagination(user :User, filter :filters, page?: string, perPage?: string) :Promise<paginationCards> {
         const cardsQuery = this.getBaseQueryBuilder(user);
 
-        if (filter.search !== undefined) {
+        if (filter.search) {
             cardsQuery.andWhere(new Brackets(qb => {
                 qb.where('unaccent(c.code) ILIKE unaccent(%:search%)', { search: filter.search })
                     .orWhere('unaccent(c.name) ILIKE unaccent(%:search%)', { search: filter.search })
