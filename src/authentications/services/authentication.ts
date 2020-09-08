@@ -8,8 +8,8 @@ export default class Authentication {
             throw new Error('authorization header not found');
         }
 
-        const authorizationHeader = req.header('Authorization');
-        const [type, jwt] = authorizationHeader!.split(' ');
+        const authorizationHeader = req.headers.authorization;
+        const [type, jwt] = authorizationHeader.split(' ');
 
         if (type !== 'bearer') {
             throw new Error('invalid authorization type');
@@ -18,7 +18,7 @@ export default class Authentication {
         return jwt;
     }
 
-    static decodeJWT(jwt: string) :{ [key: string]: any } {
+    static decodeJWT(jwt: string) :{ [key: string]: string } {
         const jwtDecode = JWT.decode(jwt);
 
         if (!jwtDecode || typeof jwtDecode === "string") {
@@ -28,7 +28,7 @@ export default class Authentication {
         return jwtDecode;
     }
 
-    static getDecodeJWT(req: Request) :{ [key: string]: any } {
+    static getDecodeJWT(req: Request) :{ [key: string]: string } {
         const jwt = this.getJWT(req);
         const jwtDecode = JWT.decode(jwt);
 

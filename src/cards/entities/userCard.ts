@@ -23,7 +23,7 @@ export default class userCard {
     })
     public version!: version
 
-    @ManyToOne(type => User, {primary: true})
+    @ManyToOne(() => User, {primary: true})
     public user!: User;
 
     @ManyToOne(() => Card, (card: Card) => card.userCard, {primary: true})

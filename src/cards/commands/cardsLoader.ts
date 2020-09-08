@@ -22,6 +22,7 @@ async function regenDataFile() {
 
 async function loadData() {
     console.info('load data');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
     const cards = JSON.parse(fs.readFileSync(dataFilePath).toString()).cards;
 
     const database :string = ((process.env.NODE_ENV === 'test') ? process.env.POSTGRES_DB_TEST : process.env.POSTGRES_DB) || 'fftcg-application' ;
@@ -32,6 +33,7 @@ async function loadData() {
     const query = `INSERT INTO cards values (:id, :Code, :Element, :Rarity, :Cost, :Power, :Category_1, :Category_2, :Multicard, :Ex_Burst, :Name_FR, :Type_FR, :Job_FR, :Text_FR) ON CONFLICT DO NOTHING;`;
     const queryRunner = connection.createQueryRunner();
     for (const card of cards) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         card.id = RandomGenerator.uuid4();
         const [escapeQuery, parameters] = connection.driver.escapeQueryWithParameters(query, card, {});
         await queryRunner.query(escapeQuery, parameters);
@@ -48,4 +50,4 @@ async function start() {
     process.exit(0);
 }
 
-start();
+void start();

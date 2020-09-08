@@ -4,13 +4,15 @@ import {Request, Response} from "express";
 import logger from "../../utils/logger";
 
 export default class User {
-    public async get(req: Request, res: Response) {
+    public async get(req: Request, res: Response) :Promise<void> {
         const userRepository = getRepository(UserEntity);
         const user = await userRepository.findOne(req.params.id).catch((err) => {
-            logger.error(err.message)
-            res.status(400).json({
-                'message' : err.message
-            })
+            if (err instanceof Error) {
+                logger.error(err.message)
+                res.status(400).json({
+                    'message': err.message
+                })
+            }
         });
 
         if (!user) {

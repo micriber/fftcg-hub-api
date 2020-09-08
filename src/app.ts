@@ -21,7 +21,7 @@ async function start(): Promise<Promise<Server> | void> {
         app.use('/api', router);
 
         return app.listen(port, () => {
-            logger.info('server start with port ' + port);
+            logger.info(`server start with port ${port}`);
         });
     } catch (err) {
         logger.error(err);

@@ -16,22 +16,22 @@ module.exports = {
     ],
     parser: "@typescript-eslint/parser",
     extends: [
-        // "eslint:recommended",
+        "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
-        // "plugin:@typescript-eslint/recommended-requiring-type-checking",
-        // "plugin:import/errors",
-        // "plugin:import/warnings",
-        // "plugin:import/typescript"
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript"
     ],
-    // settings: {
-    //     'import/parsers': {
-    //         '@typescript-eslint/parser': ['.ts'],
-    //     },
-    //     "import/resolver": {
-    //         "node": {
-    //             "extensions": ['.ts']
-    //         }
-    //     }
-    // }
+    settings: {
+        'import/parsers': {
+            '@typescript-eslint/parser': ['.ts'],
+        },
+        "import/resolver": {
+            "node": {
+                "extensions": ['.ts']
+            }
+        }
+    }
 }
 

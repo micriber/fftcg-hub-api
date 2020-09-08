@@ -1,5 +1,4 @@
-import express from 'express';
-import {Request, Response} from 'express';
+import express, {Request, Response} from 'express';
 import CardsController from '../controllers/card';
 import authentication from '../../authentications/middlewares/authentication';
 

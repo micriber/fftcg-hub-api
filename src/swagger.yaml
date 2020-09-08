@@ -224,9 +224,7 @@ components:
             properties:
                 message:
                     type: string
-                    example:
-                        - Token expiration date
-                        - User not found
+                    example: Token expiration date
     requestBodies:
         google:
             description: id token from google oauth

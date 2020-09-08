@@ -3,11 +3,14 @@ import Card from "../entities/card";
 import UserCard from "../entities/userCard";
 import User from "../../users/entities/user";
 import {getRepository} from "typeorm/index";
-import addCard from '../schemas/userCard';
+import addCard, {userCardType} from "../schemas/userCard";
 
 export default class userCard {
-    public async add(req: Request, res: Response) {
-        const {value, error} = addCard.validate(req.body);
+    public async add(req: Request, res: Response) : Promise<void> {
+        const result = addCard.validate(req.body);
+        const error = result.error;
+        const value = result.value as userCardType;
+
         if (error) {
             res.status(400).json({message: error.message});
             return;
@@ -15,7 +18,7 @@ export default class userCard {
 
         try {
             const {card, userCard} = await this.getUserCard(req);
-            const userCardRepository = await getRepository(UserCard);
+            const userCardRepository = getRepository(UserCard);
 
             if (!userCard) {
                 const userCard = userCardRepository.create();
@@ -32,13 +35,17 @@ export default class userCard {
 
             res.sendStatus(200);
         } catch (error) {
-            res.status(400).json({message: error.message});
-            return;
+            if (error instanceof Error) {
+                res.status(400).json({message: error.message});
+                return;
+            }
         }
     }
 
-    public async subtract(req: Request, res: Response) {
-        const {value, error} = addCard.validate(req.body);
+    public async subtract(req: Request, res: Response) : Promise<void> {
+        const result = addCard.validate(req.body);
+        const error = result.error;
+        const value = result.value as userCardType;
         if (error) {
             res.status(400).json({message: error.message});
             return;
@@ -46,7 +53,7 @@ export default class userCard {
 
         try {
             const {userCard} = await this.getUserCard(req);
-            const userCardRepository = await getRepository(UserCard);
+            const userCardRepository = getRepository(UserCard);
 
             if (!userCard) {
                 res.status(400).json({message: "This user doesn't have this card"});
@@ -62,21 +69,23 @@ export default class userCard {
 
             res.sendStatus(200);
         } catch (error) {
-            res.status(400).json({message: error.message});
-            return;
+            if (error instanceof Error) {
+                res.status(400).json({message: error.message});
+                return;
+            }
         }
     }
 
     private async getUserCard(req: Request) {
         const card = await this.getCard(req);
 
-        const userCardRepository = await getRepository(UserCard);
+        const userCardRepository = getRepository(UserCard);
         const userCard = await userCardRepository.findOne({
             relations: ['user', 'card'],
             where: {
                 card: card,
-                user: req.app.get('user'),
-                version: req.body.version
+                user: req.app.get('user') as User,
+                version: (req.body as userCardType).version
             }
         });
 

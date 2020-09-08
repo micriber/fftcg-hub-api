@@ -4,7 +4,7 @@ import logger from "../../utils/logger";
 
 /* istanbul ignore next */
 export default class GoogleOAuth {
-    public async verifyIdToken(idToken: string, callback: (error: (Error | null), tokenPayload?: TokenPayload) => Promise<void>) {
+    public async verifyIdToken(idToken: string, callback: (error: (Error | null), tokenPayload?: TokenPayload) => Promise<void>) :Promise<void> {
         if (process.env.NODE_ENV === 'test') {
             if (idToken === 'badIdToken') {
                 await callback(new Error());
@@ -50,10 +50,11 @@ export default class GoogleOAuth {
             }
 
             await callback(null, loginPayload);
-        }).catch((error) => {
-            logger.error(error.message);
-
-            callback(error);
+        }).catch(async (error) => {
+            if (error instanceof Error) {
+                logger.error(error.message);
+                await callback(error);
+            }
         });
     }
 }
