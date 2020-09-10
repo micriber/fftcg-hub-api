@@ -30,7 +30,7 @@ export default class GoogleOAuth {
             idToken: idToken,
             audience: process.env.GOOGLE_CLIENT_ID,
         }).then(async (loginTicket :LoginTicket) => {
-            const loginPayload = <TokenPayload> loginTicket.getPayload();
+            const loginPayload = loginTicket.getPayload() as TokenPayload;
 
             if (!loginPayload.email) {
                 logger.error(loginPayload)

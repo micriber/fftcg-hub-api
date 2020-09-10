@@ -25,7 +25,7 @@ export default class userCard {
                 userCard.card = card;
                 userCard.quantity = value.quantity;
                 userCard.version = value.version;
-                userCard.user = <User>req.app.get('user');
+                userCard.user = req.app.get('user') as User;
 
                 await userCardRepository.save(userCard);
             } else {
