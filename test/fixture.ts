@@ -3,7 +3,7 @@ import {Builder, fixturesIterator, Loader, Parser, Resolver} from 'typeorm-fixtu
 import { getRepository } from 'typeorm';
 import {createConnection} from "typeorm/index";
 
-export default async () => {
+export default async () : Promise<void> => {
     let connection;
 
     try {
@@ -19,13 +19,16 @@ export default async () => {
         const builder = new Builder(connection, new Parser());
 
         for (const fixture of fixturesIterator(fixtures)) {
-            const entity :unknown = await builder.build(fixture);
+            const entity = await builder.build(fixture);
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             await getRepository(entity.constructor.name).save(entity);
         }
     } catch (err) {
-        console.error(err.message)
+        if (err instanceof Error) {
+            console.error(err.message)
+        }
     } finally {
         if (connection) {
             await connection.close();

@@ -1,6 +1,18 @@
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Timestamp} from "typeorm";
 import {Index} from "typeorm/index";
 
+export type userType = {
+    id: number,
+    firstName: string,
+    lastName: string,
+    userName?: string,
+    email: string,
+    locale: string,
+    authenticationType: string,
+    createdAt: Timestamp,
+    updatedAt: Timestamp
+}
+
 @Entity("users")
 export default class User {
 

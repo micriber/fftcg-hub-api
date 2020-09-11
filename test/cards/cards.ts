@@ -5,12 +5,14 @@ import {getRepository} from "typeorm";
 import * as JWT from "jsonwebtoken";
 import Card from "../../src/cards/entities/card";
 import loadFixtures from "../fixture";
+import {errorMessageType} from "../../src/utils/error";
+import {paginationCards} from "../../src/cards/repositories/card";
 
 chai.use(chaiHttp);
 const {expect, request} = chai;
 const authorizationHeader = 'bearer ' + JWT.sign({iss: 'https://accounts.google.com'}, 'test');
 
-describe('Cards', async(): Promise<void> => {
+describe('Cards', () => {
 
     let server: ChaiHttp.Agent;
 
@@ -23,18 +25,20 @@ describe('Cards', async(): Promise<void> => {
         await loadFixtures();
     });
 
-    after(async(): Promise<void> => {
+    after(() => {
         server.close();
     });
 
-    describe('GET /cards', async (): Promise<void> => {
+    describe('GET /cards', () => {
         it('should return pagination of all card', async(): Promise<void> => {
             await server.get('/api/v1/cards').set('authorization', authorizationHeader).then((res): void => {
                 expect(res.error).to.be.false;
                 expect(res).to.have.status(200);
 
+                const body = res.body as paginationCards;
+
                 const card = {
-                    id: res.body.cards[0].id,
+                    id: body.cards[0].id,
                     code: '1-176H',
                     element: '水',
                     rarity: 'H',
@@ -53,8 +57,8 @@ describe('Cards', async(): Promise<void> => {
                         "version": "full-art"
                     }]
                 };
-                expect(res.body.cards[0]).to.deep.equal(card);
-                expect(res.body.total).to.be.equal(4);
+                expect(body.cards[0]).to.deep.equal(card);
+                expect(body.total).to.be.equal(4);
             });
         });
 
@@ -65,8 +69,11 @@ describe('Cards', async(): Promise<void> => {
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
+
+                    const body = res.body as paginationCards;
+
                     const card = {
-                        id: res.body.cards[0].id,
+                        id: body.cards[0].id,
                         code: '1-186L',
                         element: '闇',
                         rarity: 'L',
@@ -82,30 +89,30 @@ describe('Cards', async(): Promise<void> => {
                         text: "Initiative[[br]] Lorsque Séphiroth entre sur le terrain, choisissez 1 Soutien. Détruisez-le.",
                         userCard: []
                     };
-                    expect(res.body.cards[0]).to.deep.equal(card);
-                    expect(res.body.total).to.be.equal(1);
+                    expect(body.cards[0]).to.deep.equal(card);
+                    expect(body.total).to.be.equal(1);
             });
         })
     });
 
-    describe('GET /cards/{code}', async (): Promise<void> => {
+    describe('GET /cards/{code}', () => {
         it('should return a card', async(): Promise<void> => {
-            const databaseCard =  await getRepository(Card).findOne();
-            await server.get('/api/v1/cards/'+databaseCard!.code).set('authorization', authorizationHeader).then((res): void => {
+            const databaseCard =  await getRepository(Card).findOne() as Card;
+            await server.get(`/api/v1/cards/${databaseCard.code}`).set('authorization', authorizationHeader).then((res): void => {
                 expect(res.error).to.be.false;
                 expect(res).to.have.status(200);
-                const card = res.body;
-                expect(card.code).to.be.equal(databaseCard!.code);
-                expect(card.rarity).to.be.equal(databaseCard!.rarity);
-                expect(card.name).to.be.equal(databaseCard!.name);
-                expect(card.text).to.be.equal(databaseCard!.text);
+                const card = res.body as Card;
+                expect(card.code).to.be.equal(databaseCard.code);
+                expect(card.rarity).to.be.equal(databaseCard.rarity);
+                expect(card.name).to.be.equal(databaseCard.name);
+                expect(card.text).to.be.equal(databaseCard.text);
             });
         });
 
         it('card not exist', async(): Promise<void> => {
             await server.get('/api/v1/cards/codeDontExist').set('authorization', authorizationHeader).then((res): void => {
                 expect(res).to.have.status(404);
-                expect(res.body.message).to.be.equal('card not found');
+                expect((res.body as errorMessageType).message).to.be.equal('card not found');
             });
         });
     });
