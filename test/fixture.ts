@@ -1,9 +1,15 @@
 import * as path from 'path';
-import {Builder, fixturesIterator, Loader, Parser, Resolver} from 'typeorm-fixtures-cli/dist';
+import {
+    Builder,
+    fixturesIterator,
+    Loader,
+    Parser,
+    Resolver,
+} from 'typeorm-fixtures-cli/dist';
 import { getRepository } from 'typeorm';
-import {createConnection} from "typeorm/index";
+import { createConnection } from 'typeorm/index';
 
-export default async () : Promise<void> => {
+export default async (): Promise<void> => {
     let connection;
 
     try {
@@ -27,7 +33,7 @@ export default async () : Promise<void> => {
         }
     } catch (err) {
         if (err instanceof Error) {
-            console.error(err.message)
+            console.error(err.message);
         }
     } finally {
         if (connection) {

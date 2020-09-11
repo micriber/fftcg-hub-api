@@ -12,7 +12,8 @@ module.exports = {
         project: './tsconfig.json',
     },
     plugins: [
-        '@typescript-eslint'
+        '@typescript-eslint',
+        "prettier"
     ],
     parser: "@typescript-eslint/parser",
     extends: [
@@ -21,7 +22,8 @@ module.exports = {
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "plugin:import/errors",
         "plugin:import/warnings",
-        "plugin:import/typescript"
+        "plugin:import/typescript",
+        "prettier"
     ],
     settings: {
         'import/parsers': {
@@ -32,6 +34,9 @@ module.exports = {
                 "extensions": ['.ts']
             }
         }
+    },
+    "rules": {
+        "prettier/prettier": "error"
     }
 }
 

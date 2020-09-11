@@ -1,4 +1,4 @@
-import express, {Request, Response} from 'express';
+import express, { Request, Response } from 'express';
 import CardsController from '../controllers/card';
 import authentication from '../../authentications/middlewares/authentication';
 
@@ -7,7 +7,11 @@ const cardsController = new CardsController();
 
 router
     .use('/v1/cards', authentication)
-    .get('/v1/cards/:code',(req: Request, res: Response) => cardsController.get(req, res))
-    .get('/v1/cards/',(req: Request, res: Response) => cardsController.getAll(req, res));
+    .get('/v1/cards/:code', (req: Request, res: Response) =>
+        cardsController.get(req, res)
+    )
+    .get('/v1/cards/', (req: Request, res: Response) =>
+        cardsController.getAll(req, res)
+    );
 
 export default router;

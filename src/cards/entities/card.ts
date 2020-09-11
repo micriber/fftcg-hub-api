@@ -1,53 +1,52 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
-import {Index, OneToMany} from "typeorm/index";
-import UserCard from "./userCard";
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Index, OneToMany } from 'typeorm/index';
+import UserCard from './userCard';
 
-@Entity("cards")
+@Entity('cards')
 export default class Card {
-
-    @PrimaryGeneratedColumn("uuid")
+    @PrimaryGeneratedColumn('uuid')
     public id!: number;
 
-    @Column("varchar")
+    @Column('varchar')
     @Index({ unique: true })
     public code!: string;
 
-    @Column("varchar")
+    @Column('varchar')
     public element!: string;
 
-    @Column("varchar")
+    @Column('varchar')
     public rarity!: string;
 
-    @Column("varchar")
+    @Column('varchar')
     public cost!: string;
 
-    @Column("varchar")
+    @Column('varchar')
     public power!: string;
 
-    @Column("varchar")
+    @Column('varchar')
     public category1!: string;
 
-    @Column("varchar")
+    @Column('varchar')
     public category2!: string;
 
-    @Column("varchar")
+    @Column('varchar')
     public multicard!: string;
 
-    @Column("varchar")
+    @Column('varchar')
     public exBurst!: string;
 
-    @Column("varchar")
+    @Column('varchar')
     public name!: string;
 
-    @Column("varchar")
+    @Column('varchar')
     public type!: string;
 
-    @Column("varchar")
+    @Column('varchar')
     public job!: string;
 
-    @Column("varchar")
+    @Column('varchar')
     public text!: string;
 
-    @OneToMany(() => UserCard, (userCard :UserCard) => userCard.card)
+    @OneToMany(() => UserCard, (userCard: UserCard) => userCard.card)
     public userCard!: UserCard[];
 }
