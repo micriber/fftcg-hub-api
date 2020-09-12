@@ -13,12 +13,12 @@ async function start(): Promise<Promise<Server> | void> {
             ? process.env.POSTGRES_DB_TEST
             : process.env.POSTGRES_DB) || 'fftcg-application';
 
+    const app = express();
+
     try {
         const connectionOptions = await getConnectionOptions();
         Object.assign(connectionOptions, { database: database });
         await createConnection(connectionOptions);
-
-        const app = express();
 
         app.use(express.json());
         app.use('/api', router);
@@ -28,6 +28,7 @@ async function start(): Promise<Promise<Server> | void> {
         });
     } catch (err) {
         logger.error(err);
+        app.response.sendStatus(500);
     }
 }
 

@@ -31,13 +31,13 @@ export class CardRepository extends Repository<Card> {
     ): Promise<paginationCards> {
         const cardsQuery = this.getBaseQueryBuilder(user);
 
-        if (filter.search) {
+        if (filter.search !== undefined) {
             cardsQuery.andWhere(
                 new Brackets((qb) => {
-                    qb.where('unaccent(c.code) ILIKE unaccent(%:search%)', {
-                        search: filter.search,
-                    }).orWhere('unaccent(c.name) ILIKE unaccent(%:search%)', {
-                        search: filter.search,
+                    qb.where('unaccent(c.code) ILIKE unaccent(:search)', {
+                        search: `%${filter.search || ''}%`,
+                    }).orWhere('unaccent(c.name) ILIKE unaccent(:search)', {
+                        search: `%${filter.search || ''}%`,
                     });
                 })
             );

@@ -30,14 +30,16 @@ export default class Card {
         if (req.query.search) {
             filter.search = req.query.search as string;
         }
-        const cards = await cardRepository.getAllCardsWithPagination(
-            req.app.get('user') as User,
-            filter,
-            // @TODO : voir comment faire pour ne pas avoir a typer string undefined sur chaque query param
-            req.query.page as string | undefined,
-            req.query.perPage as string | undefined
-        );
-
-        res.status(200).json(cards);
+        await cardRepository
+            .getAllCardsWithPagination(
+                req.app.get('user') as User,
+                filter,
+                // @TODO : voir comment faire pour ne pas avoir a typer string undefined sur chaque query param
+                req.query.page as string | undefined,
+                req.query.perPage as string | undefined
+            )
+            .then((cards) => {
+                res.status(200).json(cards);
+            });
     }
 }
