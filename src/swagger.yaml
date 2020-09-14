@@ -31,8 +31,8 @@ paths:
                   example: 8987518b-f2bb-45e1-bbf7-4e6a35803149
                   required: true
                   schema:
-                    type: string
-                    format: uuid
+                      type: string
+                      format: uuid
                 - $ref: '#/components/parameters/authorization'
             responses:
                 200:
@@ -48,10 +48,10 @@ paths:
             tags: [card]
             summary: Get all cards
             parameters:
-                -   $ref: '#/components/parameters/authorization'
-                -   $ref: '#/components/parameters/search'
-                -   $ref: '#/components/parameters/perPage'
-                -   $ref: '#/components/parameters/page'
+                - $ref: '#/components/parameters/authorization'
+                - $ref: '#/components/parameters/search'
+                - $ref: '#/components/parameters/perPage'
+                - $ref: '#/components/parameters/page'
             responses:
                 200:
                     $ref: '#/components/responses/cards'
@@ -64,14 +64,14 @@ paths:
             tags: [card]
             summary: Find card by code
             parameters:
-                -   name: code
-                    in: path
-                    description: code of card to return
-                    example: 1-011C
-                    required: true
-                    schema:
-                        type: string
-                -   $ref: '#/components/parameters/authorization'
+                - name: code
+                  in: path
+                  description: code of card to return
+                  example: 1-011C
+                  required: true
+                  schema:
+                      type: string
+                - $ref: '#/components/parameters/authorization'
             responses:
                 200:
                     $ref: '#/components/responses/card'
@@ -224,9 +224,7 @@ components:
             properties:
                 message:
                     type: string
-                    example:
-                        - Token expiration date
-                        - User not found
+                    example: Token expiration date
     requestBodies:
         google:
             description: id token from google oauth

@@ -1,9 +1,9 @@
 import express from 'express';
-import swaggerUi from 'swagger-ui-express'
+import swaggerUi, { JsonObject } from 'swagger-ui-express';
 import YAML from 'yamljs';
 import usersRouter from './users/routes/';
 import cardsRouter from './cards/routes/';
-import authenticationsRouter from "./authentications/routes";
+import authenticationsRouter from './authentications/routes';
 import logger from './utils/logger';
 
 const router = express.Router();
@@ -16,7 +16,7 @@ router.use((req, res, next) => {
 
     res.on('finish', () => {
         logger.info(`${req.url} ${res.statusCode}`, {
-            body: req.body,
+            body: req.body as JsonObject,
             params: req.params,
         });
     });
@@ -25,7 +25,9 @@ router.use((req, res, next) => {
 
 /* istanbul ignore next */
 if (process.env.NODE_ENV !== 'production') {
-    const swaggerDocument = YAML.load(__dirname + '/swagger.yaml');
+    const swaggerDocument = YAML.load(
+        __dirname + '/swagger.yaml'
+    ) as JsonObject;
     router.use('/swagger', swaggerUi.serve);
     router.get('/swagger', swaggerUi.setup(swaggerDocument));
 }
