@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import Card from '../entities/card';
 import UserCard from '../entities/userCard';
-import User from '../../users/entities/user';
 import { getRepository } from 'typeorm/index';
 import addCard, { userCardType } from '../schemas/userCard';
 
@@ -25,7 +24,7 @@ export default class userCard {
                 userCard.card = card;
                 userCard.quantity = value.quantity;
                 userCard.version = value.version;
-                userCard.user = req.app.get('user') as User;
+                userCard.user = req.user;
 
                 await userCardRepository.save(userCard);
             } else {
@@ -86,7 +85,7 @@ export default class userCard {
             relations: ['user', 'card'],
             where: {
                 card: card,
-                user: req.app.get('user') as User,
+                user: req.user,
                 version: (req.body as userCardType).version,
             },
         });

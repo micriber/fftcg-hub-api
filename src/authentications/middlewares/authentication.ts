@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction, RequestHandler } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import GoogleOAuth from '../../authentications/services/googleOAuth';
 import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
 import logger from '../../utils/logger';
@@ -50,7 +50,7 @@ const authenticationMiddleware: RequestHandler = async (
                                     });
                                     return;
                                 }
-                                req.app.set('user', user);
+                                req.user = user;
                             } catch (error) {
                                 if (error instanceof Error) {
                                     logger.error(error.message);
@@ -61,12 +61,10 @@ const authenticationMiddleware: RequestHandler = async (
                                 return;
                             }
                         } else {
-                            const user = await getRepository(
+                            req.user = (await getRepository(
                                 UserEntity
-                            ).findOne();
-                            req.app.set('user', user);
+                            ).findOne()) as UserEntity;
                         }
-
                         next();
                     }
                 );
