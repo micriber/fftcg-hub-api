@@ -47,6 +47,9 @@ export default class Card {
     @Column('varchar')
     public text!: string;
 
+    @Column('varchar')
+    public set!: string;
+
     @OneToMany(() => UserCard, (userCard: UserCard) => userCard.card)
     public userCard!: UserCard[];
 }
