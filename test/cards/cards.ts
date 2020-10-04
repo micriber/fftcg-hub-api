@@ -60,6 +60,7 @@ describe('Cards', () => {
                         job: 'Invokeur',
                         text:
                             '[[ex]]EX BURST [[/]]Lorsque Yuna entre sur le terrain, choisissez 1 Avant. Renvoyez-le dans la main de son propriétaire.[[br]] Si un Personnage est mis du terrain dans la Break Zone, vous pouvez le retirer du jeu à la place.',
+                        set: 'Opus I',
                         userCard: [
                             {
                                 quantity: 1,
@@ -99,6 +100,7 @@ describe('Cards', () => {
                         job: 'Héros',
                         text:
                             'Initiative[[br]] Lorsque Séphiroth entre sur le terrain, choisissez 1 Soutien. Détruisez-le.',
+                        set: 'Opus I',
                         userCard: [],
                     };
                     expect(body.cards[0]).to.deep.equal(card);
