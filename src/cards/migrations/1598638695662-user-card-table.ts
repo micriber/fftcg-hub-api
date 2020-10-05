@@ -5,7 +5,12 @@ export class userCardTable1598638695662 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(
-            `CREATE TYPE "userCards_version_enum" AS ENUM('classic', 'foil', 'full-art')`
+            `DO $$
+                BEGIN
+                    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'userCards_version_enum') THEN
+                        CREATE TYPE "userCards_version_enum" AS ENUM('classic', 'foil', 'full-art');
+                    END IF;
+            END$$;`
         );
         await queryRunner.query(
             `CREATE TABLE "userCards" ("quantity" integer NOT NULL, "version" "userCards_version_enum" NOT NULL DEFAULT 'classic', "userId" uuid NOT NULL, "cardId" uuid NOT NULL, CONSTRAINT "PK_1efb7ce4c4b40d92ae769f090cd" PRIMARY KEY ("userId", "cardId", "version"))`
