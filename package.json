@@ -7,9 +7,9 @@
         "node": ">=12.18"
     },
     "scripts": {
-        "start": "node build/app.js",
+        "start": "node build/src/app.js",
         "build": "tsc",
-        "postbuild": "copyfiles -f src/swagger.yaml build/",
+        "postbuild": "copyfiles src/**/*.yaml build/",
         "check": "tsc --noemit",
         "watch": "nodemon",
         "eslint": "eslint --max-warnings 0 --ext .ts ./src ./test",

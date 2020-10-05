@@ -13,6 +13,7 @@ ENV IMAGE_VERSION=${IMAGE_VERSION:-development}
 RUN apk update && apk add bash
 
 COPY src ./src
+COPY test ./test
 COPY @types ./@types
 COPY ormconfig.js ./ormconfig.js
 COPY package.json package-lock.json .eslintrc.js tsconfig.json ./
