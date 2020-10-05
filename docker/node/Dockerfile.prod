@@ -1,0 +1,31 @@
+FROM node:12.18-alpine
+LABEL maintainer="coquelet.c@gmail.com"
+LABEL name="node"
+
+ARG APP=fftcg-collection-api
+ARG IMAGE_VERSION
+
+WORKDIR /usr/src/app
+
+ENV PORT=3000
+ENV IMAGE_VERSION=${IMAGE_VERSION:-development}
+
+RUN apk update && apk add bash
+
+COPY src ./src
+COPY @types ./@types
+COPY ormconfig.js ./ormconfig.js
+COPY package.json package-lock.json .eslintrc.js tsconfig.json ./
+
+# Build with dev dependencies for build
+RUN npm install
+RUN npm run build
+
+COPY docker/node/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+EXPOSE $PORT
+
+ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+
+CMD ["npm", "run", "start"]

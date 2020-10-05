@@ -2,6 +2,15 @@
 
 DOCKER_RUN_CMD=docker-compose exec node
 
+docker-build:
+	docker build -f docker\node\Dockerfile.prod -t micriber/fftcg-api .
+
+docker-tag:
+	docker tag micriber/fftcg-api registry.pawndev.com/fftcg-api
+
+docker-push:
+	docker push registry.pawndev.com/fftcg-api
+
 up:
 	docker-compose up -d
 

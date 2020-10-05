@@ -1,6 +1,7 @@
+import { join } from 'path';
 import express from 'express';
 import router from './router';
-import { createConnection, getConnectionOptions } from 'typeorm';
+import { Connection, createConnection, getConnectionOptions } from 'typeorm';
 import { Server } from 'http';
 import logger from './utils/logger';
 
@@ -14,11 +15,21 @@ async function start(): Promise<Promise<Server> | void> {
             : process.env.POSTGRES_DB) || 'fftcg-application';
 
     const app = express();
+    let connection: Connection | undefined;
 
     try {
         const connectionOptions = await getConnectionOptions();
-        Object.assign(connectionOptions, { database: database });
-        await createConnection(connectionOptions);
+        Object.assign(connectionOptions, {
+            database: database,
+            entities: [join(__dirname, '**', 'entities', '**', '*.{ts,js}')],
+            migrations: [
+                join(__dirname, '**', 'migrations', '**', '*.{ts,js}'),
+            ],
+            subscribers: [
+                join(__dirname, '**', 'subscribers', '**', '*.{ts,js}'),
+            ],
+        });
+        connection = await createConnection(connectionOptions);
 
         app.use(express.json());
         app.use('/api', router);
@@ -27,8 +38,9 @@ async function start(): Promise<Promise<Server> | void> {
             logger.info(`server start with port ${port}`);
         });
     } catch (err) {
+        if (connection) await connection.close();
         logger.error(err);
-        app.response.sendStatus(500);
+        process.exit(1);
     }
 }
 
