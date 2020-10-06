@@ -1,0 +1,10 @@
+POST http://{{host}}:{{port}}/api/v1/cards/11-140S/add
+authorization: bearer {{idToken}}
+Content-Type: application/json
+
+{
+    "quantity": 5,
+    "version": "classic"
+}
+
+###

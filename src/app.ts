@@ -37,10 +37,12 @@ async function start(): Promise<Promise<Server> | void> {
         return app.listen(port, () => {
             logger.info(`server start with port ${port}`);
         });
-    } catch (err) {
+    } catch (error) {
         if (connection) await connection.close();
-        logger.error(err);
-        process.exit(1);
+        if (error instanceof Error) {
+            logger.error(error.message);
+        }
+        throw error;
     }
 }
 

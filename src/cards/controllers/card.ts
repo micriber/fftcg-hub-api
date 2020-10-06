@@ -27,6 +27,9 @@ export default class Card {
         if (req.query.search) {
             filter.search = req.query.search;
         }
+        if (req.query.owned) {
+            filter.owned = req.query.owned;
+        }
         await cardRepository
             .getAllCardsWithPagination(
                 req.user,

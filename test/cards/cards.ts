@@ -107,6 +107,35 @@ describe('Cards', () => {
                     expect(body.total).to.be.equal(1);
                 });
         });
+
+        it('should return result filtered by "owned" param', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as paginationCards;
+                    const filterCards = body.cards.filter(
+                        (card) => card.userCard.length === 0
+                    );
+                    expect(filterCards.length).to.be.greaterThan(0);
+                });
+
+            await server
+                .get(`/api/v1/cards?perPage=50&owned=true`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as paginationCards;
+                    for (const card of body.cards) {
+                        expect(card.userCard.length).to.be.greaterThan(0);
+                    }
+                });
+        });
     });
 
     describe('GET /cards/{code}', () => {

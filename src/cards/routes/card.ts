@@ -8,6 +8,7 @@ const cardsController = new CardsController();
 export interface CardRequest extends Request {
     query: {
         search?: string;
+        owned?: string;
         page?: string;
         perPage?: string;
     };

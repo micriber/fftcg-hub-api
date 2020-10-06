@@ -1,12 +1,24 @@
+GET http://{{host}}:{{port}}/api/v1/cards
+authorization: bearer {{idToken}}
+
+###
+
 GET http://{{host}}:{{port}}/api/v1/cards?page=1&search=shiva
 authorization: bearer {{idToken}}
 
 ###
-GET http://{{host}}:{{port}}/api/v1/cards/11-140S?page=2
+
+GET http://{{host}}:{{port}}/api/v1/cards/11-140S
 authorization: bearer {{idToken}}
 
 ###
-GET http://{{host}}:{{port}}/api/v1/cards?search=sephiroth
+
+GET http://{{host}}:{{port}}/api/v1/cards?search=sephiroth&page=2
+authorization: bearer {{idToken}}
+
+###
+
+GET http://{{host}}:{{port}}/api/v1/cards?owned=true
 authorization: bearer {{idToken}}
 
 ###

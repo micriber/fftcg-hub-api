@@ -12,6 +12,7 @@ export type paginationCards = {
 
 export type filters = {
     search?: string;
+    owned?: string;
 };
 
 @EntityRepository(Card)
@@ -41,6 +42,10 @@ export class CardRepository extends Repository<Card> {
                     });
                 })
             );
+        }
+
+        if (filter.owned === 'true') {
+            cardsQuery.andWhere('uc.quantity is NOT Null');
         }
 
         const intPage = page ? +page : 1;
