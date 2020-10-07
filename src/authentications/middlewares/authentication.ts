@@ -32,6 +32,7 @@ const authenticationMiddleware: RequestHandler = async (
                             return;
                         }
 
+                        /* istanbul ignore next */
                         if (process.env.NODE_ENV !== 'test') {
                             try {
                                 const userRepository = getRepository(

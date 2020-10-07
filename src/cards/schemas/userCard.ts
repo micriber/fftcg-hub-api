@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import { version } from '../entities/userCard';
 
-export type userCardType = {
+export type UserCardType = {
     quantity: number;
     version: version;
 };

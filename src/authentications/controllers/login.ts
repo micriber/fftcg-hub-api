@@ -3,13 +3,13 @@ import { getRepository } from 'typeorm';
 import User from '../../users/entities/user';
 import { TokenPayload } from 'google-auth-library/build/src/auth/loginticket';
 import GoogleOAuth from '../services/googleOAuth';
-import googleLogin, { googleLoginBody } from '../schemas/googleLogin';
+import googleLogin, { GoogleLoginBody } from '../schemas/googleLogin';
 import { ValidationError } from 'joi';
 
 export default class Login {
     public async google(req: Request, res: Response): Promise<void> {
         const { value, error } = googleLogin.validate(req.body) as {
-            value: googleLoginBody;
+            value: GoogleLoginBody;
             error?: ValidationError;
         };
         if (error) {

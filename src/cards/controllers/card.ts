@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { CardRepository, filters } from '../repositories/card';
+import { CardRepository, Filters } from '../repositories/card';
 import { getCustomRepository } from 'typeorm/index';
 import { CardRequest } from '../routes/card';
 
@@ -23,10 +23,10 @@ export default class Card {
         const cardRepository: CardRepository = getCustomRepository(
             CardRepository
         );
-        const filter: filters = {};
-        if (req.query.search) {
-            filter.search = req.query.search;
-        }
+        const filter: Filters = {
+            ...(req.query.search ? { search: req.query.search } : {}),
+            ...(req.query.owned ? { owned: req.query.owned === 'true' } : {}),
+        };
         await cardRepository
             .getAllCardsWithPagination(
                 req.user,

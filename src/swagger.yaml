@@ -50,6 +50,7 @@ paths:
             parameters:
                 - $ref: '#/components/parameters/authorization'
                 - $ref: '#/components/parameters/search'
+                - $ref: '#/components/parameters/owned'
                 - $ref: '#/components/parameters/perPage'
                 - $ref: '#/components/parameters/page'
             responses:
@@ -145,6 +146,8 @@ components:
                     type: string
                 text:
                     type: string
+                set:
+                    type: string
                 userCard:
                     type: array
                     items:
@@ -164,6 +167,7 @@ components:
                 type: Avant
                 job: Gardien
                 text: Lorsqu'Auron inflige des dégâts à votre adversaire, vous pouvez jouer 1 Soutien Feu de votre main sur le terrain dullé.
+                set: Opus I
                 userCard:
                     - quantity: 10
                       version: classic
@@ -326,3 +330,10 @@ components:
                 type: integer
                 required: false
                 example: 50
+        owned:
+            in: query
+            name: owned
+            schema:
+                type: bool
+                required: false
+                example: true

@@ -5,8 +5,8 @@ import { getRepository } from 'typeorm';
 import * as JWT from 'jsonwebtoken';
 import Card from '../../src/cards/entities/card';
 import loadFixtures from '../fixture';
-import { errorMessageType } from '../../src/utils/error';
-import { paginationCards } from '../../src/cards/repositories/card';
+import { ErrorMessageType } from '../../src/utils/error';
+import { PaginationCards } from '../../src/cards/repositories/card';
 
 chai.use(chaiHttp);
 const { expect, request } = chai;
@@ -42,7 +42,7 @@ describe('Cards', () => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
 
-                    const body = res.body as paginationCards;
+                    const body = res.body as PaginationCards;
 
                     const card = {
                         id: body.cards[0].id,
@@ -82,7 +82,7 @@ describe('Cards', () => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
 
-                    const body = res.body as paginationCards;
+                    const body = res.body as PaginationCards;
 
                     const card = {
                         id: body.cards[0].id,
@@ -105,6 +105,35 @@ describe('Cards', () => {
                     };
                     expect(body.cards[0]).to.deep.equal(card);
                     expect(body.total).to.be.equal(1);
+                });
+        });
+
+        it('should return result filtered by "owned" param', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    const filterCards = body.cards.filter(
+                        (card) => card.userCard.length === 0
+                    );
+                    expect(filterCards.length).to.be.greaterThan(0);
+                });
+
+            await server
+                .get(`/api/v1/cards?perPage=50&owned=true`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    for (const card of body.cards) {
+                        expect(card.userCard.length).to.be.greaterThan(0);
+                    }
                 });
         });
     });
@@ -132,7 +161,7 @@ describe('Cards', () => {
                 .set('authorization', authorizationHeader)
                 .then((res): void => {
                     expect(res).to.have.status(404);
-                    expect((res.body as errorMessageType).message).to.be.equal(
+                    expect((res.body as ErrorMessageType).message).to.be.equal(
                         'card not found'
                     );
                 });

@@ -5,7 +5,7 @@ import { getRepository } from 'typeorm';
 import * as JWT from 'jsonwebtoken';
 import Card from '../../src/cards/entities/card';
 import loadFixtures from '../fixture';
-import { errorMessageType } from '../../src/utils/error';
+import { ErrorMessageType } from '../../src/utils/error';
 
 chai.use(chaiHttp);
 const { expect, request } = chai;
@@ -128,7 +128,7 @@ describe('User cards', () => {
                     version: 'classic',
                 })
                 .then((res): void => {
-                    expect((res.body as errorMessageType).message).to.be.equal(
+                    expect((res.body as ErrorMessageType).message).to.be.equal(
                         '"quantity" must be greater than or equal to 0'
                     );
                     expect(res).to.have.status(400);
@@ -146,7 +146,7 @@ describe('User cards', () => {
                     version: 'classic',
                 })
                 .then((res): void => {
-                    expect((res.body as errorMessageType).message).to.be.equal(
+                    expect((res.body as ErrorMessageType).message).to.be.equal(
                         'card not found'
                     );
                     expect(res).to.have.status(400);
@@ -180,7 +180,7 @@ describe('User cards', () => {
                     version: 'classic',
                 })
                 .then((res): void => {
-                    expect((res.body as errorMessageType).message).to.be.equal(
+                    expect((res.body as ErrorMessageType).message).to.be.equal(
                         "This user doesn't have this card"
                     );
                     expect(res).to.have.status(400);
