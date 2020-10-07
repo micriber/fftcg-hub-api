@@ -3,16 +3,16 @@ import Card from '../entities/card';
 import User from '../../users/entities/user';
 import { Brackets } from 'typeorm/index';
 
-export type paginationCards = {
+export type PaginationCards = {
     cards: Card[];
     page: number;
     perPage: number;
     total: number;
 };
 
-export type filters = {
+export type Filters = {
     search?: string;
-    owned?: string;
+    owned?: boolean;
 };
 
 @EntityRepository(Card)
@@ -26,10 +26,10 @@ export class CardRepository extends Repository<Card> {
 
     public async getAllCardsWithPagination(
         user: User,
-        filter: filters,
+        filter: Filters,
         page?: string,
         perPage?: string
-    ): Promise<paginationCards> {
+    ): Promise<PaginationCards> {
         const cardsQuery = this.getBaseQueryBuilder(user);
 
         if (filter.search !== undefined) {
@@ -44,7 +44,7 @@ export class CardRepository extends Repository<Card> {
             );
         }
 
-        if (filter.owned === 'true') {
+        if (filter.owned) {
             cardsQuery.andWhere('uc.quantity is NOT Null');
         }
 

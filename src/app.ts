@@ -38,10 +38,13 @@ async function start(): Promise<Promise<Server> | void> {
             logger.info(`server start with port ${port}`);
         });
     } catch (error) {
+        /* istanbul ignore next */
         if (connection) await connection.close();
+        /* istanbul ignore next */
         if (error instanceof Error) {
             logger.error(error.message);
         }
+        /* istanbul ignore next */
         throw error;
     }
 }

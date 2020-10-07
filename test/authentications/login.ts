@@ -2,7 +2,7 @@ import chai from 'chai';
 import app from '../../src/app';
 import chaiHttp = require('chai-http');
 import loadFixtures from '../fixture';
-import { errorMessageType } from '../../src/utils/error';
+import { ErrorMessageType } from '../../src/utils/error';
 import User from '../../src/users/entities/user';
 
 chai.use(chaiHttp);
@@ -36,7 +36,7 @@ describe('Login', () => {
                 })
                 .then((res): void => {
                     expect(res).to.have.status(401);
-                    expect((res.body as errorMessageType).message).to.be.equal(
+                    expect((res.body as ErrorMessageType).message).to.be.equal(
                         'Invalid token'
                     );
                 });

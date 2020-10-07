@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { Index } from 'typeorm/index';
 
-export type userType = {
+export type UserType = {
     id: number;
     firstName: string;
     lastName: string;

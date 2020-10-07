@@ -2,13 +2,13 @@ import { Request, Response } from 'express';
 import Card from '../entities/card';
 import UserCard from '../entities/userCard';
 import { getRepository } from 'typeorm/index';
-import addCard, { userCardType } from '../schemas/userCard';
+import addCard, { UserCardType } from '../schemas/userCard';
 
 export default class userCard {
     public async add(req: Request, res: Response): Promise<void> {
         const result = addCard.validate(req.body);
         const error = result.error;
-        const value = result.value as userCardType;
+        const value = result.value as UserCardType;
 
         if (error) {
             res.status(400).json({ message: error.message });
@@ -44,37 +44,30 @@ export default class userCard {
     public async subtract(req: Request, res: Response): Promise<void> {
         const result = addCard.validate(req.body);
         const error = result.error;
-        const value = result.value as userCardType;
+        const value = result.value as UserCardType;
         if (error) {
             res.status(400).json({ message: error.message });
             return;
         }
 
-        try {
-            const { userCard } = await this.getUserCard(req);
-            const userCardRepository = getRepository(UserCard);
+        const { userCard } = await this.getUserCard(req);
+        const userCardRepository = getRepository(UserCard);
 
-            if (!userCard) {
-                res.status(400).json({
-                    message: "This user doesn't have this card",
-                });
-                return;
-            }
-
-            if (userCard.quantity === value.quantity) {
-                await userCardRepository.remove(userCard);
-            } else {
-                userCard.quantity -= value.quantity;
-                await userCardRepository.save(userCard);
-            }
-
-            res.sendStatus(200);
-        } catch (error) {
-            if (error instanceof Error) {
-                res.status(400).json({ message: error.message });
-                return;
-            }
+        if (!userCard) {
+            res.status(400).json({
+                message: "This user doesn't have this card",
+            });
+            return;
         }
+
+        if (userCard.quantity === value.quantity) {
+            await userCardRepository.remove(userCard);
+        } else {
+            userCard.quantity -= value.quantity;
+            await userCardRepository.save(userCard);
+        }
+
+        res.sendStatus(200);
     }
 
     private async getUserCard(req: Request) {
@@ -86,7 +79,7 @@ export default class userCard {
             where: {
                 card: card,
                 user: req.user,
-                version: (req.body as userCardType).version,
+                version: (req.body as UserCardType).version,
             },
         });
 

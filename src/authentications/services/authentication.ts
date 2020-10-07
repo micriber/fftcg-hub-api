@@ -26,15 +26,4 @@ export default class Authentication {
 
         return jwtDecode;
     }
-
-    static getDecodeJWT(req: Request): { [key: string]: string } {
-        const jwt = this.getJWT(req);
-        const jwtDecode = JWT.decode(jwt);
-
-        if (!jwtDecode || typeof jwtDecode === 'string') {
-            throw new Error('Invalid token');
-        }
-
-        return jwtDecode;
-    }
 }

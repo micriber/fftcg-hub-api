@@ -26,6 +26,7 @@ const logger = winston.createLogger({
     }),
 });
 
+/* istanbul ignore next */
 if (process.env.NODE_ENV !== 'test') {
     logger.add(
         new winston.transports.Console({

@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-export type googleLoginBody = {
+export type GoogleLoginBody = {
     idToken: string;
 };
 
