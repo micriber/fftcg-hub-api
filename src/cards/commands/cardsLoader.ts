@@ -7,39 +7,39 @@ import CardElement from '../entities/cardElement';
 
 const dataFilePath = __dirname + '/cards.json';
 const ELEMENTS = {
-    '火': {
+    火: {
         id: 1,
-        name: 'fire'
+        name: 'fire',
     },
-    '氷': {
+    氷: {
         id: 2,
-        name: 'ice'
+        name: 'ice',
     },
-    '風': {
+    風: {
         id: 3,
-        name: 'wind'
+        name: 'wind',
     },
-    '土': {
+    土: {
         id: 4,
-        name: 'earth'
+        name: 'earth',
     },
-    '雷': {
+    雷: {
         id: 5,
-        name: 'lightning'
+        name: 'lightning',
     },
-    '水': {
+    水: {
         id: 6,
-        name: 'water'
+        name: 'water',
     },
-    '光': {
+    光: {
         id: 7,
-        name: 'light'
+        name: 'light',
     },
-    '闇': {
+    闇: {
         id: 8,
-        name: 'dark'
+        name: 'dark',
     },
-}
+};
 
 type JapaneseElement = keyof typeof ELEMENTS;
 
@@ -101,22 +101,35 @@ async function loadData() {
         ] = connection.driver.escapeQueryWithParameters(query, card, {});
         await queryRunner.query(escapeQuery, parameters);
 
-        const cardElementsExist = await connection.getRepository(CardElement).findOne({
-            where: {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-                card: card.id,
-            },
-        });
+        const cardElementsExist = await connection
+            .getRepository(CardElement)
+            .findOne({
+                where: {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+                    card: card.id,
+                },
+            });
 
         if (!cardElementsExist) {
             const insertElementQuery = `INSERT INTO "cardsElements" values (:cardId, :element) ON CONFLICT DO NOTHING;`;
-            const cardElements = card.Element.split('/');
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
+            const cardElements: JapaneseElement[] = card.Element.split(
+                '/'
+            ) as JapaneseElement[];
             for (const element of cardElements) {
-                const cardElement = {cardId: card.id, element: ELEMENTS[(element as JapaneseElement)].name}
+                const cardElement = {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
+                    cardId: card.id,
+                    element: ELEMENTS[element].name,
+                };
                 const [
                     escapeElementQuery,
                     elementParameters,
-                ] = connection.driver.escapeQueryWithParameters(insertElementQuery, cardElement, {});
+                ] = connection.driver.escapeQueryWithParameters(
+                    insertElementQuery,
+                    cardElement,
+                    {}
+                );
                 await queryRunner.query(escapeElementQuery, elementParameters);
             }
         }

@@ -47,7 +47,7 @@ describe('Cards', () => {
                     const card = {
                         id: body.cards[0].id,
                         code: '1-176H',
-                        elements: [{element: 'water'}],
+                        elements: [{ element: 'water' }],
                         rarity: 'H',
                         cost: '5',
                         power: '',
@@ -87,7 +87,7 @@ describe('Cards', () => {
                     const card = {
                         id: body.cards[0].id,
                         code: '1-186L',
-                        elements: [{element: 'dark'}],
+                        elements: [{ element: 'dark' }],
                         rarity: 'L',
                         cost: '8',
                         power: '8000',
@@ -140,7 +140,9 @@ describe('Cards', () => {
 
     describe('GET /cards/{code}', () => {
         it('should return a card', async (): Promise<void> => {
-            const databaseCard = (await getRepository(Card).findOne({relations: ['userCard', 'elements']})) as Card;
+            const databaseCard = (await getRepository(Card).findOne({
+                relations: ['userCard', 'elements'],
+            })) as Card;
             await server
                 .get(`/api/v1/cards/${databaseCard.code}`)
                 .set('authorization', authorizationHeader)
@@ -152,7 +154,9 @@ describe('Cards', () => {
                     expect(card.rarity).to.be.equal(databaseCard.rarity);
                     expect(card.name).to.be.equal(databaseCard.name);
                     expect(card.text).to.be.equal(databaseCard.text);
-                    expect(card.elements).to.be.deep.equal(databaseCard.elements);
+                    expect(card.elements).to.be.deep.equal(
+                        databaseCard.elements
+                    );
                 });
         });
 
@@ -160,9 +164,9 @@ describe('Cards', () => {
             const databaseCard = (await getRepository(Card).findOne({
                 relations: ['userCard', 'elements'],
                 where: {
-                    code: '12-120C'
-                }
-                })) as Card;
+                    code: '12-120C',
+                },
+            })) as Card;
             await server
                 .get(`/api/v1/cards/${databaseCard.code}`)
                 .set('authorization', authorizationHeader)
@@ -174,7 +178,9 @@ describe('Cards', () => {
                     expect(card.rarity).to.be.equal(databaseCard.rarity);
                     expect(card.name).to.be.equal(databaseCard.name);
                     expect(card.text).to.be.equal(databaseCard.text);
-                    expect(card.elements).to.be.deep.equal(databaseCard.elements);
+                    expect(card.elements).to.be.deep.equal(
+                        databaseCard.elements
+                    );
                 });
         });
 

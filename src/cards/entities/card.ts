@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, JoinTable } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { Index, OneToMany } from 'typeorm/index';
 import CardElement from './cardElement';
 import UserCard from './userCard';
@@ -51,6 +51,9 @@ export default class Card {
     @OneToMany(() => UserCard, (userCard: UserCard) => userCard.card)
     public userCard!: UserCard[];
 
-    @OneToMany(() => CardElement, cardElement => cardElement.card, { onDelete: 'CASCADE', cascade: ['insert'] })
+    @OneToMany(() => CardElement, (cardElement) => cardElement.card, {
+        onDelete: 'CASCADE',
+        cascade: ['insert'],
+    })
     public elements!: CardElement[];
 }
