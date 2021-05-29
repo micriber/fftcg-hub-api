@@ -7,3 +7,15 @@ items:
         locale: 'fr'
         authenticationType: 'google'
         userName: 'userName($current)'
+    user4:
+        firstName: 'iHaveFirstName'
+        email: 'email4@gmail.com'
+        locale: 'fr'
+        authenticationType: 'google'
+        userName: 'username4'
+    user5:
+        lastName: 'iHaveLastName'
+        email: 'email5@gmail.com'
+        locale: 'fr'
+        authenticationType: 'google'
+        userName: 'username5'
