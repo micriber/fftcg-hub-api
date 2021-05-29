@@ -40,8 +40,8 @@ export default class Login {
                     res.status(200).json(user);
                 } else {
                     const newUser = userRepository.create();
-                    newUser.firstName = tokenPayload.given_name as string;
-                    newUser.lastName = tokenPayload.family_name as string;
+                    newUser.firstName = tokenPayload.given_name;
+                    newUser.lastName = tokenPayload.family_name;
                     newUser.email = tokenPayload.email as string;
                     newUser.locale = tokenPayload.locale as string;
                     newUser.authenticationType = 'google';
