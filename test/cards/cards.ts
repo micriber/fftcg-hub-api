@@ -47,7 +47,7 @@ describe('Cards', () => {
                     const card = {
                         id: body.cards[0].id,
                         code: '1-176H',
-                        element: '水',
+                        elements: [{element: 'water'}],
                         rarity: 'H',
                         cost: '5',
                         power: '',
@@ -69,7 +69,7 @@ describe('Cards', () => {
                         ],
                     };
                     expect(body.cards[0]).to.deep.equal(card);
-                    expect(body.total).to.be.equal(4);
+                    expect(body.total).to.be.equal(5);
                 });
         });
 
@@ -87,7 +87,7 @@ describe('Cards', () => {
                     const card = {
                         id: body.cards[0].id,
                         code: '1-186L',
-                        element: '闇',
+                        elements: [{element: 'dark'}],
                         rarity: 'L',
                         cost: '8',
                         power: '8000',
@@ -140,7 +140,7 @@ describe('Cards', () => {
 
     describe('GET /cards/{code}', () => {
         it('should return a card', async (): Promise<void> => {
-            const databaseCard = (await getRepository(Card).findOne()) as Card;
+            const databaseCard = (await getRepository(Card).findOne({relations: ['userCard', 'elements']})) as Card;
             await server
                 .get(`/api/v1/cards/${databaseCard.code}`)
                 .set('authorization', authorizationHeader)
@@ -152,6 +152,29 @@ describe('Cards', () => {
                     expect(card.rarity).to.be.equal(databaseCard.rarity);
                     expect(card.name).to.be.equal(databaseCard.name);
                     expect(card.text).to.be.equal(databaseCard.text);
+                    expect(card.elements).to.be.deep.equal(databaseCard.elements);
+                });
+        });
+
+        it('should return a multi-element card', async (): Promise<void> => {
+            const databaseCard = (await getRepository(Card).findOne({
+                relations: ['userCard', 'elements'],
+                where: {
+                    code: '12-120C'
+                }
+                })) as Card;
+            await server
+                .get(`/api/v1/cards/${databaseCard.code}`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+                    const card = res.body as Card;
+                    expect(card.code).to.be.equal(databaseCard.code);
+                    expect(card.rarity).to.be.equal(databaseCard.rarity);
+                    expect(card.name).to.be.equal(databaseCard.name);
+                    expect(card.text).to.be.equal(databaseCard.text);
+                    expect(card.elements).to.be.deep.equal(databaseCard.elements);
                 });
         });
 

@@ -2,7 +2,8 @@ entity: Card
 items:
     sephiroth:
         code: '1-186L'
-        element: '闇'
+        elements:
+            - element: 'dark'
         rarity: 'L'
         cost: '8'
         power: '8000'
@@ -17,7 +18,8 @@ items:
         set: 'Opus I'
     yuna:
         code: '1-176H'
-        element: '水'
+        elements:
+            - element: 'water'
         rarity: 'H'
         cost: '5'
         power: ''
@@ -32,7 +34,8 @@ items:
         set: 'Opus I'
     bahamut:
         code: '4-016R'
-        element: '火'
+        elements:
+            - element: 'fire'
         rarity: 'R'
         cost: '4'
         power: ''
@@ -47,7 +50,8 @@ items:
         set: 'Opus IV'
     pampa:
         code: '4-058C'
-        element: '風'
+        elements:
+            - element: 'wind'
         rarity: 'C'
         cost: '1'
         power: ''
@@ -60,3 +64,20 @@ items:
         job: 'Pampa'
         text: "《ダル》 : Choisissez 1 Avant. Infligez-lui 1000 points de dégâts.[[br]] 《風》《2》《ダル》, mettez Pampa dans la Break Zone : Choisissez 1 Avant. Infligez-lui 10000 points de dégâts. Pampa vous inflige 1 point de dégât. L'EX Burst des cartes mises dans la Damage Zone par cette compétence ne peut pas être utilisé."
         set: 'Opus IV'
+    shantotto:
+        code: '12-120C'
+        elements:
+            - element: 'earth'
+            - element: 'lightning'
+        rarity: 'C'
+        cost: '2'
+        power: '7000'
+        category1: 'DFF &middot; XI'
+        category2: 'XI'
+        multicard: ''
+        exBurst: ''
+        name: 'Shantotto'
+        type: 'Avant'
+        job: 'Mage'
+        text: Lorsque Shantotto entre sur le terrain, sélectionnez 1 des 2 actions suivantes.[[br]]   "Choisissez 1 Avant autre que Shantotto. Il gagne Booster jusqu'à la fin du tour."[[br]]   "Choisissez 1 Avant que vous contrôlez. Il gagne 'Cet Avant ne peut pas être détruit' jusqu'à la fin du tour."
+        set: 'Opus XII'

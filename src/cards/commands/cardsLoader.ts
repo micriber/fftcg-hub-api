@@ -3,8 +3,45 @@ import { createConnection, getConnectionOptions } from 'typeorm/index';
 import { RandomGenerator } from 'typeorm/util/RandomGenerator';
 import * as fs from 'fs';
 import Card from '../entities/card';
+import CardElement from '../entities/cardElement';
 
 const dataFilePath = __dirname + '/cards.json';
+const ELEMENTS = {
+    '火': {
+        id: 1,
+        name: 'fire'
+    },
+    '氷': {
+        id: 2,
+        name: 'ice'
+    },
+    '風': {
+        id: 3,
+        name: 'wind'
+    },
+    '土': {
+        id: 4,
+        name: 'earth'
+    },
+    '雷': {
+        id: 5,
+        name: 'lightning'
+    },
+    '水': {
+        id: 6,
+        name: 'water'
+    },
+    '光': {
+        id: 7,
+        name: 'light'
+    },
+    '闇': {
+        id: 8,
+        name: 'dark'
+    },
+}
+
+type JapaneseElement = keyof typeof ELEMENTS;
 
 async function regenDataFile() {
     return new Promise((resolve, reject) => {
@@ -33,8 +70,8 @@ async function loadData() {
     Object.assign(connectionOptions, { database: database });
     const connection = await createConnection(connectionOptions);
 
-    const queryInsert = `INSERT INTO cards values (:id, :Code, :Element, :Rarity, :Cost, :Power, :Category_1, :Category_2, :Multicard, :Ex_Burst, :Name_FR, :Type_FR, :Job_FR, :Text_FR, :Set) ON CONFLICT DO NOTHING;`;
-    const queryUpdate = `UPDATE cards SET element = :Element, rarity = :Rarity, cost = :Cost, power = :Power, category1 = :Category_1, category2 = :Category_2, multicard = :Multicard, "exBurst" = :Ex_Burst, name = :Name_FR, type = :Type_FR, job = :Job_FR, text = :Text_FR, set = :Set WHERE id = :id AND code = :Code;`;
+    const queryInsert = `INSERT INTO cards values (:id, :Code, :Rarity, :Cost, :Power, :Category_1, :Category_2, :Multicard, :Ex_Burst, :Name_FR, :Type_FR, :Job_FR, :Text_FR, :Set) ON CONFLICT DO NOTHING;`;
+    const queryUpdate = `UPDATE cards SET rarity = :Rarity, cost = :Cost, power = :Power, category1 = :Category_1, category2 = :Category_2, multicard = :Multicard, "exBurst" = :Ex_Burst, name = :Name_FR, type = :Type_FR, job = :Job_FR, text = :Text_FR, set = :Set WHERE id = :id AND code = :Code;`;
     const queryRunner = connection.createQueryRunner();
 
     for (const card of cards) {
@@ -63,6 +100,26 @@ async function loadData() {
             parameters,
         ] = connection.driver.escapeQueryWithParameters(query, card, {});
         await queryRunner.query(escapeQuery, parameters);
+
+        const cardElementsExist = await connection.getRepository(CardElement).findOne({
+            where: {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+                card: card.id,
+            },
+        });
+
+        if (!cardElementsExist) {
+            const insertElementQuery = `INSERT INTO "cardsElements" values (:cardId, :element) ON CONFLICT DO NOTHING;`;
+            const cardElements = card.Element.split('/');
+            for (const element of cardElements) {
+                const cardElement = {cardId: card.id, element: ELEMENTS[(element as JapaneseElement)].name}
+                const [
+                    escapeElementQuery,
+                    elementParameters,
+                ] = connection.driver.escapeQueryWithParameters(insertElementQuery, cardElement, {});
+                await queryRunner.query(escapeElementQuery, elementParameters);
+            }
+        }
     }
     console.log('insert/update cards finish');
 }
