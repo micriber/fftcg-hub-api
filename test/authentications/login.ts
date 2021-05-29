@@ -70,8 +70,9 @@ describe('Login', () => {
                     );
                 });
         });
-        it('should authenticate a user without lastName', async (): Promise<void> => {
-            const token = Date.now();
+        it('should authenticate a user without lastName', async (): Promise<
+            void
+        > => {
             await server
                 .post('/api/v1/login/google')
                 .send({
@@ -89,8 +90,9 @@ describe('Login', () => {
                     expect((res.body as User).lastName).to.be.null;
                 });
         });
-        it('should authenticate a user without firstName', async (): Promise<void> => {
-            const token = Date.now();
+        it('should authenticate a user without firstName', async (): Promise<
+            void
+        > => {
             await server
                 .post('/api/v1/login/google')
                 .send({
@@ -103,7 +105,9 @@ describe('Login', () => {
                         `email5@gmail.com`
                     );
                     expect((res.body as User).firstName).to.be.null;
-                    expect((res.body as User).lastName).to.be.equal('iHaveLastName');
+                    expect((res.body as User).lastName).to.be.equal(
+                        'iHaveLastName'
+                    );
                 });
         });
     });
