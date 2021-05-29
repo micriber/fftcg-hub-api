@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { Index, OneToMany } from 'typeorm/index';
+import CardElement from './cardElement';
 import UserCard from './userCard';
 
 @Entity('cards')
@@ -10,9 +11,6 @@ export default class Card {
     @Column('varchar')
     @Index({ unique: true })
     public code!: string;
-
-    @Column('varchar')
-    public element!: string;
 
     @Column('varchar')
     public rarity!: string;
@@ -52,4 +50,10 @@ export default class Card {
 
     @OneToMany(() => UserCard, (userCard: UserCard) => userCard.card)
     public userCard!: UserCard[];
+
+    @OneToMany(() => CardElement, (cardElement) => cardElement.card, {
+        onDelete: 'CASCADE',
+        cascade: ['insert'],
+    })
+    public elements!: CardElement[];
 }

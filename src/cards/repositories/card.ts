@@ -78,6 +78,11 @@ export class CardRepository extends Repository<Card> {
             'c.id = "uc"."cardId"'
         );
         cardsQuery.leftJoin('users', 'u', '"uc"."userId" = u.id');
+        cardsQuery.leftJoinAndSelect(
+            'c.elements',
+            'ce',
+            '"ce"."cardId" = c.id'
+        );
 
         // where
         cardsQuery.andWhere(

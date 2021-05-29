@@ -122,8 +122,10 @@ components:
                     format: uuid
                 code:
                     type: string
-                element:
-                    type: string
+                elements:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/cardElement'
                 rarity:
                     type: string
                 cost:
@@ -155,7 +157,8 @@ components:
             example:
                 id: 8987518b-f2bb-45e1-bbf7-4e6a35803149
                 code: 1-001H
-                element: 火
+                elements:
+                    - element: fire
                 rarity: H
                 cost: 6
                 power: 9000
@@ -217,6 +220,11 @@ components:
                 version:
                     type: string
                     enum: [classic, foil, full-art]
+        cardElement:
+            properties:
+                element:
+                    type: string
+                    example: 'water'
         idToken:
             properties:
                 idtoken:
