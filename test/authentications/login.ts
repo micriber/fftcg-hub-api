@@ -70,5 +70,45 @@ describe('Login', () => {
                     );
                 });
         });
+        it('should authenticate a user without lastName', async (): Promise<
+            void
+        > => {
+            await server
+                .post('/api/v1/login/google')
+                .send({
+                    idToken: '4',
+                })
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+                    expect((res.body as User).email).to.be.equal(
+                        `email4@gmail.com`
+                    );
+                    expect((res.body as User).firstName).to.be.equal(
+                        `iHaveFirstName`
+                    );
+                    expect((res.body as User).lastName).to.be.null;
+                });
+        });
+        it('should authenticate a user without firstName', async (): Promise<
+            void
+        > => {
+            await server
+                .post('/api/v1/login/google')
+                .send({
+                    idToken: '5',
+                })
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+                    expect((res.body as User).email).to.be.equal(
+                        `email5@gmail.com`
+                    );
+                    expect((res.body as User).firstName).to.be.null;
+                    expect((res.body as User).lastName).to.be.equal(
+                        'iHaveLastName'
+                    );
+                });
+        });
     });
 });

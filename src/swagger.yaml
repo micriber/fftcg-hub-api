@@ -185,8 +185,10 @@ components:
                     format: uuid
                 firstName:
                     type: string
+                    nullable: true
                 lastName:
                     type: string
+                    nullable: true
                 email:
                     type: string
                     format: email

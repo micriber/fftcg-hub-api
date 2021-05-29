@@ -47,14 +47,6 @@ export default class GoogleOAuth {
                     logger.error(loginPayload);
                     throw new Error('Missing email in token');
                 }
-                if (!loginPayload.given_name) {
-                    logger.error(loginPayload);
-                    throw new Error('Missing given_name in token');
-                }
-                if (!loginPayload.family_name) {
-                    logger.error(loginPayload);
-                    throw new Error('Missing family_name in token');
-                }
                 if (!loginPayload.locale) {
                     logger.error(loginPayload);
                     throw new Error('Missing locale in token');

@@ -25,11 +25,11 @@ export default class User {
     @PrimaryGeneratedColumn('uuid')
     public id!: number;
 
-    @Column('varchar')
-    public firstName!: string;
+    @Column('varchar', { nullable: true })
+    public firstName?: string;
 
-    @Column('varchar')
-    public lastName!: string;
+    @Column('varchar', { nullable: true })
+    public lastName?: string;
 
     @Column('varchar', { nullable: true })
     public userName?: string;
