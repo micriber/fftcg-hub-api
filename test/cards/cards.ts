@@ -145,6 +145,117 @@ describe('Cards', () => {
                     }
                 });
         });
+        it('should return result filtered by types', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50&types=Avant,Soutien`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    for (const card of body.cards) {
+                        expect(card.type).to.be.oneOf(['Avant', 'Soutien']);
+                    }
+                });
+        });
+        it('should return result filtered by elements', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50&elements=earth`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    for (const card of body.cards) {
+                        expect(card.elements).to.have.deep.members([{element: 'earth', id: 'b6041dbc-20a9-4a16-92a8-f6a0b0168005'}]);
+                    }
+                });
+
+                await server
+                .get(`/api/v1/cards?perPage=50&elements=dark,fire`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    for (const card of body.cards) {
+                        expect(card.elements[0].element).to.be.oneOf(['dark', 'fire']);
+                    }
+                });
+        });
+        it('should return result filtered by opus', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50&opus=Opus_I,Opus_II`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    for (const card of body.cards) {
+                        expect(card.set).to.be.oneOf(['Opus I', 'Opus II']);
+                    }
+                });
+        });
+        it('should return result filtered by rarities', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50&rarities=L,C`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    for (const card of body.cards) {
+                        expect(card.rarity).to.be.oneOf(['L', 'C']);
+                    }
+                });
+        });
+        it('should return result filtered by categories', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50&categories=XI,VII`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    for (const card of body.cards) {
+                        expect(card.category2).to.be.oneOf(['XI', 'VII']);
+                    }
+                });
+        });
+        it('should return result filtered by cost', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50&cost=4,8`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    for (const card of body.cards) {
+                        expect(+card.cost >= 4 && +card.cost <= 8).to.be.true;
+                    }
+                });
+        });
+        it('should return result filtered by power', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50&power=7000,8000`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    for (const card of body.cards) {
+                        expect(+card.power >= 7000 && +card.cost <= 8000).to.be.true;
+                    }
+                });
+        });
     });
 
     describe('GET /cards/{code}', () => {

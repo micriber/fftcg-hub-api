@@ -26,6 +26,13 @@ export default class Card {
         const filter: Filters = {
             ...(req.query.search ? { search: req.query.search } : {}),
             ...(req.query.owned ? { owned: req.query.owned === 'true' } : {}),
+            ...(req.query.types ? { types: req.query.types.split(',') } : {}),
+            ...(req.query.elements ? { elements: req.query.elements?.split(',') } : {}),
+            ...(req.query.opus ? { opus: req.query.opus.split(',').map(opus => opus.replace('_', ' ')) } : {}),
+            ...(req.query.rarities ? { rarities: req.query.rarities.split(',') } : {}),
+            ...(req.query.categories ? { categories: req.query.categories.split(',') } : {}),
+            ...(req.query.cost ? { cost: req.query.cost.split(',').map(cost => +cost) } : {}),
+            ...(req.query.power ? { power: req.query.power.split(',').map(power => +power) } : {}),
         };
         await cardRepository
             .getAllCardsWithPagination(

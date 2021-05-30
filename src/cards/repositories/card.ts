@@ -13,6 +13,14 @@ export type PaginationCards = {
 export type Filters = {
     search?: string;
     owned?: boolean;
+    // TODO
+    types?: string[];
+    elements?: string[];
+    opus?: string[];
+    rarities?: string[];
+    categories?: string[];
+    cost?: number[];
+    power?: number[];
 };
 
 @EntityRepository(Card)
@@ -55,6 +63,82 @@ export class CardRepository extends Repository<Card> {
                     );
                 })
             );
+        }
+
+        if (filter.types) {
+            cardsQuery.andWhere(
+                new Brackets((qb) => {
+                    qb.where('"c"."type" IN (:...types)', {
+                        types: filter.types
+                    })
+                })
+            )
+        }
+
+        if (filter.elements) {
+            cardsQuery.andWhere(
+                new Brackets((qb) => {
+                    qb.where('"ce"."element" IN (:...elements)', {
+                        elements: filter.elements
+                    })
+                })
+            )
+        }
+
+        if (filter.opus) {
+            cardsQuery.andWhere(
+                new Brackets((qb) => {
+                    qb.where('"c"."set" IN (:...opus)', {
+                        opus: filter.opus
+                    })
+                })
+            )
+        }
+
+        if (filter.rarities) {
+            cardsQuery.andWhere(
+                new Brackets((qb) => {
+                    qb.where('"c"."rarity" IN (:...rarities)', {
+                        rarities: filter.rarities
+                    })
+                })
+            )
+        }
+
+        if (filter.categories) {
+            cardsQuery.andWhere(
+                new Brackets((qb) => {
+                    qb.where('"c"."category1" IN (:...categories)', {
+                        categories: filter.categories
+                    }).orWhere('"c"."category2" IN (:...categories)', {
+                        categories: filter.categories
+                    })
+                })
+            )
+        }
+
+        if (filter.cost && filter.cost.length === 2) {
+            cardsQuery.andWhere(
+                new Brackets((qb) => {
+                    qb.where('"c"."cost"::INTEGER >= :minCost', {
+                        minCost: filter.cost![0]
+                    }).andWhere('"c"."cost"::INTEGER <= :maxCost', {
+                        maxCost: filter.cost![1]
+                    })
+                })
+            )
+        }
+
+        if (filter.power && filter.power.length === 2) {
+            cardsQuery.andWhere(
+                new Brackets((qb) => {
+                    qb.where('nullif("c"."power", \'\')::INTEGER >= :minPower', {
+                        minPower: filter.power![0]
+                    }).andWhere('nullif("c"."power", \'\')::INTEGER <= :maxPower', {
+                        maxPower: filter.power![1]
+                    })
+                })
+            )
         }
 
         const intPage = page ? +page : 1;

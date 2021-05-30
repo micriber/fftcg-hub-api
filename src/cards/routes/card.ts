@@ -11,6 +11,13 @@ export interface CardRequest extends Request {
         owned?: string;
         page?: string;
         perPage?: string;
+        types?: string;
+        elements?: string;
+        opus?: string;
+        rarities?: string;
+        categories?: string;
+        cost?: string;
+        power?: string;
     };
 }
 

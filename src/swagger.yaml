@@ -350,3 +350,54 @@ components:
                 type: bool
                 required: false
                 example: true
+        types:
+            in: query
+            name: types
+            schema:
+                type: string
+                required: false
+                example: 'Avant,Soutien,Invocation,Monstre'
+        elements:
+            in: query
+            name: elements
+            schema:
+                type: string
+                required: false
+                example: 'fire,ice,wind,earth,lightning,water,light,dark'
+        opus:
+            in: query
+            name: opus
+            schema:
+                type: string
+                required: false
+                example: 'Opus_I,Opus_II,Opus_III,Opus_IV,Opus_V,Opus_VI,Opus_VII,Opus_VIII,Opus_X,Opus_IX,Opus_XI,Opus_XII,Opus_XIII,Boss_Deck_Chaos'
+        rarities:
+            in: query
+            name: rarities
+            schema:
+                type: string
+                required: false
+                example: 'C,R,H,L,S,P,B'
+        categories:
+            in: query
+            name: categories
+            schema:
+                type: string
+                required: false
+                example: 'I,II,IV,III,VI,V,VII,VIII,X,IX,XI,XII,XIV,XIII,XV,XVI,FFL,FFT,FFE'
+        cost:
+            in: query
+            name: cost
+            schema:
+                type: string
+                required: false
+                example: '2,8'
+                description: Range of costs
+        power:
+            in: query
+            name: power
+            schema:
+                type: string
+                required: false
+                example: '4000,13000'
+                description: Range of power
