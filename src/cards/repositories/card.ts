@@ -136,12 +136,12 @@ export class CardRepository extends Repository<Card> {
             cardsQuery.andWhere(
                 new Brackets((qb) => {
                     qb.where(
-                        'nullif("c"."power", \'\')::INTEGER >= :minPower',
+                        'coalesce(nullif("c"."power", \'\'), \'0\')::INTEGER >= :minPower',
                         {
                             minPower: filter.power && filter.power[0],
                         }
                     ).andWhere(
-                        'nullif("c"."power", \'\')::INTEGER <= :maxPower',
+                        'coalesce(nullif("c"."power", \'\'), \'0\')::INTEGER <= :maxPower',
                         {
                             maxPower: filter.power && filter.power[1],
                         }
