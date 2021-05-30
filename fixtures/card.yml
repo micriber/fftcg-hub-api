@@ -4,6 +4,7 @@ items:
         code: '1-186L'
         elements:
             - element: 'dark'
+              id: 'b6041dbc-20a9-4a16-92a8-f6a0b0168001'
         rarity: 'L'
         cost: '8'
         power: '8000'
@@ -20,6 +21,7 @@ items:
         code: '1-176H'
         elements:
             - element: 'water'
+              id: 'b6041dbc-20a9-4a16-92a8-f6a0b0168002'
         rarity: 'H'
         cost: '5'
         power: ''
@@ -36,6 +38,7 @@ items:
         code: '4-016R'
         elements:
             - element: 'fire'
+              id: 'b6041dbc-20a9-4a16-92a8-f6a0b0168003'
         rarity: 'R'
         cost: '4'
         power: ''
@@ -52,6 +55,7 @@ items:
         code: '4-058C'
         elements:
             - element: 'wind'
+              id: 'b6041dbc-20a9-4a16-92a8-f6a0b0168004'
         rarity: 'C'
         cost: '1'
         power: ''
@@ -68,7 +72,9 @@ items:
         code: '12-120C'
         elements:
             - element: 'earth'
+              id: 'b6041dbc-20a9-4a16-92a8-f6a0b0168005'
             - element: 'lightning'
+              id: 'b6041dbc-20a9-4a16-92a8-f6a0b0168006'
         rarity: 'C'
         cost: '2'
         power: '7000'

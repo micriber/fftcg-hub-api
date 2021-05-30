@@ -6,11 +6,14 @@ import * as JWT from 'jsonwebtoken';
 import Card from '../../src/cards/entities/card';
 import loadFixtures from '../fixture';
 import { ErrorMessageType } from '../../src/utils/error';
+import { PaginationCards } from '../../src/cards/repositories/card';
 
 chai.use(chaiHttp);
 const { expect, request } = chai;
 const authorizationHeader =
     'bearer ' + JWT.sign({ iss: 'https://accounts.google.com' }, 'test');
+const authorizationHeader2 =
+    'bearer ' + JWT.sign({ iss: 'https://accounts.google.com', email: 'email5@gmail.com' }, 'test');
 
 describe('User cards', () => {
     let server: ChaiHttp.Agent;
@@ -151,6 +154,61 @@ describe('User cards', () => {
                     );
                     expect(res).to.have.status(400);
                 });
+        });
+    });
+
+    describe('GET /cards', () => {
+        it('should get all cards after another user add to collection', async () => {
+            const yuna = (await getRepository(Card).findOne({
+                where: { name: 'Yuna' },
+            })) as Card;
+            await server
+                .get(`/api/v1/cards/${yuna.code}`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+                    const card = res.body as Card;
+                    expect(card.userCard[0].quantity).to.be.equal(1);
+                    expect(card.userCard[0].version).to.be.equal('full-art');
+                    expect(card.name).to.be.equal(yuna.name);
+                });
+
+            await server
+                .post(`/api/v1/cards/${yuna.code}/add`)
+                .set('authorization', authorizationHeader)
+                .send({
+                    quantity: 1,
+                    version: 'full-art',
+                })
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+                });
+
+            await server
+                .get(`/api/v1/cards/${yuna.code}`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+                    const card = res.body as Card;
+                    expect(card.userCard[0].quantity).to.be.equal(2);
+                    expect(card.userCard[0].version).to.be.equal('full-art');
+                    expect(card.name).to.be.equal(yuna.name);
+                });
+            
+            await server
+                .get('/api/v1/cards')
+                .set('authorization', authorizationHeader2)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+                    const body = res.body as PaginationCards;
+                    const yunaCardFromBody = body.cards.filter((c) => c.name === yuna.name)
+                    expect(yunaCardFromBody).not.be.empty;
+                    expect(yunaCardFromBody[0].userCard).empty;
+                })
         });
     });
 

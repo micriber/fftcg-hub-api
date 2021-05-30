@@ -45,7 +45,14 @@ export class CardRepository extends Repository<Card> {
         }
 
         if (filter.owned) {
-            cardsQuery.andWhere('uc.quantity is NOT Null');
+
+            cardsQuery.andWhere(
+                new Brackets((qb) => {
+                    qb.where('uc.quantity IS NOT NUll').andWhere('"uc"."userId" = :userId', {
+                        userId: user.id,
+                    });
+                })
+            );
         }
 
         const intPage = page ? +page : 1;
@@ -70,28 +77,18 @@ export class CardRepository extends Repository<Card> {
 
     private getBaseQueryBuilder(user: User) {
         const cardsQuery = this.createQueryBuilder('c');
-
         // Joins
         cardsQuery.leftJoinAndSelect(
             'c.userCard',
             'uc',
-            'c.id = "uc"."cardId"'
+            `uc."userId" = '${user.id}'`,
         );
         cardsQuery.leftJoin('users', 'u', '"uc"."userId" = u.id');
         cardsQuery.leftJoinAndSelect(
             'c.elements',
             'ce',
-            '"ce"."cardId" = c.id'
         );
 
-        // where
-        cardsQuery.andWhere(
-            new Brackets((qb) => {
-                qb.where('uc.quantity IS NUll').orWhere('u.id = :userId', {
-                    userId: user.id,
-                });
-            })
-        );
         return cardsQuery;
     }
 }
