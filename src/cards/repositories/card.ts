@@ -13,7 +13,6 @@ export type PaginationCards = {
 export type Filters = {
     search?: string;
     owned?: boolean;
-    // TODO
     types?: string[];
     elements?: string[];
     opus?: string[];

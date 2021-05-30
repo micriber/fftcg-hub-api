@@ -265,6 +265,22 @@ describe('Cards', () => {
                     }
                 });
         });
+        it('should return result filtered by cost and power', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50&cost=0,10&power=0,15000`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    for (const card of body.cards) {
+                        expect(+card.cost >= 0 && +card.cost <= 10).to.be.true;
+                        expect(+card.power >= 0 && +card.cost <= 15000).to.be
+                            .true;
+                    }
+                });
+        });
     });
 
     describe('GET /cards/{code}', () => {

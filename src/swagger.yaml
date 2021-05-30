@@ -53,6 +53,13 @@ paths:
                 - $ref: '#/components/parameters/owned'
                 - $ref: '#/components/parameters/perPage'
                 - $ref: '#/components/parameters/page'
+                - $ref: '#/components/parameters/types'
+                - $ref: '#/components/parameters/elements'
+                - $ref: '#/components/parameters/opus'
+                - $ref: '#/components/parameters/rarities'
+                - $ref: '#/components/parameters/categories'
+                - $ref: '#/components/parameters/cost'
+                - $ref: '#/components/parameters/power'
             responses:
                 200:
                     $ref: '#/components/responses/cards'
