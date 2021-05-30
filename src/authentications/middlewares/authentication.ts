@@ -70,13 +70,12 @@ const authenticationMiddleware: RequestHandler = async (
                                         email: jwtDecode.email,
                                     },
                                 })) as UserEntity;
-                                console.log(localUser)
-                                req.user = localUser
+                                req.user = localUser;
                             } else {
-                            req.user = (await getRepository(
-                                UserEntity
-                            ).findOne()) as UserEntity;
-                        }
+                                req.user = (await getRepository(
+                                    UserEntity
+                                ).findOne()) as UserEntity;
+                            }
                         }
                         next();
                     }
