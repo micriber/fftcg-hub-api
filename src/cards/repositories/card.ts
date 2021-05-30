@@ -45,12 +45,14 @@ export class CardRepository extends Repository<Card> {
         }
 
         if (filter.owned) {
-
             cardsQuery.andWhere(
                 new Brackets((qb) => {
-                    qb.where('uc.quantity IS NOT NUll').andWhere('"uc"."userId" = :userId', {
-                        userId: user.id,
-                    });
+                    qb.where('uc.quantity IS NOT NUll').andWhere(
+                        '"uc"."userId" = :userId',
+                        {
+                            userId: user.id,
+                        }
+                    );
                 })
             );
         }
@@ -81,13 +83,10 @@ export class CardRepository extends Repository<Card> {
         cardsQuery.leftJoinAndSelect(
             'c.userCard',
             'uc',
-            `uc."userId" = '${user.id}'`,
+            `uc."userId" = '${user.id}'`
         );
         cardsQuery.leftJoin('users', 'u', '"uc"."userId" = u.id');
-        cardsQuery.leftJoinAndSelect(
-            'c.elements',
-            'ce',
-        );
+        cardsQuery.leftJoinAndSelect('c.elements', 'ce');
 
         return cardsQuery;
     }

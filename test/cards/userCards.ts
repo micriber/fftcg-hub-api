@@ -13,7 +13,11 @@ const { expect, request } = chai;
 const authorizationHeader =
     'bearer ' + JWT.sign({ iss: 'https://accounts.google.com' }, 'test');
 const authorizationHeader2 =
-    'bearer ' + JWT.sign({ iss: 'https://accounts.google.com', email: 'email5@gmail.com' }, 'test');
+    'bearer ' +
+    JWT.sign(
+        { iss: 'https://accounts.google.com', email: 'email5@gmail.com' },
+        'test'
+    );
 
 describe('User cards', () => {
     let server: ChaiHttp.Agent;
@@ -197,7 +201,7 @@ describe('User cards', () => {
                     expect(card.userCard[0].version).to.be.equal('full-art');
                     expect(card.name).to.be.equal(yuna.name);
                 });
-            
+
             await server
                 .get('/api/v1/cards')
                 .set('authorization', authorizationHeader2)
@@ -205,10 +209,12 @@ describe('User cards', () => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
                     const body = res.body as PaginationCards;
-                    const yunaCardFromBody = body.cards.filter((c) => c.name === yuna.name)
+                    const yunaCardFromBody = body.cards.filter(
+                        (c) => c.name === yuna.name
+                    );
                     expect(yunaCardFromBody).not.be.empty;
                     expect(yunaCardFromBody[0].userCard).empty;
-                })
+                });
         });
     });
 
