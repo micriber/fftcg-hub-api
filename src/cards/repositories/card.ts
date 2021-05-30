@@ -117,13 +117,17 @@ export class CardRepository extends Repository<Card> {
             );
         }
 
-        if (filter.cost && filter.cost.length === 2) {
+        if (
+            filter.cost &&
+            Array.isArray(filter.cost) &&
+            filter.cost.length === 2
+        ) {
             cardsQuery.andWhere(
                 new Brackets((qb) => {
                     qb.where('"c"."cost"::INTEGER >= :minCost', {
-                        minCost: filter.cost![0],
+                        minCost: filter.cost && filter.cost[0],
                     }).andWhere('"c"."cost"::INTEGER <= :maxCost', {
-                        maxCost: filter.cost![1],
+                        maxCost: filter.cost && filter.cost[1],
                     });
                 })
             );
@@ -135,12 +139,12 @@ export class CardRepository extends Repository<Card> {
                     qb.where(
                         'nullif("c"."power", \'\')::INTEGER >= :minPower',
                         {
-                            minPower: filter.power![0],
+                            minPower: filter.power && filter.power[0],
                         }
                     ).andWhere(
                         'nullif("c"."power", \'\')::INTEGER <= :maxPower',
                         {
-                            maxPower: filter.power![1],
+                            maxPower: filter.power && filter.power[1],
                         }
                     );
                 })
