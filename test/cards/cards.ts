@@ -169,11 +169,16 @@ describe('Cards', () => {
 
                     const body = res.body as PaginationCards;
                     for (const card of body.cards) {
-                        expect(card.elements).to.have.deep.members([{element: 'earth', id: 'b6041dbc-20a9-4a16-92a8-f6a0b0168005'}]);
+                        expect(card.elements).to.have.deep.members([
+                            {
+                                element: 'earth',
+                                id: 'b6041dbc-20a9-4a16-92a8-f6a0b0168005',
+                            },
+                        ]);
                     }
                 });
 
-                await server
+            await server
                 .get(`/api/v1/cards?perPage=50&elements=dark,fire`)
                 .set('authorization', authorizationHeader)
                 .then((res): void => {
@@ -182,7 +187,10 @@ describe('Cards', () => {
 
                     const body = res.body as PaginationCards;
                     for (const card of body.cards) {
-                        expect(card.elements[0].element).to.be.oneOf(['dark', 'fire']);
+                        expect(card.elements[0].element).to.be.oneOf([
+                            'dark',
+                            'fire',
+                        ]);
                     }
                 });
         });
@@ -252,7 +260,8 @@ describe('Cards', () => {
 
                     const body = res.body as PaginationCards;
                     for (const card of body.cards) {
-                        expect(+card.power >= 7000 && +card.cost <= 8000).to.be.true;
+                        expect(+card.power >= 7000 && +card.cost <= 8000).to.be
+                            .true;
                     }
                 });
         });
