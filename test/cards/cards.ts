@@ -43,11 +43,15 @@ describe('Cards', () => {
                     expect(res).to.have.status(200);
 
                     const body = res.body as PaginationCards;
-
                     const card = {
                         id: body.cards[0].id,
                         code: '1-176H',
-                        elements: [{ element: 'water' }],
+                        elements: [
+                            {
+                                element: 'water',
+                                id: 'b6041dbc-20a9-4a16-92a8-f6a0b0168002',
+                            },
+                        ],
                         rarity: 'H',
                         cost: '5',
                         power: '',
@@ -87,7 +91,12 @@ describe('Cards', () => {
                     const card = {
                         id: body.cards[0].id,
                         code: '1-186L',
-                        elements: [{ element: 'dark' }],
+                        elements: [
+                            {
+                                element: 'dark',
+                                id: 'b6041dbc-20a9-4a16-92a8-f6a0b0168001',
+                            },
+                        ],
                         rarity: 'L',
                         cost: '8',
                         power: '8000',

@@ -62,9 +62,20 @@ const authenticationMiddleware: RequestHandler = async (
                                 return;
                             }
                         } else {
-                            req.user = (await getRepository(
-                                UserEntity
-                            ).findOne()) as UserEntity;
+                            if (jwtDecode.email) {
+                                const localUser = (await getRepository(
+                                    UserEntity
+                                ).findOne({
+                                    where: {
+                                        email: jwtDecode.email,
+                                    },
+                                })) as UserEntity;
+                                req.user = localUser;
+                            } else {
+                                req.user = (await getRepository(
+                                    UserEntity
+                                ).findOne()) as UserEntity;
+                            }
                         }
                         next();
                     }

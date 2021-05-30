@@ -1,6 +1,7 @@
 entity: User
 items:
     user{1..3}:
+        id: 'a6041dbc-20a9-4a16-92a8-f6a0b016800($current)'
         firstName: 'firstName($current)'
         lastName: 'lastName($current)'
         email: 'email($current)@gmail.com'
@@ -8,12 +9,14 @@ items:
         authenticationType: 'google'
         userName: 'userName($current)'
     user4:
+        id: 'a6041dbc-20a9-4a16-92a8-f6a0b0168004'
         firstName: 'iHaveFirstName'
         email: 'email4@gmail.com'
         locale: 'fr'
         authenticationType: 'google'
         userName: 'username4'
     user5:
+        id: 'a6041dbc-20a9-4a16-92a8-f6a0b0168005'
         lastName: 'iHaveLastName'
         email: 'email5@gmail.com'
         locale: 'fr'
