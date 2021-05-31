@@ -31,11 +31,7 @@ export default class Card {
                 ? { elements: req.query.elements?.split(',') }
                 : {}),
             ...(req.query.opus
-                ? {
-                      opus: req.query.opus
-                          .split(',')
-                          .map((opus) => opus.replace('_', ' ')),
-                  }
+                ? { opus: req.query.opus.split(',') }
                 : {}),
             ...(req.query.rarities
                 ? { rarities: req.query.rarities.split(',') }
