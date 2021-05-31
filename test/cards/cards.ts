@@ -140,8 +140,169 @@ describe('Cards', () => {
                     expect(res).to.have.status(200);
 
                     const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
                     for (const card of body.cards) {
                         expect(card.userCard.length).to.be.greaterThan(0);
+                    }
+                });
+        });
+        it('should return result filtered by types', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50&types=Avant,Soutien`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
+                    for (const card of body.cards) {
+                        expect(card.type).to.be.oneOf(['Avant', 'Soutien']);
+                    }
+                });
+        });
+        it('should return result filtered by elements', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50&elements=earth`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
+                    for (const card of body.cards) {
+                        expect(card.elements).to.have.deep.members([
+                            {
+                                element: 'earth',
+                                id: 'b6041dbc-20a9-4a16-92a8-f6a0b0168005',
+                            },
+                        ]);
+                    }
+                });
+
+            await server
+                .get(`/api/v1/cards?perPage=50&elements=dark,fire`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
+                    for (const card of body.cards) {
+                        expect(card.elements[0].element).to.be.oneOf([
+                            'dark',
+                            'fire',
+                        ]);
+                    }
+                });
+        });
+        it('should return result filtered by opus', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50&opus=Opus I,Opus II`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
+                    for (const card of body.cards) {
+                        expect(card.set).to.be.oneOf(['Opus I', 'Opus II']);
+                    }
+                });
+        });
+        it('should return result filtered by rarities', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50&rarities=L,C`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
+                    for (const card of body.cards) {
+                        expect(card.rarity).to.be.oneOf(['L', 'C']);
+                    }
+                });
+        });
+        it('should return result filtered by categories', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50&categories=XI,VII`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
+                    for (const card of body.cards) {
+                        expect(card.category2).to.be.oneOf(['XI', 'VII']);
+                    }
+                });
+        });
+        it('should return result filtered by cost', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50&cost=4,8`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
+                    for (const card of body.cards) {
+                        expect(+card.cost >= 4 && +card.cost <= 8).to.be.true;
+                    }
+                });
+        });
+        it('should return result filtered by power', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50&power=7000,8000`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
+                    for (const card of body.cards) {
+                        expect(+card.power >= 7000 && +card.cost <= 8000).to.be
+                            .true;
+                    }
+                });
+        });
+        it('should return result without power when min power filter is equal to 0', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50&power=0,15000`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    const cardsWithoutPower = body.cards.filter((value) => {
+                        return value.power === '';
+                    });
+                    expect(cardsWithoutPower.length).to.be.greaterThan(0);
+                });
+        });
+        it('should return result filtered by cost and power', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50&cost=0,10&power=0,15000`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error).to.be.false;
+                    expect(res).to.have.status(200);
+
+                    const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
+                    for (const card of body.cards) {
+                        expect(+card.cost >= 0 && +card.cost <= 10).to.be.true;
+                        expect(+card.power >= 0 && +card.cost <= 15000).to.be
+                            .true;
                     }
                 });
         });

@@ -81,24 +81,36 @@ async function loadData() {
                 code: card.Code,
             },
         });
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const sanitizedCard = {
+            ...card,
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+            Power: +card.Power === 0 || isNaN(+card.Power) ? '' : card.Power,
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
+            Category_1: card.Category_1.split(' &middot; ')[0],
+        };
 
         const query = !cardExist ? queryInsert : queryUpdate;
         if (!cardExist) {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/restrict-template-expressions
-            console.log(`insert ${card.Code}`);
+            console.log(`insert ${sanitizedCard.Code}`);
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            card.id = RandomGenerator.uuid4();
+            sanitizedCard.id = RandomGenerator.uuid4();
         } else {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/restrict-template-expressions
-            console.log(`update ${card.Code}`);
+            console.log(`update ${sanitizedCard.Code}`);
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            card.id = cardExist.id;
+            sanitizedCard.id = cardExist.id;
         }
 
         const [
             escapeQuery,
             parameters,
-        ] = connection.driver.escapeQueryWithParameters(query, card, {});
+        ] = connection.driver.escapeQueryWithParameters(
+            query,
+            sanitizedCard,
+            {}
+        );
         await queryRunner.query(escapeQuery, parameters);
 
         const cardElementsExist = await connection
@@ -106,20 +118,20 @@ async function loadData() {
             .findOne({
                 where: {
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-                    card: card.id,
+                    card: sanitizedCard.id,
                 },
             });
 
         if (!cardElementsExist) {
             const insertElementQuery = `INSERT INTO "cardsElements" values (:cardId, :element) ON CONFLICT DO NOTHING;`;
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
-            const cardElements: JapaneseElement[] = card.Element.split(
+            const cardElements: JapaneseElement[] = sanitizedCard.Element.split(
                 '/'
             ) as JapaneseElement[];
             for (const element of cardElements) {
                 const cardElement = {
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
-                    cardId: card.id,
+                    cardId: sanitizedCard.id,
                     element: ELEMENTS[element].name,
                 };
                 const [
