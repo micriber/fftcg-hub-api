@@ -30,9 +30,7 @@ export default class Card {
             ...(req.query.elements
                 ? { elements: req.query.elements?.split(',') }
                 : {}),
-            ...(req.query.opus
-                ? { opus: req.query.opus.split(',') }
-                : {}),
+            ...(req.query.opus ? { opus: req.query.opus.split(',') } : {}),
             ...(req.query.rarities
                 ? { rarities: req.query.rarities.split(',') }
                 : {}),
