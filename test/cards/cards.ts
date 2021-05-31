@@ -140,6 +140,7 @@ describe('Cards', () => {
                     expect(res).to.have.status(200);
 
                     const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
                     for (const card of body.cards) {
                         expect(card.userCard.length).to.be.greaterThan(0);
                     }
@@ -154,6 +155,7 @@ describe('Cards', () => {
                     expect(res).to.have.status(200);
 
                     const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
                     for (const card of body.cards) {
                         expect(card.type).to.be.oneOf(['Avant', 'Soutien']);
                     }
@@ -168,6 +170,7 @@ describe('Cards', () => {
                     expect(res).to.have.status(200);
 
                     const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
                     for (const card of body.cards) {
                         expect(card.elements).to.have.deep.members([
                             {
@@ -186,6 +189,7 @@ describe('Cards', () => {
                     expect(res).to.have.status(200);
 
                     const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
                     for (const card of body.cards) {
                         expect(card.elements[0].element).to.be.oneOf([
                             'dark',
@@ -196,13 +200,14 @@ describe('Cards', () => {
         });
         it('should return result filtered by opus', async () => {
             await server
-                .get(`/api/v1/cards?perPage=50&opus=Opus_I,Opus_II`)
+                .get(`/api/v1/cards?perPage=50&opus=Opus I,Opus II`)
                 .set('authorization', authorizationHeader)
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
 
                     const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
                     for (const card of body.cards) {
                         expect(card.set).to.be.oneOf(['Opus I', 'Opus II']);
                     }
@@ -217,6 +222,7 @@ describe('Cards', () => {
                     expect(res).to.have.status(200);
 
                     const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
                     for (const card of body.cards) {
                         expect(card.rarity).to.be.oneOf(['L', 'C']);
                     }
@@ -231,6 +237,7 @@ describe('Cards', () => {
                     expect(res).to.have.status(200);
 
                     const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
                     for (const card of body.cards) {
                         expect(card.category2).to.be.oneOf(['XI', 'VII']);
                     }
@@ -245,6 +252,7 @@ describe('Cards', () => {
                     expect(res).to.have.status(200);
 
                     const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
                     for (const card of body.cards) {
                         expect(+card.cost >= 4 && +card.cost <= 8).to.be.true;
                     }
@@ -259,6 +267,7 @@ describe('Cards', () => {
                     expect(res).to.have.status(200);
 
                     const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
                     for (const card of body.cards) {
                         expect(+card.power >= 7000 && +card.cost <= 8000).to.be
                             .true;
@@ -289,6 +298,7 @@ describe('Cards', () => {
                     expect(res).to.have.status(200);
 
                     const body = res.body as PaginationCards;
+                    expect(body.cards.length).to.be.greaterThan(0);
                     for (const card of body.cards) {
                         expect(+card.cost >= 0 && +card.cost <= 10).to.be.true;
                         expect(+card.power >= 0 && +card.cost <= 15000).to.be

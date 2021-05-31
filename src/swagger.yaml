@@ -377,7 +377,7 @@ components:
             schema:
                 type: string
                 required: false
-                example: 'Opus_I,Opus_II,Opus_III,Opus_IV,Opus_V,Opus_VI,Opus_VII,Opus_VIII,Opus_X,Opus_IX,Opus_XI,Opus_XII,Opus_XIII,Boss_Deck_Chaos'
+                example: 'Opus I,Opus II,Opus III,Opus IV,Opus V,Opus VI,Opus VII,Opus VIII,Opus X,Opus IX,Opus XI,Opus XII,Opus XIII,Boss_Deck_Chaos'
         rarities:
             in: query
             name: rarities
