@@ -107,21 +107,11 @@ export class CardRepository extends Repository<Card> {
         if (filter.categories) {
             cardsQuery.andWhere(
                 new Brackets((qb) => {
-                    qb.where(
-                        '"c"."category1" ILIKE ANY(ARRAY[:...categories])',
-                        {
-                            categories: filter.categories?.map(
-                                (value) => `%${value}%`
-                            ),
-                        }
-                    ).orWhere(
-                        '"c"."category2" ILIKE ANY(ARRAY[:...categories])',
-                        {
-                            categories: filter.categories?.map(
-                                (value) => `%${value}%`
-                            ),
-                        }
-                    );
+                    qb.where('"c"."category1" IN (:...categories)', {
+                        categories: filter.categories,
+                    }).orWhere('"c"."category2" IN (:...categories)', {
+                        categories: filter.categories,
+                    });
                 })
             );
         }

@@ -86,6 +86,8 @@ async function loadData() {
             ...card,
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
             Power: +card.Power === 0 || isNaN(+card.Power) ? '' : card.Power,
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
+            Category_1: card.Category_1.split(' &middot; ')[0],
         };
 
         const query = !cardExist ? queryInsert : queryUpdate;

@@ -236,23 +236,6 @@ describe('Cards', () => {
                     }
                 });
         });
-        it('should return result filtered by categories when category filter is partial category', async () => {
-            await server
-                .get(`/api/v1/cards?perPage=50&categories=DFF`)
-                .set('authorization', authorizationHeader)
-                .then((res): void => {
-                    expect(res.error).to.be.false;
-                    expect(res).to.have.status(200);
-
-                    const body = res.body as PaginationCards;
-                    const cardsWithExactCategory = body.cards.filter(
-                        (value) => {
-                            return value.category1 !== 'DFF';
-                        }
-                    );
-                    expect(cardsWithExactCategory.length).to.be.greaterThan(0);
-                });
-        });
         it('should return result filtered by cost', async () => {
             await server
                 .get(`/api/v1/cards?perPage=50&cost=4,8`)
