@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: fftcg-preprod
+
+resources:
+- ../../base/
+
+patchesStrategicMerge:
+- ing.yaml
+
+configMapGenerator:
+- envs:
+  - files/config.env
+  name: env-config
+images:
+- name: fftcg-api
+  newName: registry.pawndev.com/fftcg-api
+  newTag: 0.3.0

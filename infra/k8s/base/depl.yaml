@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fftcg-api
+  namespace: fftcg-api-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fftcg-api
+  template:
+    metadata:
+      labels:
+        app: fftcg-api
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: fftcg-api
+        image: fftcg-api
+        imagePullPolicy: Always
+        stdin: true
+        tty: true
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+          name: http
+        envFrom:
+        - configMapRef:
+            name: env-config   
+        env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgresql
+                key: postgresql-postgres-password
+          - name: GOOGLE_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: google
+                key: GOOGLE_CLIENT_ID
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
+          httpGet:
+            path: /api/swagger
+            port: 3000
+            scheme: HTTP
+        readinessProbe:
+          initialDelaySeconds: 30
+          httpGet:
+            path: /api/swagger
+            port: 3000
+            scheme: HTTP
