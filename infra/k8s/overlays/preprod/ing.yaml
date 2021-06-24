@@ -1,0 +1,18 @@
+
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: fftcg-api
+spec:
+  rules:
+  - host: fftcg-api.preprod.micriber.com
+    http:
+      paths:
+      - backend:
+          serviceName: fftcg-api
+          servicePort: http
+        path: /
+  tls:
+  - hosts:
+    - fftcg-api.preprod.micriber.com
+    secretName: fftcgapi-preprod-micriber-com-tls

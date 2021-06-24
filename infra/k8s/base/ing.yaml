@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: fftcg-api
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  rules:
+  - host: fftcg-api.micriber.com
+    http:
+      paths:
+      - backend:
+          serviceName: fftcg-api
+          servicePort: http
+        path: /
+  tls:
+  - hosts:
+    - fftcg-api.micriber.com
+    secretName: fftcgapi-micriber-com-tls
