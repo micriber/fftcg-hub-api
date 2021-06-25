@@ -1,17 +1,18 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import swaggerUi, { JsonObject } from 'swagger-ui-express';
 import YAML from 'yamljs';
 import usersRouter from './users/routes/';
 import cardsRouter from './cards/routes/';
 import authenticationsRouter from './authentications/routes';
 import logger from './utils/logger';
+import { getManager } from 'typeorm';
 // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-assignment
 const semver = require('semver');
 
 const router = express.Router();
 
 router.use((req, res, next) => {
-    if (req.path.includes('swagger')) {
+    if (req.path.includes('swagger') || req.path.includes('healthCheck')) {
         next();
         return;
     }
@@ -46,6 +47,19 @@ if (process.env.NODE_ENV !== 'production') {
     router.use('/swagger', swaggerUi.serve);
     router.get('/swagger', swaggerUi.setup(swaggerDocument));
 }
+
+router.get('/healthCheck', async (req: Request, res: Response) => {
+    try {
+        const entityManager = getManager();
+        await entityManager.query('select 1');
+    } catch (err) {
+        if (err instanceof Error) {
+            logger.error(err.message);
+        }
+        res.sendStatus(500);
+    }
+    res.sendStatus(200);
+});
 
 router.use(usersRouter);
 router.use(cardsRouter);

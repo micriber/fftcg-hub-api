@@ -245,7 +245,7 @@ components:
         userCard:
             properties:
                 quantity:
-                    type: interger
+                    type: integer
                     example: 5
                 version:
                     type: string
@@ -385,7 +385,7 @@ components:
             in: query
             name: owned
             schema:
-                type: bool
+                type: boolean
                 required: false
                 example: true
         types:
