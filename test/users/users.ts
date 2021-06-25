@@ -36,6 +36,7 @@ describe('Users', () => {
         it('authorization header not found', async (): Promise<void> => {
             await server
                 .get('/api/v1/users/caa8b54a-eb5e-4134-8ae2-a3946a428ec7')
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res).to.have.status(401);
                     expect((res.body as ErrorMessageType).message).to.be.equal(
@@ -48,6 +49,7 @@ describe('Users', () => {
             await server
                 .get('/api/v1/users/caa8b54a-eb5e-4134-8ae2-a3946a428ec7')
                 .set('authorization', 'bea rer 1')
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res).to.have.status(401);
                     expect((res.body as ErrorMessageType).message).to.be.equal(
@@ -60,6 +62,7 @@ describe('Users', () => {
             await server
                 .get('/api/v1/users/caa8b54a-eb5e-4134-8ae2-a3946a428ec7')
                 .set('authorization', 'bearer badJwtToken')
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res).to.have.status(401);
                     expect((res.body as ErrorMessageType).message).to.be.equal(
@@ -75,6 +78,7 @@ describe('Users', () => {
                     'authorization',
                     'bearer ' + JWT.sign({ iss: 'https://toto.com' }, 'test')
                 )
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res).to.have.status(401);
                     expect((res.body as ErrorMessageType).message).to.be.equal(
@@ -88,6 +92,7 @@ describe('Users', () => {
             await server
                 .get(`/api/v1/users/${databaseUser.id}`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -103,6 +108,7 @@ describe('Users', () => {
             await server
                 .get('/api/v1/users/caa8b54a-eb5e-4134-8ae2-a3946a428ec7')
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res).to.have.status(404);
                     expect((res.body as ErrorMessageType).message).to.be.equal(

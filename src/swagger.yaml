@@ -11,6 +11,8 @@ paths:
         post:
             tags: [authentication]
             summary: Login with google
+            parameters:
+                - $ref: '#/components/parameters/appVersion'
             requestBody:
                 $ref: '#/components/requestBodies/google'
             responses:
@@ -20,6 +22,8 @@ paths:
                     $ref: '#/components/responses/user'
                 401:
                     $ref: '#/components/responses/invalidToken'
+                426:
+                    $ref: '#/components/responses/upgradeRequired'
     /users/{userId}:
         get:
             tags: [user]
@@ -34,6 +38,7 @@ paths:
                       type: string
                       format: uuid
                 - $ref: '#/components/parameters/authorization'
+                - $ref: '#/components/parameters/appVersion'
             responses:
                 200:
                     $ref: '#/components/responses/user'
@@ -43,6 +48,8 @@ paths:
                     $ref: '#/components/responses/badRequest'
                 401:
                     $ref: '#/components/responses/invalidToken'
+                426:
+                    $ref: '#/components/responses/upgradeRequired'
     /cards:
         get:
             tags: [card]
@@ -60,6 +67,7 @@ paths:
                 - $ref: '#/components/parameters/categories'
                 - $ref: '#/components/parameters/cost'
                 - $ref: '#/components/parameters/power'
+                - $ref: '#/components/parameters/appVersion'
             responses:
                 200:
                     $ref: '#/components/responses/cards'
@@ -67,6 +75,8 @@ paths:
                     $ref: '#/components/responses/badRequest'
                 401:
                     $ref: '#/components/responses/invalidToken'
+                426:
+                    $ref: '#/components/responses/upgradeRequired'
     /cards/{code}:
         get:
             tags: [card]
@@ -80,6 +90,7 @@ paths:
                   schema:
                       type: string
                 - $ref: '#/components/parameters/authorization'
+                - $ref: '#/components/parameters/appVersion'
             responses:
                 200:
                     $ref: '#/components/responses/card'
@@ -89,10 +100,14 @@ paths:
                     $ref: '#/components/responses/badRequest'
                 401:
                     $ref: '#/components/responses/invalidToken'
+                426:
+                    $ref: '#/components/responses/upgradeRequired'
     /cards/{code}/add:
         post:
             tags: [card]
             summary: Add card to collection
+            parameters:
+                - $ref: '#/components/parameters/appVersion'
             requestBody:
                 $ref: '#/components/requestBodies/userCard'
             responses:
@@ -104,10 +119,14 @@ paths:
                     $ref: '#/components/responses/notFound'
                 400:
                     $ref: '#/components/responses/badRequest'
+                426:
+                    $ref: '#/components/responses/upgradeRequired'
     /cards/{code}/subtract:
         post:
             tags: [card]
             summary: Remove card to collection
+            parameters:
+                - $ref: '#/components/parameters/appVersion'
             requestBody:
                 $ref: '#/components/requestBodies/userCard'
             responses:
@@ -119,6 +138,8 @@ paths:
                     $ref: '#/components/responses/notFound'
                 400:
                     $ref: '#/components/responses/badRequest'
+                426:
+                    $ref: '#/components/responses/upgradeRequired'
 
 components:
     schemas:
@@ -255,7 +276,6 @@ components:
             required: true
             content:
                 application/json:
-                    example: eyJhbGciOiJSUz...yLe9LNM85DA
                     schema:
                         $ref: '#/components/schemas/idToken'
         userCard:
@@ -320,10 +340,21 @@ components:
                 application/json:
                     schema:
                         $ref: '#/components/schemas/error'
+        upgradeRequired:
+            description: upgrade required
     parameters:
+        appVersion:
+          in: header
+          name: app-version
+          description: app version
+          example: 0.4.0
+          required: true
+          schema:
+              type: string
         authorization:
             in: header
             name: authorization
+            required: true
             schema:
                 type: string
                 format: bearer

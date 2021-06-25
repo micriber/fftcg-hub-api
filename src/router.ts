@@ -5,6 +5,8 @@ import usersRouter from './users/routes/';
 import cardsRouter from './cards/routes/';
 import authenticationsRouter from './authentications/routes';
 import logger from './utils/logger';
+// eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-assignment
+const semver = require('semver');
 
 const router = express.Router();
 
@@ -20,6 +22,19 @@ router.use((req, res, next) => {
             params: req.params,
         });
     });
+
+    const appVersion = req.header('app-version');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+    if (!appVersion || semver.lt(appVersion, process.env.MIN_APP_VERSION)) {
+        logger.warn(
+            `app version (${appVersion ?? 'header not found'}) is lower than ${
+                process.env.MIN_APP_VERSION ?? 'env not found'
+            }`
+        );
+        res.sendStatus(426);
+        return;
+    }
+
     next();
 });
 

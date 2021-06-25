@@ -31,6 +31,7 @@ describe('Login', () => {
         it('bad token', async (): Promise<void> => {
             await server
                 .post('/api/v1/login/google')
+                .set('app-version', '0.4.0')
                 .send({
                     idToken: 'badIdToken',
                 })
@@ -44,6 +45,7 @@ describe('Login', () => {
         it('should login a user', async (): Promise<void> => {
             await server
                 .post('/api/v1/login/google')
+                .set('app-version', '0.4.0')
                 .send({
                     idToken: '1',
                 })
@@ -59,6 +61,7 @@ describe('Login', () => {
             const token = Date.now();
             await server
                 .post('/api/v1/login/google')
+                .set('app-version', '0.4.0')
                 .send({
                     idToken: token.toString(),
                 })
@@ -75,6 +78,7 @@ describe('Login', () => {
         > => {
             await server
                 .post('/api/v1/login/google')
+                .set('app-version', '0.4.0')
                 .send({
                     idToken: '4',
                 })
@@ -95,6 +99,7 @@ describe('Login', () => {
         > => {
             await server
                 .post('/api/v1/login/google')
+                .set('app-version', '0.4.0')
                 .send({
                     idToken: '5',
                 })

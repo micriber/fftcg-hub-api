@@ -26,7 +26,7 @@ spec:
           name: http
         envFrom:
         - configMapRef:
-            name: env-config   
+            name: env-config
         env:
           - name: POSTGRES_PASSWORD
             valueFrom:
@@ -38,19 +38,3 @@ spec:
               secretKeyRef:
                 name: google
                 key: GOOGLE_CLIENT_ID
-        livenessProbe:
-          failureThreshold: 3
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 10
-          httpGet:
-            path: /api/swagger
-            port: 3000
-            scheme: HTTP
-        readinessProbe:
-          initialDelaySeconds: 30
-          httpGet:
-            path: /api/swagger
-            port: 3000
-            scheme: HTTP
