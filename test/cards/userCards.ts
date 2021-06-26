@@ -47,6 +47,7 @@ describe('User cards', () => {
             await server
                 .get(`/api/v1/cards/${sephiroth.code}`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -58,6 +59,7 @@ describe('User cards', () => {
             await server
                 .post(`/api/v1/cards/${sephiroth.code}/add`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .send({
                     quantity: 1,
                     version: 'classic',
@@ -70,6 +72,7 @@ describe('User cards', () => {
             await server
                 .get(`/api/v1/cards/${sephiroth.code}`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -87,6 +90,7 @@ describe('User cards', () => {
             await server
                 .get(`/api/v1/cards/${yuna.code}`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -99,6 +103,7 @@ describe('User cards', () => {
             await server
                 .post(`/api/v1/cards/${yuna.code}/add`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .send({
                     quantity: 1,
                     version: 'full-art',
@@ -111,6 +116,7 @@ describe('User cards', () => {
             await server
                 .get(`/api/v1/cards/${yuna.code}`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -130,6 +136,7 @@ describe('User cards', () => {
             await server
                 .post(`/api/v1/cards/${sephiroth.code}/add`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .send({
                     quantity: -1,
                     version: 'classic',
@@ -148,6 +155,7 @@ describe('User cards', () => {
             await server
                 .post(`/api/v1/cards/badCode/add`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .send({
                     quantity: 1,
                     version: 'classic',
@@ -169,6 +177,7 @@ describe('User cards', () => {
             await server
                 .get(`/api/v1/cards/${yuna.code}`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -181,6 +190,7 @@ describe('User cards', () => {
             await server
                 .post(`/api/v1/cards/${yuna.code}/add`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .send({
                     quantity: 1,
                     version: 'full-art',
@@ -193,6 +203,7 @@ describe('User cards', () => {
             await server
                 .get(`/api/v1/cards/${yuna.code}`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -205,6 +216,7 @@ describe('User cards', () => {
             await server
                 .get('/api/v1/cards')
                 .set('authorization', authorizationHeader2)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -228,6 +240,7 @@ describe('User cards', () => {
             await server
                 .get(`/api/v1/cards/${sephiroth.code}`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -239,6 +252,7 @@ describe('User cards', () => {
             await server
                 .post(`/api/v1/cards/${sephiroth.code}/subtract`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .send({
                     quantity: 1,
                     version: 'classic',
@@ -258,6 +272,7 @@ describe('User cards', () => {
             await server
                 .get(`/api/v1/cards/${pampa.code}`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -270,6 +285,7 @@ describe('User cards', () => {
             await server
                 .post(`/api/v1/cards/${pampa.code}/subtract`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .send({
                     quantity: 5,
                     version: 'classic',
@@ -282,6 +298,7 @@ describe('User cards', () => {
             await server
                 .get(`/api/v1/cards/${pampa.code}`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -299,6 +316,7 @@ describe('User cards', () => {
             await server
                 .get(`/api/v1/cards/${yuna.code}`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -311,6 +329,7 @@ describe('User cards', () => {
             await server
                 .post(`/api/v1/cards/${yuna.code}/subtract`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .send({
                     quantity: 1,
                     version: 'full-art',
@@ -323,6 +342,7 @@ describe('User cards', () => {
             await server
                 .get(`/api/v1/cards/${yuna.code}`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);

@@ -38,6 +38,7 @@ describe('Cards', () => {
             await server
                 .get('/api/v1/cards')
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -82,6 +83,7 @@ describe('Cards', () => {
             await server
                 .get(`/api/v1/cards?search=${search}`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -116,11 +118,30 @@ describe('Cards', () => {
                     expect(body.total).to.be.equal(1);
                 });
         });
-
+        it('header app-version not found', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50`)
+                .set('authorization', authorizationHeader)
+                .then((res): void => {
+                    expect(res.error.text).to.be.equal('Upgrade Required');
+                    expect(res).to.have.status(426);
+                });
+        });
+        it('header app-version lower than min version', async () => {
+            await server
+                .get(`/api/v1/cards?perPage=50`)
+                .set('authorization', authorizationHeader)
+                .set('app-version', '0.3.8')
+                .then((res): void => {
+                    expect(res.error.text).to.be.equal('Upgrade Required');
+                    expect(res).to.have.status(426);
+                });
+        });
         it('should return result filtered by "owned" param', async () => {
             await server
                 .get(`/api/v1/cards?perPage=50`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -135,6 +156,7 @@ describe('Cards', () => {
             await server
                 .get(`/api/v1/cards?perPage=50&owned=true`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -150,6 +172,7 @@ describe('Cards', () => {
             await server
                 .get(`/api/v1/cards?perPage=50&types=Avant,Soutien`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -165,6 +188,7 @@ describe('Cards', () => {
             await server
                 .get(`/api/v1/cards?perPage=50&elements=earth`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -184,6 +208,7 @@ describe('Cards', () => {
             await server
                 .get(`/api/v1/cards?perPage=50&elements=dark,fire`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -202,6 +227,7 @@ describe('Cards', () => {
             await server
                 .get(`/api/v1/cards?perPage=50&opus=Opus I,Opus II`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -217,6 +243,7 @@ describe('Cards', () => {
             await server
                 .get(`/api/v1/cards?perPage=50&rarities=L,C`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -232,6 +259,7 @@ describe('Cards', () => {
             await server
                 .get(`/api/v1/cards?perPage=50&categories=XI,VII`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -247,6 +275,7 @@ describe('Cards', () => {
             await server
                 .get(`/api/v1/cards?perPage=50&cost=4,8`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -262,6 +291,7 @@ describe('Cards', () => {
             await server
                 .get(`/api/v1/cards?perPage=50&power=7000,8000`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -278,6 +308,7 @@ describe('Cards', () => {
             await server
                 .get(`/api/v1/cards?perPage=50&power=0,15000`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -293,6 +324,7 @@ describe('Cards', () => {
             await server
                 .get(`/api/v1/cards?perPage=50&cost=0,10&power=0,15000`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -316,6 +348,7 @@ describe('Cards', () => {
             await server
                 .get(`/api/v1/cards/${databaseCard.code}`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -340,6 +373,7 @@ describe('Cards', () => {
             await server
                 .get(`/api/v1/cards/${databaseCard.code}`)
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res.error).to.be.false;
                     expect(res).to.have.status(200);
@@ -358,6 +392,7 @@ describe('Cards', () => {
             await server
                 .get('/api/v1/cards/codeDontExist')
                 .set('authorization', authorizationHeader)
+                .set('app-version', '0.4.0')
                 .then((res): void => {
                     expect(res).to.have.status(404);
                     expect((res.body as ErrorMessageType).message).to.be.equal(

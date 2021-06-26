@@ -1,5 +1,6 @@
 POST http://{{host}}:{{port}}/api/v1/login/google
 Content-Type: application/json
+app-version: 0.3.0
 
 {
     "idToken": "{{idToken}}"

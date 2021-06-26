@@ -13,6 +13,7 @@ jobs:
                 POSTGRES_USER: user
                 POSTGRES_PASSWORD: password
                 POSTGRES_DB_TEST: fftcg-application-test
+                MIN_APP_VERSION: 0.4.0
         services:
             postgres:
                 image: postgres:11.4
