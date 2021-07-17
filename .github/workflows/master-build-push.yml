@@ -30,7 +30,7 @@ jobs:
         with:
           push: true
           file: ./docker/node/Dockerfile.prod
-          tags: registry.pawndev.com/fftcg-api:${{ steps.package-version.outputs.current-version}}
+          tags: registry.pawndev.com/fftcg-hub-api:${{ steps.package-version.outputs.current-version}}
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
   # deploy-k8s:
