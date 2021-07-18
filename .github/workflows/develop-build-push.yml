@@ -32,7 +32,7 @@ jobs:
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
       - name: Set docker image variable
         id: set_docker_image
-        run: echo "::set-output name=docker_image::registry.micriber.com/fftcg-hub-api-preprod:${{ steps.package-version.outputs.current-version}}-${{ env.GITHUB_SHA }}"
+        run: echo "::set-output name=docker_image::registry.micriber.com/fftcg-hub-api-preprod:${{ steps.package-version.outputs.current-version}}-${GITHUB_SHA::8}"
       - name: Build and Push
         id: docker_build
         uses: docker/build-push-action@v2
@@ -59,4 +59,4 @@ jobs:
           kustomize: 4.1.3
           command: |
             echo "Set image to deploy"
-            cd infra/k8s/overlays/preprod && kustomize edit set image fftcg-api=${{needs.docker.outputs.docker_image}} && echo "Applying to k8s cluster" && kubectl apply -k .
+            cd infra/k8s/overlays/preprod && kustomize edit set image fftcg-api=${{needs.set_docker_image.outputs.docker_image}} && echo "Applying to k8s cluster" && kubectl apply -k .
