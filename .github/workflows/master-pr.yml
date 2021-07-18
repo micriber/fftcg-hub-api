@@ -16,6 +16,12 @@ jobs:
         id: check
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Display version information
+        run: |
+          echo "Version has been changed: ${{ steps.check.outputs.changed }}"
+          echo "Version type: ${{ steps.check.outputs.type }}"
+          echo "Version number: ${{ steps.check.outputs.version }}"
+          echo "Version changed commit: ${{ steps.check.outputs.commit }}"
       - name: Version not change fail
         if: steps.check.outputs.changed == 'false'
         run: /bin/false
