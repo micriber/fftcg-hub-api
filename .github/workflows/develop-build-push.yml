@@ -32,7 +32,7 @@ jobs:
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
       - name: Set docker image variable
         id: set_docker_image
-        run: echo "::set-output name=docker_image::registry.micriber.com/fftcg-hub-api-preprod:${{ steps.package-version.outputs.current-version}}-${{ GITHUB_SHA }}"
+        run: echo "::set-output name=docker_image::registry.micriber.com/fftcg-hub-api-preprod:${{ steps.package-version.outputs.current-version}}-${{ env.GITHUB_SHA }}"
       - name: Build and Push
         id: docker_build
         uses: docker/build-push-action@v2
