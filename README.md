@@ -40,14 +40,28 @@ To deploy the api to the kubernetes cluster, make sure you have installed:
 ##### Build docker image
 
 ```bash
-docker build -f docker/node/Dockerfile.prod -t micriber/fftcg-api .
-docker tag micriber/fftcg-api registry.pawndev.com/fftcg-api:myRelease
-docker push registry.pawndev.com/fftcg-api:myRelease
+docker build -f docker/node/Dockerfile.prod -t registry.micriber.com/fftcg-hub-api:myRelease .
+docker push registry.micriber.com/fftcg-hub-api:myRelease
 ```
 
 Then, you will have your image build and pushed to the registry
 
-#### kubernetes deployment
+##### Kubernetes deployment
+
+N.B. Values between curly braces {} are enums
+
+```bash
+# go to the environment you want 
+cd infra/k8s/overlays/{preprod|production}
+# set the image
+kustomize edit set image fftcg-api=registry.micriber.com/fftcg-hub-api:myRelease
+# verify that all values are correct
+kubectl kustomize .
+# When you think all is good, apply, and don't forget to select the correct cluster !
+kubectl apply -k . -n fftcg-{preprod|production}
+```
+
+#### DEPRECATED: helm deployment
 
 Make a `values-production.yaml` file beside the `values.yaml` (in `infra/helm/fftcg-collection-api`)
 And override all the configuration you want
