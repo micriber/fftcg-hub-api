@@ -16,12 +16,19 @@ jobs:
         id: check
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: MontyD/package-json-updated-action
+        id: version-updated
+        with:
+          path: package.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Display version information
         run: |
           echo "Version has been changed: ${{ steps.check.outputs.changed }}"
           echo "Version type: ${{ steps.check.outputs.type }}"
           echo "Version number: ${{ steps.check.outputs.version }}"
           echo "Version changed commit: ${{ steps.check.outputs.commit }}"
+          echo "Version had updated: ${{ steps.version-updated.outputs.has-updated }}"
       - name: Version not change fail
         if: steps.check.outputs.changed == 'false'
         run: /bin/false
