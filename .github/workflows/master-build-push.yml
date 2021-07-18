@@ -6,7 +6,7 @@ on:
       - master
 
 env:
-  KUBECONFIG: .kube/config
+  KUBECONFIG: /tmp/kubeconfig
   KUBECONFIG_FILE: ${{ secrets.KUBECONFIG }}
   REGISTRY_URL: registry.micriber.com
   IMAGE_NAME: fftcg-hub-api-preprod
@@ -67,9 +67,7 @@ jobs:
         id: set_docker_image
         run: echo "::set-output name=docker_image::${{ env.REGISTRY_URL }}/${{ env.IMAGE_NAME }}:${{ steps.package-version.outputs.current-version}}-${GITHUB_SHA:8}"
       - name: Get kubeconfig
-        run: |
-          mkdir -p .kube
-          echo "${{ env.KUBECONFIG_FILE }}" > $KUBECONFIG
+        run: echo "${{ env.KUBECONFIG_FILE }}" > ${{ env.KUBECONFIG }}
       - name: Setup k8s tools
         uses: stefanprodan/kube-tools@v1
         with:
