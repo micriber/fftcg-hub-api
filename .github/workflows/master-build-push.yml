@@ -11,20 +11,31 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Check version changes
+        uses: EndBug/version-check@v1
+        id: check
+      - name: Version not change fail
+        if: steps.check.outputs.changed == 'false'
+        run: /bin/false
       - name: get-npm-version
+        if: steps.check.outputs.changed == 'true'
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
       - name: Set up QEMU
+        if: steps.check.outputs.changed == 'true'
         uses: docker/setup-qemu-action@v1docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
+        if: steps.check.outputs.changed == 'true'
         uses: docker/setup-buildx-action@v1
       - name: Login to Registry
+        if: steps.check.outputs.changed == 'true'
         uses: docker/login-action@v1
         with:
           registry: https://registry.micriber.com
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
       - name: Build and Push
+        if: steps.check.outputs.changed == 'true'
         id: docker_build
         uses: docker/build-push-action@v2
         with:
@@ -32,7 +43,9 @@ jobs:
           file: ./docker/node/Dockerfile.prod
           tags: registry.micriber.com/fftcg-hub-api:${{ steps.package-version.outputs.current-version}}
       - name: Image digest
+        if: steps.check.outputs.changed == 'true'
         run: echo ${{ steps.docker_build.outputs.digest }}
   # deploy-k8s:
+      #needs: docker
   #   runs-on: ubuntu-latest
     
