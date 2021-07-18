@@ -16,7 +16,7 @@ jobs:
         id: check
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: MontyD/package-json-updated-action
+      - uses: MontyD/package-json-updated-action@v1
         id: version-updated
         with:
           path: package.json
