@@ -1,0 +1,71 @@
+name: Build'n'Push docker image
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  KUBECONFIG: .kube/config
+  KUBECONFIG_FILE: ${{ secrets.KUBECONFIG }}
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    outputs:
+      docker_image: ${{ steps.set_docker_image.outputs.docker_image }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Check version changes
+        uses: EndBug/version-check@v1
+        id: check
+      - name: Version not change fail
+        if: steps.check.outputs.changed == 'false'
+        run: /bin/false
+      - name: get-npm-version
+        if: steps.check.outputs.changed == 'true'
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
+      - name: Set up QEMU
+        if: steps.check.outputs.changed == 'true'
+        uses: docker/setup-qemu-action@v1docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        if: steps.check.outputs.changed == 'true'
+        uses: docker/setup-buildx-action@v1
+      - name: Login to Registry
+        if: steps.check.outputs.changed == 'true'
+        uses: docker/login-action@v1
+        with:
+          registry: https://registry.micriber.com
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+      - name: Set docker image variable
+        id: set_docker_image
+        run: echo "::set-output name=docker_image::registry.micriber.com/fftcg-hub-api-preprod:${{ steps.package-version.outputs.current-version}}-${{ GITHUB_SHA }}"
+      - name: Build and Push
+        if: steps.check.outputs.changed == 'true'
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          file: ./docker/node/Dockerfile.prod
+          tags: ${{ steps.set_docker_image.outputs.docker_image }}
+      - name: Image digest
+        if: steps.check.outputs.changed == 'true'
+        run: echo ${{ steps.docker_build.outputs.digest }}
+  deploy-k8s:
+    runs-on: ubuntu-latest
+    needs: docker
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup k8s tools
+        uses: stefanprodan/kube-tools@v1
+        with:
+          kubectl: 1.18.2
+          kustomize: 4.1.3
+          command: |
+            echo "Set image to deploy"
+            cd infra/k8s/overlays/production && kustomize edit set image fftcg-api=${{needs.docker.outputs.docker_image}} && echo "Applying to k8s cluster" && kubectl apply -k .
+
