@@ -6,8 +6,6 @@ on:
       - master
 
 env:
-  KUBECONFIG: /tmp/kubeconfig
-  KUBECONFIG_FILE: ${{ secrets.KUBECONFIG }}
   REGISTRY_URL: registry.micriber.com
   IMAGE_NAME: fftcg-hub-api-preprod
 
