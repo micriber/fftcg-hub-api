@@ -23,7 +23,7 @@ spec:
         command: [ 'npm', 'run', 'migration:run'  ]
         envFrom:
         - configMapRef:
-          name: env-config
+            name: env-config
         env:
           - name: POSTGRES_PASSWORD
             valueFrom:
