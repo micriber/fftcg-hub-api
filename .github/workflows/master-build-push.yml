@@ -73,7 +73,7 @@ jobs:
           kustomize: 4.1.3
           command: |
             echo "Set image to deploy"
-            cd infra/k8s/overlays/production && kustomize edit set image fftcg-api=${{ steps.set_docker_image.outputs.docker_image }}
+            cd infra/k8s/overlays/production && kustomize edit set image fftcg-api=${{ steps.set_docker_image.outputs.docker_image }} && kustomize edit set image sql-migrations=${{ steps.set_docker_image.outputs.docker_image }}
       - name: Deploy
         uses: danielr1996/kubectl-action@1.0.0
         with:
