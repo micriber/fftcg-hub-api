@@ -1,4 +1,4 @@
-name: Check version has been upgraded
+name: Check version upgraded
 
 on:
   pull_request:
@@ -11,24 +11,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Check version changes
-        uses: EndBug/version-check@v1
-        id: check
+      - uses: kriasoft/check-version@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: MontyD/package-json-updated-action@1.0.1
-        id: version-updated
-        with:
-          path: package.json
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Display version information
-        run: |
-          echo "Version has been changed: ${{ steps.check.outputs.changed }}"
-          echo "Version type: ${{ steps.check.outputs.type }}"
-          echo "Version number: ${{ steps.check.outputs.version }}"
-          echo "Version changed commit: ${{ steps.check.outputs.commit }}"
-          echo "Version had updated: ${{ steps.version-updated.outputs.has-updated }}"
-      - name: Version not change fail
-        if: steps.check.outputs.changed == 'false'
-        run: /bin/false
