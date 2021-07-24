@@ -33,7 +33,7 @@ jobs:
         run: echo "::set-output name=docker_image::${{ env.REGISTRY_URL }}/${{ env.IMAGE_NAME }}:${{ steps.package-version.outputs.current-version}}"
       - name: Get last tag
         id: set_last_tag 
-        run: echo "::set-output name=last_tag::$(git describe --tags `git rev-list --tags --max-count=1)"
+        run: echo "::set-output name=last_tag::$(git describe --tags `git rev-list --tags --max-count=1`)"
       - name: Get all commits since last release
         id: set_release_body_patchnote
         run: echo "::set-output name=body_patchnote::$(git log --pretty=format:'%s' ${{ steps.set_last_tag.outputs.last_tag }}..HEAD)"
