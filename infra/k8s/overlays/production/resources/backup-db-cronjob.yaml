@@ -14,7 +14,7 @@ spec:
           containers:
           - name: backup-db
             image: registry.micriber.com/postgres-backup-s3:1.0.0
-            imagePullPolicy: IfNotPresent
+            imagePullPolicy: Always
             envFrom:
             - configMapRef:
                 name: env-config
