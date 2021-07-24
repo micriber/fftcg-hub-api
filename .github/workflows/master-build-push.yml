@@ -60,5 +60,5 @@ jobs:
         with:
           body: ${{ github.event.commits[0].message }}
           name: v${{ steps.package-version.outputs.current-version }}
-          tag: v${{ steps.package-version.outputs.current-version }}
+          tag_name: v${{ steps.package-version.outputs.current-version }}
           
