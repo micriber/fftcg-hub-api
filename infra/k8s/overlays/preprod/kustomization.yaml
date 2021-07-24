@@ -6,7 +6,7 @@ resources:
 - ../../base/
 
 patchesStrategicMerge:
-- ing.yaml
+- patches/ing.yaml
 
 configMapGenerator:
 - envs:
