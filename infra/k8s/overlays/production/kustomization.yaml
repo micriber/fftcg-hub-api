@@ -4,15 +4,12 @@ namespace: fftcg-production
 
 resources:
 - ../../base/
+- resources/backup-db-cronjob.yaml
 
 patchesStrategicMerge:
-- ing.yaml
+- patches/ing.yaml
 
 configMapGenerator:
 - envs:
   - files/config.env
   name: env-config
-images:
-- name: fftcg-api
-  newName: registry.pawndev.com/fftcg-api
-  newTag: 0.4.0

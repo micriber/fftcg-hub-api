@@ -1,0 +1,40 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: backup-db
+spec:
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          imagePullSecrets:
+          - name: regcred
+          containers:
+          - name: backup-db
+            image: registry.micriber.com/postgres-backup-s3:1.0.0
+            imagePullPolicy: Always
+            envFrom:
+            - configMapRef:
+                name: env-config
+            env:
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: postgresql
+                    key: postgresql-postgres-password
+              - name: AWS_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: aws
+                    key: AWS_ACCESS_KEY_ID
+              - name: AWS_SECRET_ACCESS_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: aws
+                    key: AWS_SECRET_ACCESS_KEY
+              - name: AWS_DEFAULT_REGION
+                value: eu-west-3
+              - name: S3_BACKUP_PATH
+                value: s3://fftcg-hub-api-postgres-backup/
