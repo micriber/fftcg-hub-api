@@ -14,6 +14,22 @@ spec:
         app: fftcg-api
     spec:
       restartPolicy: Always
+      imagePullSecrets:
+      - name: regcred
+      initContainers:
+      - name: sql-migrations
+        image: sql-migrations
+        imagePullPolicy: Always
+        command: [ 'npm', 'run', 'migration:run'  ]
+        envFrom:
+        - configMapRef:
+            name: env-config
+        env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgresql
+                key: postgresql-postgres-password
       containers:
       - name: fftcg-api
         image: fftcg-api

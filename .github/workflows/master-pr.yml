@@ -1,0 +1,16 @@
+name: Check version upgraded
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: kriasoft/check-version@1086f884eb01a69a5895cc768ae4901c9e0c764c
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
