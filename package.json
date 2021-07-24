@@ -37,7 +37,6 @@
         "swagger-ui-express": "^4.1.4",
         "typeorm": "^0.2.25",
         "winston": "^3.3.3",
-        "winston-daily-rotate-file": "^4.5.0",
         "yamljs": "^0.3.0"
     },
     "devDependencies": {
