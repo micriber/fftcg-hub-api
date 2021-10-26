@@ -11,6 +11,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - uses: kriasoft/check-version@1086f884eb01a69a5895cc768ae4901c9e0c764c
+      - uses: kriasoft/check-version@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
