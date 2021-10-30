@@ -5,7 +5,7 @@ metadata:
   name: fftcg-api
 spec:
   rules:
-  - host: fftcg-api.preprod.micriber.com
+  - host: fcc-api.preprod.micriber.com
     http:
       paths:
       - backend:
@@ -14,5 +14,5 @@ spec:
         path: /
   tls:
   - hosts:
-    - fftcg-api.preprod.micriber.com
-    secretName: fftcgapi-preprod-micriber-com-tls
+    - fcc-api.preprod.micriber.com
+    secretName: fcc-api-preprod-micriber-com-tls
