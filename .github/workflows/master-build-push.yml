@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY_URL: registry.micriber.com
-  IMAGE_NAME: fftcg-hub-api-preprod
+  IMAGE_NAME: fftcg-hub-api
 
 jobs:
   docker:
